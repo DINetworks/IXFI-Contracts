@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -7,7 +7,7 @@ import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
-import {IIXFICaller} from './interfaces/IIXFICaller.sol';
+import {IIXFICaller} from "./interfaces/IIXFICaller.sol";
 
 contract IXFI is ERC20, Ownable {
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -15,6 +15,7 @@ contract IXFI is ERC20, Ownable {
     using MessageHashUtils for bytes32;
     using ECDSA for bytes32;
 
+    uint256 crossfi_chainid = 4157; // 4158 is in mainnet 
     EnumerableSet.AddressSet private relayers;
 
     mapping(address => bool) public whitelisted;
@@ -48,6 +49,11 @@ contract IXFI is ERC20, Ownable {
         _;
     }
 
+    modifier onlyCrossfiChain() {
+        require(block.chainid == crossfi_chainid, "Not CrossFi Chain");
+        _;
+    }
+
     // add new whitelisted relayer
     function addWhitelistedRelayer(address relayer) public onlyOwner {
         require(relayer != address(0), 'address is not valid');
@@ -69,6 +75,24 @@ contract IXFI is ERC20, Ownable {
         emit RelayerRemoved(relayer);
     }
 
+    // Users get IXFI token by locking their XFI
+    function deposit() public payable onlyCrossfiChain {
+        require(msg.value > 0, 'Zero Value');
+        
+        address account = msg.sender;
+        _mint(account, msg.value);
+    }
+
+    // Users redeem XFI by removing their IXFI
+    function withdraw(uint256 amount_) public onlyCrossfiChain {
+        address account = msg.sender;
+        require(address(this).balance >= amount_, "Not enough XFI");
+        require(balanceOf(account) >= amount_, "Not enough IXFI");
+
+        _burn(account, amount_);
+        (bool success, ) = address(payable(account)).call{value: amount_}("");
+        require(success, "Withdraw failed");
+    }
 
     function mint(
         address to, 
@@ -81,6 +105,7 @@ contract IXFI is ERC20, Ownable {
         bytes32 hash = keccak256(abi.encodePacked(to, amount, data));
         address signer = recoverSigner(hash, signature);
 
+        require(amount > 0, "Zero Amount");
         require(to == signer, "Invalid signature");
         require(block.chainid == brgData.destinationChainId, "Wrong Destination Chain"); // prevent signature replay attack from different chains' transaction
         require(nonces[to] == brgData.destinationNonce, "Invalid nonce"); // prevent signature replay attack from same nonce in current chain
