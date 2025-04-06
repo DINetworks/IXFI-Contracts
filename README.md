@@ -1,10 +1,7 @@
 <div align="center">
     <a href="https://ixfi.network.com">
-        <img alt="logo" src="https://github.com/IXFILabs/IXFI-Frontend/blob/main/public/images/logo.png" style="width: 240px;">
+        <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
     </a>
-    <h1 style="border-bottom: none">
-        <b><a href="https://ixfi.network.com">IXFI Protocol</a></b><br />
-    </h1>
 </div>
 
 ## IXFI Protocol
