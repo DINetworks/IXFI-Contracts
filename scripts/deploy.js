@@ -25,10 +25,9 @@ async function main() {
 
     // IXFI Token Contract
     const IXFIFactory = new ContractFactory(artifactsIXFI.abi, artifactsIXFI.bytecode, wallet);
-    const ixfiContract = await IXFIFactory.deploy(wallet.address, "0xdaF0CEf4fc5447a5911b73C1b8148a6f838403D9");
+    const ixfiContract = await IXFIFactory.deploy(wallet.address, ixficallerContract.target);
     await ixfiContract.waitForDeployment();
     console.log(artifactsIXFI.contractName, ixfiContract.target)
-
 
     // GasRelayererFactory
     const GasRelayerXFIFactory = new ContractFactory(artifactsGasRelayerXFI.abi, artifactsGasRelayerXFI.bytecode, wallet);

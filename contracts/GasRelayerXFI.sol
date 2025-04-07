@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 
 contract GasRelayerXFI {
     using SafeERC20 for IERC20;
-    using Address for address;
+    using Address for address payable;
 
     address public owner;
     IERC20 public ixfiToken;
@@ -42,6 +42,16 @@ contract GasRelayerXFI {
         gasBalance[user] += amount;
         
         emit GasDeposited(user, amount);
+    }
+
+    function withdrawGas(uint amount) external {
+        address payable user = payable(msg.sender);
+        require(gasBalance[user] >= amount, "Insufficient Balance");
+
+        gasBalance[user] -= amount;
+        user.sendValue(amount);        
+
+        emit GasWithdrawn(user, amount);
     }
 
     function withdrawGasIXFI(uint amount) external {

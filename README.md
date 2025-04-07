@@ -57,7 +57,7 @@ This smart contract will support meta-transactions, allowing users to submit tra
 |---------------------|---------------------------------------------------|
 | IXFIGateway.sol    | 0x24ace36d6565fc3a27e2bb9f2f0fa164d3f2adf6        |
 | GasRelayerXFI.sol  | 0xf337fc4d623b5a2664138947aa6cea8ce783f3f2        |
-| IXFI.sol           | 0x0ebf472aa078bbfce4f154fdef3abe3d9fa5c5ec        |
+| IXFI.sol           | 0xFC4C231D2293180a30eCd10Ce9A84bDBF27B3967        |
 | IXFICaller.sol     | 0xdaf0cef4fc5447a5911b73c1b8148a6f838403d9        |
 
 
