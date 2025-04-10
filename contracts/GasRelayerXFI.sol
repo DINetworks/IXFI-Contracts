@@ -57,8 +57,8 @@ contract GasRelayerXFI {
     function withdrawGasIXFI(uint amount) external {
         address user = msg.sender;
         require(gasBalance[user] >= amount, "Insufficient Balance");
-        ixfiToken.safeTransfer(user, amount);
         gasBalance[user] -= amount;
+        ixfiToken.safeTransfer(user, amount);
 
         emit GasWithdrawn(user, amount);
     }
