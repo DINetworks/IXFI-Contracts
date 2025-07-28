@@ -1,17 +1,23 @@
 
-## IXFI Protocol
+## IXFI Cross-Chain Protocol
 
-The Interoperable XFI (IXFI) Protocol is a comprehensive General Message Passing (GMP) system that enables seamless cross-chain interoperability. Built with XFI as the foundational backing token, IXFI provides a robust infrastructure for cross-chain communication, contract execution, and asset transfers.
+IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains.
 
-Key innovations include:
-- **Cross-Chain Contract Calls**: Execute smart contracts on remote chains with message passing
-- **Token Transfer with Execution**: Send tokens and trigger contract execution in a single transaction  
-- **Gasless Meta Transactions**: Execute transactions without users paying gas fees directly
-- **1:1 XFI Backing**: Every IXFI token is backed by real XFI held in the gateway contract
-- **Decentralized Relayer Network**: Event-driven relayer system for secure cross-chain message delivery
-- **Unified Gateway**: Single contract interface for all cross-chain operations
+## 📚 Documentation
 
-IXFI transforms CrossFi's ecosystem into a fully interoperable and programmable cross-chain infrastructure, enabling seamless asset transfers, smart contract execution, and data messaging across diverse blockchain ecosystems.
+- **[Technical Documentation](./TECHNICAL_DOCS.md)** - Complete system architecture and specifications
+- **[API Reference](./API_REFERENCE.md)** - Comprehensive contract API documentation
+- **[Deployment Guide](./DEPLOYMENT_GUIDE.md)** - Step-by-step deployment instructions
+- **[Integration Examples](./INTEGRATION_EXAMPLES.md)** - Frontend and smart contract integration examples
+- **[Security Analysis](./SECURITY_ANALYSIS.md)** - Security model and threat analysis
+
+## Features
+
+- **Cross-Chain Token Transfers**: Send IXFI tokens between supported chains
+- **Cross-Chain Contract Calls**: Execute smart contract functions across different blockchains
+- **Gasless Transactions**: Execute transactions without holding native gas tokens
+- **1:1 XFI Backing**: All IXFI tokens are backed by native XFI on CrossFi chain
+- **Multi-Chain Support**: Ethereum, BSC, Polygon, and other EVM chains
     <a href="https://ixfi.network.com">
         <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
     </a>

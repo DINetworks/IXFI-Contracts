@@ -52,13 +52,8 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
         ixfiToken = IERC20(_ixfiToken);
         diaOracle = IDIAOracleV2(_diaOracle);
     }
-        require(_diaOracle != address(0), "Invalid DIA Oracle address");
-        ixfiToken = IERC20(_ixfiToken);
-        diaOracle = IDIAOracleV2(_diaOracle);
-    }
 
     // Owner functions ==============================================
-
     /**
      * @notice Authorize/deauthorize a gateway contract to consume credits
      * @param gateway Gateway contract address
