@@ -1,8 +1,21 @@
-<div align="center">
+
+## IXFI Protocol
+
+The Interoperable XFI (IXFI) Protocol is a comprehensive General Message Passing (GMP) system that enables seamless cross-chain interoperability. Built with XFI as the foundational backing token, IXFI provides a robust infrastructure for cross-chain communication, contract execution, and asset transfers.
+
+Key innovations include:
+- **Cross-Chain Contract Calls**: Execute smart contracts on remote chains with message passing
+- **Token Transfer with Execution**: Send tokens and trigger contract execution in a single transaction  
+- **Gasless Meta Transactions**: Execute transactions without users paying gas fees directly
+- **1:1 XFI Backing**: Every IXFI token is backed by real XFI held in the gateway contract
+- **Decentralized Relayer Network**: Event-driven relayer system for secure cross-chain message delivery
+- **Unified Gateway**: Single contract interface for all cross-chain operations
+
+IXFI transforms CrossFi's ecosystem into a fully interoperable and programmable cross-chain infrastructure, enabling seamless asset transfers, smart contract execution, and data messaging across diverse blockchain ecosystems.
     <a href="https://ixfi.network.com">
         <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
     </a>
-</div>
+
 
 ## IXFI Protocol
 
@@ -12,9 +25,12 @@ By addressing the limitations of CrossFi’s existing bridge, IXFI transforms Cr
 
 ## Tech Stack
 
-    - solidity (v0.8.20)
-    - Hardhat (v2.22.19)
-    - Openzeppelin Contracts (v5.2.0)
+- **Solidity** (v0.8.20) - Smart contract development
+- **Hardhat** (v2.22.19) - Development framework and testing
+- **OpenZeppelin Contracts** (v5.2.0) - Security-audited contract libraries
+- **Chainlink Oracles** - Real-time price feeds for gas credit calculation
+- **Node.js** - Relayer infrastructure and event monitoring
+- **Ethers.js** - Blockchain interaction and cryptography
 
 ## Development & Test on Local Environment
 
@@ -33,32 +49,239 @@ RPC_URL=https://crossfi-testnet.g.alchemy.com/v2/<YOUR_ALCHEMY_API_KEY>
 PRIVATE_KEY=<YOUR_WALLET_PRIVATE_KEY>
 ```
 
-## Features
+Run tests to verify the installation:
 
-### Gas Relayer
-`GasRelayer.sol, GasRelayerXFI.sol:`
-These contracts facilitate gas supply for users' meta transactions on EVM-compatible chains. Users can deposit XFI (IXFI) to cover gas fees and withdraw their deposited XFI at any time.
+```sh
+npx hardhat test
+```
 
-### Gateway
-`IXFIGateway.sol`
-This smart contract will support meta-transactions, allowing users to submit transactions without paying for gas. The contract will validate the relayer's signature and execute the transaction.
+## Core Architecture
 
-- executeMetaTransaction: Allows a user to submit a meta-transaction. The relayer signs the transaction and submits it to the contract.
+### IXFI Gateway Contract (`IXFI.sol`)
 
-- recoverSigner: Recovers the signer's address from the signature to ensure the transaction was signed by the user.
+The central hub for all cross-chain operations, providing:
 
-- nonces: Prevents replay attacks by ensuring each transaction is only executed once.
+**Cross-Chain Communication:**
+- `callContract()` - Execute contracts on remote chains
+- `callContractWithToken()` - Execute contracts and transfer tokens
+- `sendToken()` - Simple cross-chain token transfers
 
-### IXFI Token
-`IXFI.sol`, `IXFICaller.sol`: these contracts facilitate the cross-chain transfer of XFI (IXFI) tokens along with associated data, enabling seamless interoperability between EVM-compatible blockchains. Users can lock XFI (or burn IXFI) on the source chain while transmitting data, and on the destination chain, IXFI is minted, allowing the received data to trigger program execution.
+**XFI Backing System:**
+- `deposit()` - Convert XFI to IXFI (1:1 ratio)
+- `withdraw()` - Convert IXFI back to XFI
+- Automatic backing verification for all operations
 
-## Depolyed Contracts on CrossFi Testnet
-| Contract Name       | Address on CrossFi Testnet                         |
-|---------------------|---------------------------------------------------|
-| IXFIGateway.sol    | 0x24ace36d6565fc3a27e2bb9f2f0fa164d3f2adf6        |
-| GasRelayerXFI.sol  | 0xf337fc4d623b5a2664138947aa6cea8ce783f3f2        |
-| IXFI.sol           | 0xFC4C231D2293180a30eCd10Ce9A84bDBF27B3967        |
-| IXFICaller.sol     | 0xdaf0cef4fc5447a5911b73c1b8148a6f838403d9        |
+**Command Execution:**
+- `execute()` - Process cross-chain commands via relayers
+- Support for multiple command types (contract calls, token operations)
+- Cryptographic validation and replay protection
+
+### Relayer Infrastructure (`relayer/`)
+
+Decentralized event monitoring and command execution system:
+
+**Event Processing:**
+- Monitors `ContractCall`, `ContractCallWithToken`, and `TokenSent` events
+- Automatic payload verification and command generation
+- Cross-chain message delivery with built-in retry mechanisms
+
+**Health Monitoring:**
+- RESTful health and metrics endpoints
+- Real-time processing statistics
+- Configurable monitoring and alerting
+
+### Deployment Scripts (`scripts/`)
+
+Production-ready deployment automation:
+- `deploy-gmp.js` - Complete GMP protocol deployment
+- `whitelist-relayer.js` - Relayer permission management
+- Multi-chain deployment support with verification
+
+### Meta Transaction System (`MetaTxGasCreditVault.sol` & `MetaTxGateway.sol`)
+
+Gasless transaction infrastructure that enables users to execute transactions without paying gas fees:
+
+**Gas Credit Vault:**
+- `deposit()` - Deposit tokens (USDC, USDT, IXFI, etc.) to earn gas credits
+- `withdraw()` - Withdraw deposited tokens and deduct corresponding credits
+- Real-time token price conversion using Chainlink oracles
+- Support for stablecoins with 1:1 credit conversion
+
+**Meta Transaction Gateway:**
+- `executeMetaTransaction()` - Execute user transactions with relayer paying gas
+- `recoverSigner()` - Cryptographic signature verification
+- Nonce-based replay protection
+- Integration with gas credit system for automatic fee deduction
+
+**Key Features:**
+- **Multi-Token Support**: Accept various tokens for gas payment (USDC, USDT, IXFI)
+- **Oracle Integration**: Real-time price feeds for accurate credit calculation
+- **Flexible Credits**: Credits can be used across all supported operations
+- **Signature Verification**: EIP-712 standard for secure meta transactions
+
+## Quick Start Guide
+
+### 1. Deploy IXFI Protocol
+
+```sh
+# Deploy on CrossFi testnet
+npx hardhat run scripts/deploy-gmp.js --network crossfi
+
+# Deploy on additional chains (Ethereum, Polygon, BSC, etc.)
+npx hardhat run scripts/deploy-gmp.js --network ethereum
+```
+
+### 2. Set Up Relayer
+
+```sh
+cd relayer
+npm install
+
+# Configure relayer settings
+cp config.example.json config.json
+# Edit config.json with your RPC endpoints and private key
+
+# Start relayer service
+node index.js
+```
+
+### 3. Cross-Chain Usage Examples
+
+**Simple Token Transfer:**
+```solidity
+// Send 100 IXFI from CrossFi to Ethereum
+ixfi.sendToken("ethereum", recipientAddress, "IXFI", 100 * 10**18);
+```
+
+**Cross-Chain Contract Call:**
+```solidity
+// Call a DeFi contract on Polygon from any chain
+bytes memory payload = abi.encode("swap", tokenIn, tokenOut, amount);
+ixfi.callContract("polygon", dexContract, payload);
+```
+
+**Contract Call with Token Transfer:**
+```solidity
+// Send tokens and execute a contract in one transaction
+ixfi.callContractWithToken(
+    "bsc",
+    stakingContract,
+    abi.encode("stake", duration),
+    "IXFI",
+    stakeAmount
+);
+```
+
+### 4. Gasless Meta Transaction Setup
+
+**Deploy Meta Transaction Infrastructure:**
+```sh
+# Deploy gas credit vault and gateway
+npx hardhat run scripts/deploy-meta-tx.js --network crossfi
+```
+
+**Set Up Gas Credits:**
+```solidity
+// Deposit USDC to get gas credits
+vault.deposit(usdcToken, 100 * 10**6); // 100 USDC
+
+// Check available credits
+uint256 credits = vault.credits(userAddress);
+```
+
+**Execute Gasless Transactions:**
+```javascript
+// User signs transaction off-chain
+const signature = await user.signTypedData(domain, types, message);
+
+// Relayer executes with gas payment
+await gateway.executeMetaTransaction(
+    userAddress,
+    functionCall,
+    nonce,
+    signature
+);
+```
+
+## Key Features
+
+### 🌉 Cross-Chain Interoperability
+- **Universal Gateway**: Single contract interface for all cross-chain operations
+- **Message Passing**: Execute smart contracts across different blockchain networks
+- **Token + Data**: Combine token transfers with arbitrary data execution
+- **Chain Agnostic**: Support for any EVM-compatible blockchain
+
+### ⛽ Gasless Meta Transactions
+- **No Gas Required**: Users execute transactions without holding native tokens
+- **Multi-Token Payment**: Accept USDC, USDT, IXFI, and other tokens for gas
+- **Oracle-Based Pricing**: Real-time token-to-gas conversion via Chainlink
+- **Credit System**: Flexible gas credit management with deposit/withdraw
+
+### 💰 XFI-Backed Tokenomics  
+- **1:1 Backing**: Every IXFI token backed by real XFI in the gateway contract
+- **Deposit/Withdraw**: Seamless conversion between XFI and IXFI
+- **Transparent Reserves**: On-chain verification of backing ratio
+- **No Inflation**: Token supply directly tied to XFI deposits
+
+### 🔄 Relayer Network
+- **Event-Driven**: Automatic processing of cross-chain events
+- **Decentralized**: Multiple relayers can operate independently  
+- **Health Monitoring**: Built-in metrics and health check endpoints
+- **Fault Tolerant**: Retry mechanisms and error handling
+
+### 🔒 Security & Validation
+- **Cryptographic Proofs**: All cross-chain messages cryptographically verified
+- **Replay Protection**: Command IDs prevent duplicate execution
+- **Payload Verification**: Hash-based payload integrity checks
+- **Access Control**: Role-based permissions for relayers and administrators
+
+## Testing
+
+Run the comprehensive test suite:
+
+```sh
+# Run all tests
+npx hardhat test
+
+# Run specific GMP protocol tests  
+npx hardhat test test/test-gmp.js
+
+# Run with gas reporting
+REPORT_GAS=true npx hardhat test
+```
+
+## Documentation
+
+- **[USAGE.md](./USAGE.md)** - Complete usage guide and API reference
+- **[GMP_README.md](./GMP_README.md)** - Technical specification for GMP protocol
+- **[relayer/README.md](./relayer/README.md)** - Relayer setup and configuration guide
+
+## Deployed Contracts
+
+### CrossFi Testnet
+| Contract | Address | Description |
+|----------|---------|-------------|
+| IXFI Gateway | `0xFC4C231D2293180a30eCd10Ce9A84bDBF27B3967` | Main GMP gateway contract |
+| MetaTxGasCreditVault | `TBD` | Gas credit management system |
+| MetaTxGateway | `TBD` | Gasless transaction execution |
+
+### Deployment Status
+- ✅ CrossFi Testnet - Active (GMP Protocol)
+- 🔄 CrossFi Testnet - Pending (Meta Transaction System)
+- 🔄 Ethereum Sepolia - Pending  
+- 🔄 Polygon Mumbai - Pending
+- 🔄 BSC Testnet - Pending
+
+## Community & Support
+
+- **GitHub**: [IXFILabs/IXFI-Contracts](https://github.com/IXFILabs/IXFI-Contracts)
+- **Website**: [ixfi.network.com](https://ixfi.network.com)
+- **Documentation**: Comprehensive guides in `/docs`
+- **Issues**: Report bugs and feature requests on GitHub
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 
 

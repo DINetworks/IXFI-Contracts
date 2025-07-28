@@ -1,0 +1,45 @@
+{
+  "relayerPrivateKey": "0x1234567890123456789012345678901234567890123456789012345678901234",
+  "pollingInterval": 5000,
+  "gasLimit": 500000,
+  "gasPrice": "20",
+  "maxRetries": 3,
+  "retryDelayMs": 30000,
+  "compensationEnabled": true,
+  "chains": {
+    "crossfi": {
+      "rpc": "https://rpc.crossfi.io",
+      "chainId": 4157,
+      "ixfiAddress": "0x...",
+      "blockConfirmations": 1
+    },
+    "ethereum": {
+      "rpc": "https://mainnet.infura.io/v3/YOUR_PROJECT_ID",
+      "chainId": 1,
+      "ixfiAddress": "0x...",
+      "blockConfirmations": 12
+    },
+    "bsc": {
+      "rpc": "https://bsc-dataseed1.binance.org",
+      "chainId": 56,
+      "ixfiAddress": "0x...",
+      "blockConfirmations": 3
+    },
+    "polygon": {
+      "rpc": "https://polygon-rpc.com",
+      "chainId": 137,
+      "ixfiAddress": "0x...",
+      "blockConfirmations": 50
+    }
+  },
+  "relayerPrivateKey": "YOUR_RELAYER_PRIVATE_KEY",
+  "pollingInterval": 5000,
+  "gasLimit": 500000,
+  "gasPrice": "20",
+  "maxRetries": 3,
+  "retryDelayMs": 30000,
+  "compensationEnabled": true,
+  "healthCheckPort": 3000,
+  "logLevel": "info",
+  "enableMetrics": true
+}

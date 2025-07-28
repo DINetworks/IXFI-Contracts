@@ -1,0 +1,37 @@
+{
+  "name": "ixfi-relayer",
+  "version": "1.0.0",
+  "description": "IXFI GMP Protocol Relayer",
+  "main": "IXFIRelayer.js",
+  "scripts": {
+    "start:gmp": "node relayer-api.js",
+    "start:meta-tx": "node MetaTxRelayer.js",
+    "test": "jest",
+    "lint": "eslint .",
+    "setup": "cp config.example.json config.json && cp meta-tx-config.example.json meta-tx-config.json"
+  },
+  "dependencies": {
+    "ethers": "^6.8.0",
+    "express": "^4.18.2",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0",
+    "eslint": "^8.50.0"
+  },
+  "keywords": [
+    "blockchain",
+    "bridge",
+    "relayer",
+    "crossfi",
+    "ixfi",
+    "gmp"
+  ],
+  "author": "IXFI Labs",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

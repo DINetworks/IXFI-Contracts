@@ -3,21 +3,34 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "hardhat compile"
+    "test": "hardhat test",
+    "test:gmp": "hardhat test test/test-gmp.js",
+    "test:meta-tx": "hardhat test test/test-meta-tx-new.js",
+    "compile": "hardhat compile",
+    "clean": "hardhat clean",
+    "deploy:gmp": "hardhat run scripts/deploy-gmp.js",
+    "deploy:meta-tx": "hardhat run scripts/deploy-meta-tx.js",
+    "whitelist-relayer": "hardhat run scripts/whitelist-relayer.js",
+    "start:gmp-relayer": "cd relayer && npm run start:gmp",
+    "start:meta-relayer": "cd relayer && npm run start:meta-tx",
+    "setup": "cp .env.example .env && cd relayer && npm run setup"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
     "hardhat": "^2.22.19",
-    "hardhat-contract-sizer": "^2.10.0",
-    "hardhat-gas-reporter": "^2.2.2"
+    "hardhat-contract-sizer": "^2.10.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.2.0"
+    "@chainlink/contracts": "^1.3.0",
+    "@openzeppelin/contracts": "^5.3.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0"
   }
 }

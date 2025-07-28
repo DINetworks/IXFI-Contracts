@@ -1,0 +1,41 @@
+{
+  "chains": {
+    "crossfi": {
+      "rpc": "https://rpc.crossfi.io",
+      "chainId": 4157,
+      "gasCreditVault": "0x0000000000000000000000000000000000000000",
+      "metaTxGateway": "0x0000000000000000000000000000000000000000",
+      "blockConfirmations": 1
+    },
+    "ethereum": {
+      "rpc": "https://mainnet.infura.io/v3/YOUR_PROJECT_ID",
+      "chainId": 1,
+      "metaTxGateway": "0x0000000000000000000000000000000000000000",
+      "blockConfirmations": 12
+    },
+    "polygon": {
+      "rpc": "https://polygon-rpc.com",
+      "chainId": 137,
+      "metaTxGateway": "0x0000000000000000000000000000000000000000",
+      "blockConfirmations": 3
+    },
+    "bsc": {
+      "rpc": "https://bsc-dataseed1.binance.org",
+      "chainId": 56,
+      "metaTxGateway": "0x0000000000000000000000000000000000000000",
+      "blockConfirmations": 3
+    },
+    "arbitrum": {
+      "rpc": "https://arb1.arbitrum.io/rpc",
+      "chainId": 42161,
+      "metaTxGateway": "0x0000000000000000000000000000000000000000",
+      "blockConfirmations": 1
+    }
+  },
+  "relayerPrivateKey": "0x0000000000000000000000000000000000000000000000000000000000000000",
+  "healthPort": 3001,
+  "maxGasPrice": "50000000000",
+  "gasBuffer": 1.2,
+  "retryAttempts": 3,
+  "retryDelay": 5000
+}
