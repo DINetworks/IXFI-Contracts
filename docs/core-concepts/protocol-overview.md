@@ -5,7 +5,7 @@ IXFI Protocol is a comprehensive cross-chain infrastructure that enables seamles
 ## Core Architecture
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "User Layer"
         U[User/DApp]
         W[Web3 Wallet]

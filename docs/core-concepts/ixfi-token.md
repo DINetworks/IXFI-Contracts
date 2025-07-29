@@ -36,7 +36,7 @@ Standard: ERC20 with cross-chain extensions
 ### Supply Mechanism
 
 ```mermaid
-graph LR
+flowchart LR
     A[XFI Deposit] --> B[IXFI Mint]
     B --> C[Cross-Chain Transfer]
     C --> D[IXFI Burn]

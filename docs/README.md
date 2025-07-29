@@ -1,5 +1,9 @@
 ![IXFI Protocol](IXFI-banner.png)
 
+<div align="center">
+  <img src="ixfi-logo.png" alt="IXFI Logo" width="200"/>
+</div>
+
 # IXFI Protocol Documentation
 
 Welcome to the comprehensive documentation for the IXFI Protocol - a revolutionary cross-chain infrastructure that enables seamless token swaps, cross-chain communication, and gasless transactions across multiple blockchain networks.
@@ -61,7 +65,7 @@ IXFI is a cross-chain protocol that facilitates:
 ## Architecture Overview
 
 ```mermaid
-graph TB
+flowchart TB
     A[User] --> B[IXFI Gateway]
     B --> C[Cross-Chain Aggregator]
     B --> D[Meta-Tx Gateway]

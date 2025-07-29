@@ -36,7 +36,7 @@ sequenceDiagram
 For non-IXFI tokens, the protocol uses a lock-and-release mechanism:
 
 ```mermaid
-graph LR
+flowchart LR
     A[User Deposits Token] --> B[Gateway Locks Token]
     B --> C[Wrapped Token Minted]
     C --> D[Cross-Chain Transfer]

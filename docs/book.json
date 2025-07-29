@@ -4,11 +4,13 @@
   "author": "IXFI Team",
   "language": "en",
   "gitbook": ">=3.2.0",
+  "logo": "ixfi-logo.png",
   "structure": {
     "readme": "README.md",
     "summary": "SUMMARY.md"
   },
   "plugins": [
+    "mermaid",
     "code",
     "hints",
     "tabs",
@@ -23,6 +25,18 @@
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/DINetworks/IXFI-Contracts"
+    },
+    "mermaid": {
+      "theme": "default",
+      "flowchart": {
+        "useMaxWidth": true,
+        "htmlLabels": true
+      },
+      "sequence": {
+        "showSequenceNumbers": true,
+        "diagramMarginX": 50,
+        "diagramMarginY": 10
+      }
     }
   },
   "pdf": {

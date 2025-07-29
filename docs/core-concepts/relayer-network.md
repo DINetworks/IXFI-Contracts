@@ -9,7 +9,7 @@ The relayer network serves as the bridge infrastructure that monitors events on 
 ## Architecture
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Source Chain"
         SC[Smart Contract]
         SE[Event Emitter]

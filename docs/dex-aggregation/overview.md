@@ -27,7 +27,7 @@ Modern DeFi spans multiple chains and hundreds of DEX protocols, each with:
 ## Architecture Overview
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "User Interface"
         UI[User Request]
         SDK[IXFI SDK]
@@ -169,7 +169,7 @@ Unique DEX designs with specific use cases:
 IXFI's routing algorithm finds optimal paths across multiple protocols:
 
 ```mermaid
-graph LR
+flowchart LR
     A[Token A] --> B[WETH]
     A --> C[USDC]
     A --> D[DAI]

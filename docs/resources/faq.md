@@ -55,7 +55,7 @@ IXFI tokens are minted when users deposit native XFI on the CrossFi chain and bu
 - **Redemption**: Always redeemable for underlying XFI
 
 ```mermaid
-graph LR
+flowchart LR
     A[User deposits 100 XFI] --> B[Contract mints 100 IXFI]
     B --> C[User bridges IXFI to other chains]
     C --> D[User returns 100 IXFI]

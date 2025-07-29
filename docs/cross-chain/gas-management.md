@@ -9,7 +9,7 @@ Cross-chain transactions require gas on both source and destination chains. The 
 ## Gas Architecture
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Source Chain"
         U[User]
         SC[Source Contract]

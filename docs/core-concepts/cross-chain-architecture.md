@@ -5,7 +5,7 @@ IXFI Protocol implements a robust cross-chain architecture that enables seamless
 ## Architecture Overview
 
 ```mermaid
-graph TB
+flowchart TB
     subgraph "Source Chain"
         SC[Smart Contract]
         SG[IXFI Gateway]
@@ -169,7 +169,7 @@ New chain integration requires:
 ### 2. Deployment Process
 
 ```mermaid
-graph LR
+flowchart LR
     A[Contract Deployment] --> B[Relayer Configuration]
     B --> C[Security Audit]
     C --> D[Testnet Testing]
