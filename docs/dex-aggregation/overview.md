@@ -281,7 +281,7 @@ async function compareQuotes(tokenIn, tokenOut, amountIn) {
 ### Cross-Chain Swap Flow
 
 ```mermaid
-sequence
+sequenceDiagram
     participant User
     participant Aggregator_A as Aggregator (Chain A)
     participant IXFI_A as IXFI Gateway (Chain A) 

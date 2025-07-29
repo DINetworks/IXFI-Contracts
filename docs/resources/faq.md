@@ -91,7 +91,7 @@ Cross-chain swaps follow this pattern:
 3. **Destination Chain**: IXFI → Token B (using best DEX)
 
 {% mermaid %}
-sequence
+sequenceDiagram
     participant User
     participant Aggregator_A as Source Chain
     participant Relayer

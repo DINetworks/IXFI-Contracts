@@ -9,7 +9,6 @@
     "summary": "SUMMARY.md"
   },
   "plugins": [
-    "mermaid",
     "code",
     "hints",
     "tabs",
@@ -24,12 +23,6 @@
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/DINetworks/IXFI-Contracts"
-    },
-    "mermaid": {
-      "theme": "default",
-      "sequence": {
-        "showSequenceNumbers": true
-      }
     }
   },
   "pdf": {

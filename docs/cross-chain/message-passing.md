@@ -40,7 +40,7 @@ enum MessageType {
 ## Message Lifecycle
 
 ```mermaid
-sequence
+sequenceDiagram
     participant Sender as Sender Contract
     participant Gateway_A as Source Gateway
     participant Relayer as Relayer Network

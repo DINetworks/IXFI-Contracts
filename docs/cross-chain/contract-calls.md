@@ -9,7 +9,7 @@ Contract calls extend beyond simple token transfers by allowing arbitrary functi
 ## Architecture
 
 ```mermaid
-sequence
+sequenceDiagram
     participant Caller as Source Contract
     participant Gateway_A as Source Gateway
     participant Relayer as Relayer Network
