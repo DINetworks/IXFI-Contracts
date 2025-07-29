@@ -1,0 +1,27 @@
+{
+  "name": "ixfi-docs",
+  "version": "1.0.0",
+  "description": "IXFI Protocol Documentation",
+  "scripts": {
+    "docs:serve": "gitbook serve",
+    "docs:build": "gitbook build",
+    "docs:install": "gitbook install",
+    "docs:pdf": "gitbook pdf . ./IXFI-Documentation.pdf",
+    "docs:epub": "gitbook epub . ./IXFI-Documentation.epub",
+    "docs:mobi": "gitbook mobi . ./IXFI-Documentation.mobi"
+  },
+  "devDependencies": {
+    "gitbook-cli": "^2.3.2"
+  },
+  "dependencies": {
+    "gitbook-plugin-mermaid-gb3": "^2.1.0",
+    "gitbook-plugin-code": "^0.1.0",
+    "gitbook-plugin-hints": "^1.0.2",
+    "gitbook-plugin-tabs": "^0.1.0",
+    "gitbook-plugin-expandable-chapters": "^0.2.0",
+    "gitbook-plugin-search-plus": "^0.0.11",
+    "gitbook-plugin-katex": "^1.1.4",
+    "gitbook-plugin-github": "^2.0.0",
+    "gitbook-plugin-copy-code-button": "^0.0.2"
+  }
+}

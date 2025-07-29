@@ -319,11 +319,11 @@
 
 <p>IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:</p>
 
-<p>1. <strong>GMP (General Message Passing) Protocol</strong> - For cross-chain communication and token transfers<br>2. <strong>Meta-Transaction System</strong> - For gasless transaction execution with IXFI-based gas credits</p>
+<p>1. <strong>GMP (General Message Passing) Protocol</strong> - For cross-chain communication and token transfers<br>2. <strong>Meta-Transaction System</strong> - For gasless transaction execution with IXFI-based gas credits<br>3. <strong>Cross-Chain DEX Aggregation</strong> - Multi-protocol DEX routing with 37+ supported protocols</p>
 
 <h3>Key Features</h3>
 
-<p>- <strong>1:1 XFI Backing</strong>: IXFI tokens are fully backed by native XFI on CrossFi chain<br>- <strong>Cross-Chain Communication</strong>: Message passing protocol similar to Axelar<br>- <strong>Gasless Transactions</strong>: Users can execute transactions without holding native gas tokens<br>- <strong>Multi-Chain Support</strong>: Ethereum, BSC, Polygon, and other EVM chains<br>- <strong>Decentralized Relayers</strong>: Network of whitelisted relayers for cross-chain operations</p>
+<p>- <strong>1:1 XFI Backing</strong>: IXFI tokens are fully backed by native XFI on CrossFi chain<br>- <strong>Cross-Chain Communication</strong>: Message passing protocol similar to Axelar<br>- <strong>Gasless Transactions</strong>: Users can execute transactions without holding native gas tokens<br>- <strong>Multi-Chain Support</strong>: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base<br>- <strong>Advanced DEX Aggregation</strong>: Support for 37+ DEX protocols including V2 and V3 variants<br>- <strong>Optimal Route Selection</strong>: Intelligent routing across multiple DEXes for best prices<br>- <strong>Concentrated Liquidity</strong>: Full support for Uniswap V3, SushiSwap V3, PancakeSwap V3<br>- <strong>Decentralized Relayers</strong>: Network of whitelisted relayers for cross-chain operations</p>
 
 <h2>Architecture</h2>
 
@@ -350,7 +350,140 @@
 
 <h3>System Components</h3>
 
-<p>1. <strong>IXFI Gateway</strong> (<code>IXFI.sol</code>) - Core contract handling GMP and XFI↔IXFI conversion<br>2. <strong>MetaTxGasCreditVault</strong> (<code>MetaTxGasCreditVault.sol</code>) - Gas credit management on CrossFi<br>3. <strong>MetaTxGateway</strong> (<code>MetaTxGateway.sol</code>) - Meta-transaction execution on any chain<br>4. <strong>IXFIExecutable</strong> (<code>IXFIExecutable.sol</code>) - Base contract for dApps receiving cross-chain calls<br>5. <strong>Relayer Services</strong> - Off-chain services for cross-chain coordination</p>
+<p>1. <strong>IXFI Gateway</strong> (<code>IXFI.sol</code>) - Core contract handling GMP and XFI↔IXFI conversion<br>2. <strong>MetaTxGasCreditVault</strong> (<code>MetaTxGasCreditVault.sol</code>) - Gas credit management on CrossFi<br>3. <strong>MetaTxGateway</strong> (<code>MetaTxGateway.sol</code>) - Meta-transaction execution on any chain<br>4. <strong>IXFIExecutable</strong> (<code>IXFIExecutable.sol</code>) - Base contract for dApps receiving cross-chain calls<br>5. <strong>CrossChainAggregator</strong> (<code>CrossChainAggregator.sol</code>) - Multi-protocol DEX aggregation system<br>6. <strong>MulticallLibraryV2</strong> (<code>MulticallLibraryV2.sol</code>) - Batch operations and optimal routing<br>7. <strong>QuoteLibrary</strong> (<code>QuoteLibrary.sol</code>) - Price quotation for 37+ DEX protocols<br>8. <strong>Relayer Services</strong> - Off-chain services for cross-chain coordination</p>
+
+<h2>DEX Aggregation System</h2>
+
+<p>The IXFI protocol includes a sophisticated DEX aggregation system that supports 37+ protocols across 7 chains, providing optimal routing and price discovery for token swaps.</p>
+
+<h3>Supported DEX Protocols</h3>
+
+<h4>V2 AMM Protocols (Traditional)</h4>
+- <strong>Uniswap V2</strong> (All networks)
+- <strong>SushiSwap V2</strong> (All networks)
+- <strong>PancakeSwap V2</strong> (BSC, Ethereum)
+- <strong>TraderJoe V1</strong> (Avalanche)
+- <strong>QuickSwap</strong> (Polygon)
+- <strong>SpookySwap</strong> (Fantom-compatible)
+- <strong>Dfyn</strong> (Polygon)
+
+<h4>V3 Concentrated Liquidity</h4>
+- <strong>Uniswap V3</strong> (Ethereum, Polygon, Arbitrum, Optimism, Base)
+- <strong>SushiSwap V3</strong> (Multi-chain)
+- <strong>PancakeSwap V3</strong> (BSC, Ethereum)
+- <strong>Algebra</strong> (Polygon)
+- <strong>Camelot V3</strong> (Arbitrum)
+
+<h4>Solidly Forks (ve(3,3))</h4>
+- <strong>Velodrome</strong> (Optimism)
+- <strong>Aerodrome</strong> (Base)
+- <strong>Thena</strong> (BSC)
+- <strong>Ramses</strong> (Arbitrum)
+
+<h4>Stableswap Protocols</h4>
+- <strong>Curve Finance</strong> (Multi-chain)
+- <strong>Ellipsis</strong> (BSC)
+- <strong>Belt Finance</strong> (BSC)
+
+<h4>Specialized DEXes</h4>
+- <strong>Balancer V2</strong> (Multi-chain)
+- <strong>1inch</strong> (Multi-chain)
+- <strong>Platypus</strong> (Avalanche)
+- <strong>WooFi</strong> (Multi-chain)
+- <strong>DODO</strong> (Multi-chain)
+
+<h3>Architecture Components</h3>
+
+<h4>CrossChainAggregator.sol</h4>
+Main aggregation contract that:
+- Orchestrates multi-DEX quote comparisons
+- Executes optimal swap routes
+- Handles cross-chain operations
+- Manages slippage protection
+
+<div class="code-section"><pre><code>
+function getOptimalQuote(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (uint256 bestAmount, uint256 bestRouter)
+
+<p>function executeSwap(<br>    address tokenIn,<br>    address tokenOut,<br>    uint256 amountIn,<br>    uint256 minAmountOut,<br>    uint256 routerType,<br>    bytes calldata swapData<br>) external payable</code></pre></div></p>
+
+<h4>MulticallLibraryV2.sol</h4>
+Batch operations library for:
+- Parallel quote fetching from 37 protocols
+- Optimal route selection
+- Gas-efficient multicall execution
+- Error handling and fallbacks
+
+<div class="code-section"><pre><code>
+function getMultipleQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory quotes)
+
+<p>function _generateQuoteCalldata(<br>    uint256 routerType,<br>    address tokenIn,<br>    address tokenOut,<br>    uint256 amountIn<br>) internal pure returns (bytes memory)</code></pre></div></p>
+
+<h4>QuoteLibrary.sol</h4>
+Quote calculation engine supporting:
+- V2 AMM price calculations
+- V3 concentrated liquidity math
+- Curve stableswap formulas
+- Balancer weighted pool math
+
+<div class="code-section"><pre><code>
+// V2 DEX Quotes
+function getUniswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+
+<p>// V3 DEX Quotes<br>function getUniswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)<br>function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)<br>function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)</p>
+
+<p>// Specialized Protocols<br>function getCurveQuote(address pool, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)<br>function getBalancerV2Quote(address vault, bytes32 poolId, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)</code></pre></div></p>
+
+<h3>Router Type Mapping</h3>
+
+<p>Each DEX protocol is assigned a unique router type ID (0-36):</p>
+
+<table><tr><td>Router Type</td><td>Protocol</td><td>Networks</td><td>Notes</td></tr>
+<tr><th>-------------</th><th>----------</th><th>----------</th><th>-------</th></tr>
+<tr><td>0</td><td>Uniswap V2</td><td>All</td><td>Standard AMM</td></tr>
+<tr><td>1</td><td>SushiSwap V2</td><td>All</td><td>Fork of Uniswap V2</td></tr>
+<tr><td>2</td><td>PancakeSwap V2</td><td>BSC, ETH</td><td>BSC native</td></tr>
+<tr><td>3</td><td>Uniswap V3</td><td>ETH, Polygon, Arbitrum, Optimism, Base</td><td>Concentrated liquidity</td></tr>
+<tr><td>4</td><td>SushiSwap V3</td><td>Multi-chain</td><td>V3 implementation</td></tr>
+<tr><td>5</td><td>PancakeSwap V3</td><td>BSC, ETH</td><td>V3 concentrated liquidity</td></tr>
+<tr><td>6-15</td><td>Various V2 AMMs</td><td>Network-specific</td><td>QuickSwap, TraderJoe, etc.</td></tr>
+<tr><td>16-25</td><td>Solidly Forks</td><td>Network-specific</td><td>Velodrome, Aerodrome, etc.</td></tr>
+<tr><td>26-30</td><td>Stableswap</td><td>Multi-chain</td><td>Curve, Ellipsis, etc.</td></tr>
+<tr><td>31-36</td><td>Specialized</td><td>Multi-chain</td><td>Balancer, 1inch, DODO, etc.</td></tr>
+</table><h3>Integration Examples</h3>
+
+<h4>Basic Token Swap</h4>
+<div class="code-section"><pre><code>
+// Get quotes from all available DEXes
+(uint256 bestAmount, uint256 bestRouter) = aggregator.getOptimalQuote(
+    USDC,
+    WETH,
+    1000e6, // 1000 USDC
+    getAllRouterTypes()
+);
+
+<p>// Execute swap with best route<br>aggregator.executeSwap{value: msg.value}(<br>    USDC,<br>    WETH,<br>    1000e6,<br>    bestAmount * 995 / 1000, // 0.5% slippage<br>    bestRouter,<br>    swapData<br>);</code></pre></div></p>
+
+<h4>Cross-Chain Swap</h4>
+<div class="code-section"><pre><code>
+// Swap USDC on Ethereum for WBNB on BSC
+aggregator.crossChainSwap(
+    &quot;ethereum&quot;,
+    &quot;binance&quot;,
+    USDC,
+    WBNB,
+    1000e6,
+    minAmountOut,
+    routerType
+);</code></pre></div>
 
 <h2>Core Contracts</h2>
 
@@ -807,11 +940,14 @@ describe(&quot;Meta-Transaction Flow&quot;, function () {
 
 <p>This technical documentation provides comprehensive coverage of the IXFI system architecture, deployment procedures, and integration guidelines. For additional support or questions, please refer to the project repository or contact the development team.</p></div><div class="section"><h1 id="api-reference">2. API Reference</h1><h2>Table of Contents</h2>
 1. <a href="#ixfi-gateway">IXFI Gateway</a>
-2. <a href="#metatxgascreditvault">MetaTxGasCreditVault</a>
-3. <a href="#metatxgateway">MetaTxGateway</a>
-4. <a href="#ixfiexecutable">IXFIExecutable</a>
-5. <a href="#events-reference">Events Reference</a>
-6. <a href="#error-codes">Error Codes</a>
+2. <a href="#crosschainaggregator">CrossChainAggregator</a>
+3. <a href="#multicalllibraryv2">MulticallLibraryV2</a>
+4. <a href="#quotelibrary">QuoteLibrary</a>
+5. <a href="#metatxgascreditvault">MetaTxGasCreditVault</a>
+6. <a href="#metatxgateway">MetaTxGateway</a>
+7. <a href="#ixfiexecutable">IXFIExecutable</a>
+8. <a href="#events-reference">Events Reference</a>
+9. <a href="#error-codes">Error Codes</a>
 
 <h2>IXFI Gateway</h2>
 
@@ -912,6 +1048,223 @@ function getXFIBalance() external view returns (uint256)
 function isCommandExecuted(bytes32 commandId) external view returns (bool)
 function getAllRelayers() external view returns (address[] memory)
 function getRelayerCount() external view returns (uint256)</code></pre></div>
+
+<h2>CrossChainAggregator</h2>
+
+<h3>Main Aggregation Functions</h3>
+
+<h4>Quote Functions</h4>
+
+<div class="code-section"><pre><code>
+function getOptimalQuote(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (uint256 bestAmount, uint256 bestRouter)</code></pre></div>
+<strong>Description</strong>: Get the best quote across specified DEX protocols
+- <strong>Parameters</strong>:
+  - <code>tokenIn</code>: Input token address
+  - <code>tokenOut</code>: Output token address
+  - <code>amountIn</code>: Amount of input tokens
+  - <code>routerTypes</code>: Array of router type IDs to check (0-36)
+- <strong>Returns</strong>: Best output amount and corresponding router type
+
+<div class="code-section"><pre><code>
+function getAllQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory)</code></pre></div>
+<strong>Description</strong>: Get quotes from all 37 supported DEX protocols
+- <strong>Returns</strong>: Array of quote results with amounts and router types
+
+<h4>Swap Execution</h4>
+
+<div class="code-section"><pre><code>
+function executeSwap(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    uint256 routerType,
+    bytes calldata swapData
+) external payable returns (uint256 amountOut)</code></pre></div>
+<strong>Description</strong>: Execute token swap through specified DEX protocol
+- <strong>Parameters</strong>:
+  - <code>tokenIn</code>: Input token address (use address(0) for ETH)
+  - <code>tokenOut</code>: Output token address
+  - <code>amountIn</code>: Exact amount of input tokens
+  - <code>minAmountOut</code>: Minimum acceptable output amount (slippage protection)
+  - <code>routerType</code>: DEX protocol to use (0-36)
+  - <code>swapData</code>: Protocol-specific swap data
+- <strong>Events</strong>: <code>SwapExecuted(address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut, uint256 routerType)</code>
+
+<h4>Cross-Chain Swap</h4>
+
+<div class="code-section"><pre><code>
+function crossChainSwap(
+    string memory sourceChain,
+    string memory destinationChain,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    uint256 routerType
+) external payable</code></pre></div>
+<strong>Description</strong>: Execute cross-chain token swap
+- <strong>Parameters</strong>:
+  - <code>sourceChain</code>: Source chain name
+  - <code>destinationChain</code>: Destination chain name
+  - <code>tokenIn</code>: Input token on source chain
+  - <code>tokenOut</code>: Desired output token on destination chain
+  - <code>amountIn</code>: Amount to swap
+  - <code>minAmountOut</code>: Minimum output with slippage protection
+  - <code>routerType</code>: DEX protocol to use on destination
+
+<h4>Batch Operations</h4>
+
+<div class="code-section"><pre><code>
+function multiSwap(
+    SwapParams[] memory swaps
+) external payable returns (uint256[] memory amountsOut)</code></pre></div>
+<strong>Description</strong>: Execute multiple swaps in a single transaction
+- <strong>Parameters</strong>:
+  - <code>swaps</code>: Array of swap parameters
+- <strong>Returns</strong>: Array of output amounts for each swap
+
+<h3>View Functions</h3>
+
+<div class="code-section"><pre><code>
+function getSupportedTokens(uint256 chainId) external view returns (address[] memory)
+function getRouterAddress(uint256 routerType, uint256 chainId) external view returns (address)
+function isRouterSupported(uint256 routerType, uint256 chainId) external view returns (bool)
+function getSwapFee(uint256 routerType) external view returns (uint256)</code></pre></div>
+
+<h2>MulticallLibraryV2</h2>
+
+<h3>Batch Quote Functions</h3>
+
+<div class="code-section"><pre><code>
+function getMultipleQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory quotes)</code></pre></div>
+<strong>Description</strong>: Get quotes from all 37 DEX protocols in parallel
+- <strong>Returns</strong>: Array of quote results sorted by output amount (best first)
+
+<div class="code-section"><pre><code>
+function getQuotesForRouters(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (QuoteResult[] memory quotes)</code></pre></div>
+<strong>Description</strong>: Get quotes from specific router types only
+- <strong>Parameters</strong>:
+  - <code>routerTypes</code>: Array of router type IDs to query
+
+<h3>Utility Functions</h3>
+
+<div class="code-section"><pre><code>
+function findBestQuote(
+    QuoteResult[] memory quotes
+) external pure returns (uint256 bestAmount, uint256 bestRouter)</code></pre></div>
+<strong>Description</strong>: Find the best quote from an array of results
+
+<div class="code-section"><pre><code>
+function filterValidQuotes(
+    QuoteResult[] memory quotes,
+    uint256 minAmount
+) external pure returns (QuoteResult[] memory validQuotes)</code></pre></div>
+<strong>Description</strong>: Filter quotes above minimum threshold
+
+<h2>QuoteLibrary</h2>
+
+<h3>V2 AMM Quotes</h3>
+
+<div class="code-section"><pre><code>
+function getUniswapV2Quote(
+    address factory,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)</code></pre></div>
+<strong>Description</strong>: Calculate quote for Uniswap V2 style AMM
+- <strong>Parameters</strong>:
+  - <code>factory</code>: Factory contract address
+  - <code>tokenIn</code>: Input token address
+  - <code>tokenOut</code>: Output token address
+  - <code>amountIn</code>: Input amount
+
+<div class="code-section"><pre><code>
+function getSushiswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+function getPancakeswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+function getQuickswapQuote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)</code></pre></div>
+
+<h3>V3 Concentrated Liquidity Quotes</h3>
+
+<div class="code-section"><pre><code>
+function getUniswapV3Quote(
+    address factory,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint24 fee
+) external view returns (uint256 amountOut)</code></pre></div>
+<strong>Description</strong>: Calculate quote for Uniswap V3 concentrated liquidity
+- <strong>Parameters</strong>:
+  - <code>factory</code>: V3 factory address
+  - <code>fee</code>: Pool fee tier (500, 3000, 10000)
+
+<div class="code-section"><pre><code>
+function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)</code></pre></div>
+
+<h3>Specialized Protocol Quotes</h3>
+
+<div class="code-section"><pre><code>
+function getCurveQuote(
+    address pool,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)</code></pre></div>
+<strong>Description</strong>: Calculate quote for Curve stableswap pools
+
+<div class="code-section"><pre><code>
+function getBalancerV2Quote(
+    address vault,
+    bytes32 poolId,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)</code></pre></div>
+<strong>Description</strong>: Calculate quote for Balancer V2 weighted pools
+
+<div class="code-section"><pre><code>
+function getVelodrome Quote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)
+function getAerodromeQuote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)</code></pre></div>
+<strong>Description</strong>: Calculate quotes for Solidly-based protocols (ve(3,3))
+
+<h3>Router Type Constants</h3>
+
+<div class="code-section"><pre><code>
+// V2 AMM Protocols
+uint256 constant UNISWAP_V2 = 0;
+uint256 constant SUSHISWAP_V2 = 1;
+uint256 constant PANCAKESWAP_V2 = 2;
+uint256 constant QUICKSWAP = 3;
+uint256 constant TRADERJOE_V1 = 4;
+
+<p>// V3 Concentrated Liquidity<br>uint256 constant UNISWAP_V3 = 10;<br>uint256 constant SUSHISWAP_V3 = 11;<br>uint256 constant PANCAKESWAP_V3 = 12;</p>
+
+<p>// Solidly Forks<br>uint256 constant VELODROME = 20;<br>uint256 constant AERODROME = 21;<br>uint256 constant THENA = 22;</p>
+
+<p>// Stableswap<br>uint256 constant CURVE = 30;<br>uint256 constant ELLIPSIS = 31;</p>
+
+<p>// Specialized<br>uint256 constant BALANCER_V2 = 35;<br>uint256 constant ONEINCH = 36;</code></pre></div></p>
 
 <h3>Command Structure</h3>
 
@@ -1661,11 +2014,13 @@ npx hardhat run scripts/production-setup.js --network crossfiMainnet</code></pr
 
 <p>This deployment guide provides a comprehensive path from development to production for the IXFI system. Follow each step carefully and maintain thorough documentation throughout the process.</p></div><div class="section"><h1 id="integration-examples">4. Integration Examples</h1><h2>Table of Contents</h2>
 1. <a href="#frontend-integration">Frontend Integration</a>
-2. <a href="#smart-contract-integration">Smart Contract Integration</a>
-3. <a href="#relayer-api-usage">Relayer API Usage</a>
-4. <a href="#sdk-examples">SDK Examples</a>
-5. <a href="#common-use-cases">Common Use Cases</a>
-6. <a href="#error-handling">Error Handling</a>
+2. <a href="#dex-aggregation-examples">DEX Aggregation Examples</a>
+3. <a href="#cross-chain-swap-examples">Cross-Chain Swap Examples</a>
+4. <a href="#smart-contract-integration">Smart Contract Integration</a>
+5. <a href="#relayer-api-usage">Relayer API Usage</a>
+6. <a href="#sdk-examples">SDK Examples</a>
+7. <a href="#common-use-cases">Common Use Cases</a>
+8. <a href="#error-handling">Error Handling</a>
 
 <h2>Frontend Integration</h2>
 
@@ -1717,6 +2072,74 @@ async function callCrossChainContract() {
 <p>console.log(&#039;Cross-chain call initiated:&#039;, tx.hash);</p>
 
 <p>// Monitor for execution on destination chain<br>    // This requires relayer monitoring or event listening<br>    return tx;<br>  } catch (error) {<br>    console.error(&#039;Cross-chain call failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+
+<h2>DEX Aggregation Examples</h2>
+
+<h3>Basic Token Swap with Optimal Routing</h3>
+
+<div class="code-section"><pre><code>
+// Initialize DEX Aggregator
+const aggregatorABI = [
+  // CrossChainAggregator ABI
+];
+
+<p>const aggregatorAddresses = {<br>  1: &#039;0x...&#039;, // Ethereum<br>  56: &#039;0x...&#039;, // BSC<br>  137: &#039;0x...&#039;, // Polygon<br>  43114: &#039;0x...&#039;, // Avalanche<br>  42161: &#039;0x...&#039;, // Arbitrum<br>  10: &#039;0x...&#039;, // Optimism<br>  8453: &#039;0x...&#039; // Base<br>};</p>
+
+<p>const aggregator = new ethers.Contract(<br>  aggregatorAddresses[chainId],<br>  aggregatorABI,<br>  signer<br>);</p>
+
+<p>async function performOptimalSwap() {<br>  try {<br>    const tokenIn = &#039;0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632&#039;; // USDC<br>    const tokenOut = &#039;0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&#039;; // WETH<br>    const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6); // 1000 USDC</p>
+
+<p>// Get all available router types (0-36)<br>    const allRouterTypes = Array.from({length: 37}, (_, i) =&gt; i);</p>
+
+<p>// Get optimal quote<br>    const [bestAmount, bestRouter] = await aggregator.getOptimalQuote(<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      allRouterTypes<br>    );</p>
+
+<p>console.log(<code>Best quote: ${ethers.utils.formatEther(bestAmount)} WETH</code>);<br>    console.log(<code>Best DEX: Router ${bestRouter}</code>);</p>
+
+<p>// Calculate minimum output with 0.5% slippage<br>    const minAmountOut = bestAmount.mul(995).div(1000);</p>
+
+<p>// Approve token spend<br>    const tokenContract = new ethers.Contract(tokenIn, erc20ABI, signer);<br>    const approveTx = await tokenContract.approve(aggregator.address, amountIn);<br>    await approveTx.wait();</p>
+
+<p>// Execute swap<br>    const swapTx = await aggregator.executeSwap(<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      minAmountOut,<br>      bestRouter,<br>      &#039;0x&#039; // Empty swap data for basic swap<br>    );</p>
+
+<p>console.log(&#039;Swap executed:&#039;, swapTx.hash);<br>    return swapTx;<br>  } catch (error) {<br>    console.error(&#039;Swap failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+
+<h3>Compare Quotes Across All DEXes</h3>
+
+<div class="code-section"><pre><code>
+async function compareAllDEXQuotes() {
+  try {
+    const tokenIn = &#039;0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632&#039;; // USDC
+    const tokenOut = &#039;0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&#039;; // WETH
+    const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6);
+
+<p>// Get quotes from all 37 DEX protocols<br>    const allQuotes = await aggregator.getAllQuotes(<br>      tokenIn,<br>      tokenOut,<br>      amountIn<br>    );</p>
+
+<p>// Process and display results<br>    const sortedQuotes = allQuotes<br>      .filter(quote =&gt; quote.amountOut.gt(0)) // Filter failed quotes<br>      .sort((a, b) =&gt; b.amountOut.sub(a.amountOut)) // Sort by amount desc<br>      .map(quote =&gt; ({<br>        router: quote.routerType,<br>        dexName: getDEXName(quote.routerType),<br>        amountOut: ethers.utils.formatEther(quote.amountOut),<br>        price: parseFloat(ethers.utils.formatEther(quote.amountOut)) / 1000 // WETH per USDC<br>      }));</p>
+
+<p>console.table(sortedQuotes);</p>
+
+<p>return sortedQuotes;<br>  } catch (error) {<br>    console.error(&#039;Quote comparison failed:&#039;, error);<br>  }<br>}</p>
+
+<p>function getDEXName(routerType) {<br>  const dexNames = {<br>    0: &#039;Uniswap V2&#039;,<br>    1: &#039;SushiSwap V2&#039;,<br>    2: &#039;PancakeSwap V2&#039;,<br>    3: &#039;QuickSwap&#039;,<br>    4: &#039;TraderJoe V1&#039;,<br>    10: &#039;Uniswap V3&#039;,<br>    11: &#039;SushiSwap V3&#039;,<br>    12: &#039;PancakeSwap V3&#039;,<br>    20: &#039;Velodrome&#039;,<br>    21: &#039;Aerodrome&#039;,<br>    30: &#039;Curve&#039;,<br>    35: &#039;Balancer V2&#039;,<br>    36: &#039;1inch&#039;<br>  };<br>  return dexNames[routerType] || <code>Router ${routerType}</code>;<br>}</code></pre></div></p>
+
+<h2>Cross-Chain Swap Examples</h2>
+
+<h3>Basic Cross-Chain Token Swap</h3>
+
+<div class="code-section"><pre><code>
+async function crossChainSwap() {
+  try {
+    const sourceChain = &#039;ethereum&#039;;
+    const destinationChain = &#039;bsc&#039;;
+    const tokenIn = &#039;0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632&#039;; // USDC on Ethereum
+    const tokenOut = &#039;0x2170Ed0880ac9A755fd29B2688956BD959F933F8&#039;; // WETH on BSC
+    const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6); // 1000 USDC
+    const minAmountOut = ethers.utils.parseEther(&#039;0.28&#039;); // Minimum WETH expected
+    const routerType = 2; // PancakeSwap V2 on BSC
+
+<p>// Execute cross-chain swap<br>    const crossChainTx = await aggregator.crossChainSwap(<br>      sourceChain,<br>      destinationChain,<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      minAmountOut,<br>      routerType<br>    );</p>
+
+<p>console.log(&#039;Cross-chain swap initiated:&#039;, crossChainTx.hash);<br>    return crossChainTx;<br>  } catch (error) {<br>    console.error(&#039;Cross-chain swap failed:&#039;, error);<br>  }<br>}</code></pre></div></p>
 
 <h3>Gasless Transaction (Meta-Transaction)</h3>
 

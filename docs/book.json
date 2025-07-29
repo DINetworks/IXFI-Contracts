@@ -1,0 +1,43 @@
+{
+  "title": "IXFI Protocol Documentation",
+  "description": "Comprehensive documentation for the IXFI cross-chain protocol",
+  "author": "IXFI Team",
+  "language": "en",
+  "gitbook": ">=3.2.0",
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "plugins": [
+    "mermaid-gb3",
+    "code",
+    "hints",
+    "tabs",
+    "expandable-chapters",
+    "search-plus",
+    "katex",
+    "github",
+    "copy-code-button"
+  ],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/DINetworks/IXFI-Contracts"
+    },
+    "mermaid-gb3": {
+      "theme": "default"
+    }
+  },
+  "pdf": {
+    "fontSize": 12,
+    "footerTemplate": null,
+    "headerTemplate": null,
+    "margin": {
+      "bottom": 36,
+      "left": 62,
+      "right": 62,
+      "top": 36
+    },
+    "pageNumbers": false,
+    "paperSize": "a4"
+  }
+}

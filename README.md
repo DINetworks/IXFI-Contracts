@@ -1,27 +1,69 @@
 
 ## IXFI Cross-Chain Protocol
 
-IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains.
+IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers, DEX aggregation, and gasless transactions across multiple EVM-compatible blockchains.
 
 ## 📚 Documentation
 
-- **[Technical Documentation](./TECHNICAL_DOCS.md)** - Complete system architecture and specifications
-- **[API Reference](./API_REFERENCE.md)** - Comprehensive contract API documentation
-- **[Deployment Guide](./DEPLOYMENT_GUIDE.md)** - Step-by-step deployment instructions
-- **[Integration Examples](./INTEGRATION_EXAMPLES.md)** - Frontend and smart contract integration examples
-- **[Security Analysis](./SECURITY_ANALYSIS.md)** - Security model and threat analysis
+**Complete documentation is available in GitBook format:**
+
+### 🚀 Quick Access
+- **[📖 Full Documentation](./docs/)** - Complete GitBook-style documentation
+- **[⚡ Quick Start Guide](./docs/getting-started/quick-start.md)** - Get started in 5 minutes
+- **[🔧 API Reference](./docs/api-reference/)** - Complete contract APIs
+- **[💡 Examples](./docs/examples/)** - Integration patterns and code samples
+
+### 📖 Build Documentation Locally
+
+```bash
+# Navigate to docs directory
+cd docs
+
+# Install dependencies
+npm install
+
+# Serve documentation locally
+npm run docs:serve
+
+# Or build static files
+npm run docs:build
+
+# Generate PDF
+npm run docs:pdf
+```
+
+### 📋 Documentation Structure
+
+```
+docs/
+├── getting-started/     # Installation and quick start
+├── core-concepts/       # Protocol architecture and concepts
+├── dex-aggregation/     # 37+ DEX protocol integration
+├── cross-chain/         # Cross-chain operations
+├── api-reference/       # Complete API documentation
+├── guides/             # Integration and deployment guides
+├── examples/           # Real-world usage examples
+└── resources/          # FAQ, troubleshooting, glossary
+```
 
 ## Features
 
+### 🔗 Cross-Chain Infrastructure
 - **Cross-Chain Token Transfers**: Send IXFI tokens between supported chains
-- **Cross-Chain Contract Calls**: Execute smart contract functions across different blockchains
-- **Gasless Transactions**: Execute transactions without holding native gas tokens
+- **Cross-Chain Contract Calls**: Execute smart contract functions across different blockchains  
 - **1:1 XFI Backing**: All IXFI tokens are backed by native XFI on CrossFi chain
 - **Multi-Chain Support**: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
-- **Advanced DEX Aggregation**: Support for 37+ DEX protocols including V2 and V3 variants
-- **Concentrated Liquidity Support**: Uniswap V3, SushiSwap V3, PancakeSwap V3 integration
-- **Optimized Routing**: Intelligent multi-DEX routing for best execution prices
-- **Meta-Transaction Support**: Execute cross-chain swaps without native gas tokens
+
+### 🔄 Advanced DEX Aggregation
+- **37+ DEX Protocols**: Support for V2 AMM, V3 concentrated liquidity, Solidly forks, stableswap
+- **Optimal Routing**: Intelligent multi-DEX routing for best execution prices
+- **V3 Integration**: Uniswap V3, SushiSwap V3, PancakeSwap V3 concentrated liquidity support
+- **Cross-Chain Swaps**: A→IXFI→B token swaps across different networks
+
+### ⛽ Gasless Transaction System
+- **IXFI Gas Credits**: Execute transactions without holding native gas tokens
+- **Meta-Transaction Support**: EIP-712 signature-based transaction execution
+- **Cross-Chain Gasless**: Seamless gasless operations across all supported chains
     <a href="https://ixfi.network.com">
         <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
     </a>
