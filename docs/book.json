@@ -26,8 +26,12 @@
     "github": {
       "url": "https://github.com/DINetworks/IXFI-Contracts"
     },
+    "theme-default": {
+      "showLevel": true,
+      "theme": "dark"
+    },
     "mermaid": {
-      "theme": "default",
+      "theme": "dark",
       "flowchart": {
         "useMaxWidth": true,
         "htmlLabels": true
