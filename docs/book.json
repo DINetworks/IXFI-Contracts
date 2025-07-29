@@ -9,7 +9,7 @@
     "summary": "SUMMARY.md"
   },
   "plugins": [
-    "mermaid-gb3",
+    "mermaid",
     "code",
     "hints",
     "tabs",
@@ -17,14 +17,19 @@
     "search-plus",
     "katex",
     "github",
-    "copy-code-button"
+    "copy-code-button",
+    "-sharing",
+    "-fontsettings"
   ],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/DINetworks/IXFI-Contracts"
     },
-    "mermaid-gb3": {
-      "theme": "default"
+    "mermaid": {
+      "theme": "default",
+      "sequence": {
+        "showSequenceNumbers": true
+      }
     }
   },
   "pdf": {

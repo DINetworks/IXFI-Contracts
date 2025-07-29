@@ -1,0 +1,18 @@
+root: ./docs
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+title: IXFI Protocol Documentation
+description: Comprehensive documentation for the IXFI cross-chain protocol
+
+integrations:
+  github:
+    owner: DINetworks
+    repo: IXFI-Contracts
+    branch: main
+
+format:
+  markdown:
+    mermaid: true

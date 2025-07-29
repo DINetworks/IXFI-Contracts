@@ -90,7 +90,7 @@ Cross-chain swaps follow this pattern:
 2. **Bridge**: IXFI transferred via relayer network
 3. **Destination Chain**: IXFI → Token B (using best DEX)
 
-```mermaid
+{% mermaid %}
 sequenceDiagram
     participant User
     participant Aggregator_A as Source Chain
@@ -103,7 +103,7 @@ sequenceDiagram
     Relayer->>Aggregator_B: Deliver IXFI
     Aggregator_B->>Aggregator_B: IXFI → BNB (PancakeSwap)
     Aggregator_B->>User: Deliver BNB
-```
+{% endmermaid %}
 
 ### How are gas fees handled?
 
