@@ -109,7 +109,7 @@ Decentralized infrastructure for cross-chain operations:
 ### Standard Cross-Chain Swap
 
 ```mermaid
-sequenceDiagram
+sequence
     participant User
     participant Gateway_A as Gateway (Chain A)
     participant Relayer
@@ -129,7 +129,7 @@ sequenceDiagram
 ### Meta-Transaction Flow
 
 ```mermaid
-sequenceDiagram
+sequence
     participant User
     participant Frontend
     participant Relayer

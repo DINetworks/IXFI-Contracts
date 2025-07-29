@@ -11,7 +11,7 @@ Cross-chain token transfers allow users to move IXFI tokens and other supported 
 ### Burn-and-Mint Model
 
 ```mermaid
-sequenceDiagram
+sequence
     participant User
     participant Source_Gateway as Source Chain Gateway
     participant Token_A as IXFI Token (Chain A)

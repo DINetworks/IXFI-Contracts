@@ -75,7 +75,7 @@ uint256 COMMAND_MINT_TOKEN = 4;
 ### 1. Message Initiation
 
 ```mermaid
-sequenceDiagram
+sequence
     participant User
     participant Gateway_A as Gateway (Chain A)
     participant Event_A as Event System (Chain A)
@@ -89,7 +89,7 @@ sequenceDiagram
 ### 2. Relayer Processing
 
 ```mermaid
-sequenceDiagram
+sequence
     participant Event_A as Event System (Chain A)
     participant Relayer as Relayer Network
     participant Validator as Multi-Sig Validator
@@ -104,7 +104,7 @@ sequenceDiagram
 ### 3. Message Execution
 
 ```mermaid
-sequenceDiagram
+sequence
     participant Relayer as Relayer Network
     participant Gateway_B as Gateway (Chain B)
     participant Contract_B as Target Contract (Chain B)

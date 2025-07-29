@@ -9,7 +9,7 @@ Meta transactions separate transaction execution from gas payment, allowing user
 ## Architecture
 
 ```mermaid
-sequenceDiagram
+sequence
     participant User
     participant DApp
     participant Relayer
