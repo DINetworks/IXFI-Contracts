@@ -3,19 +3,29 @@ require("hardhat-contract-sizer");
 
 module.exports = {
   solidity: {
-    version: "0.8.20",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200  // Optimization runs
+    compilers: [
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          },
+          evmVersion: "cancun"
+        }
       },
-      // Optional: Additional output selection
-      outputSelection: {
-        "*": {
-          "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers"]
+      {
+        version: "0.8.24",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          },
+          viaIR: true,
+          evmVersion: "cancun"
         }
       }
-    }
+    ]
   },
   contractSizer: {
     alphaSort: true,

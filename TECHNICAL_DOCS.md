@@ -17,13 +17,17 @@ IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 
 1. **GMP (General Message Passing) Protocol** - For cross-chain communication and token transfers
 2. **Meta-Transaction System** - For gasless transaction execution with IXFI-based gas credits
+3. **Cross-Chain DEX Aggregation** - Multi-protocol DEX routing with 37+ supported protocols
 
 ### Key Features
 
 - **1:1 XFI Backing**: IXFI tokens are fully backed by native XFI on CrossFi chain
 - **Cross-Chain Communication**: Message passing protocol similar to Axelar
 - **Gasless Transactions**: Users can execute transactions without holding native gas tokens
-- **Multi-Chain Support**: Ethereum, BSC, Polygon, and other EVM chains
+- **Multi-Chain Support**: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
+- **Advanced DEX Aggregation**: Support for 37+ DEX protocols including V2 and V3 variants
+- **Optimal Route Selection**: Intelligent routing across multiple DEXes for best prices
+- **Concentrated Liquidity**: Full support for Uniswap V3, SushiSwap V3, PancakeSwap V3
 - **Decentralized Relayers**: Network of whitelisted relayers for cross-chain operations
 
 ## Architecture
@@ -56,7 +60,174 @@ IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 2. **MetaTxGasCreditVault** (`MetaTxGasCreditVault.sol`) - Gas credit management on CrossFi
 3. **MetaTxGateway** (`MetaTxGateway.sol`) - Meta-transaction execution on any chain
 4. **IXFIExecutable** (`IXFIExecutable.sol`) - Base contract for dApps receiving cross-chain calls
-5. **Relayer Services** - Off-chain services for cross-chain coordination
+5. **CrossChainAggregator** (`CrossChainAggregator.sol`) - Multi-protocol DEX aggregation system
+6. **MulticallLibraryV2** (`MulticallLibraryV2.sol`) - Batch operations and optimal routing
+7. **QuoteLibrary** (`QuoteLibrary.sol`) - Price quotation for 37+ DEX protocols
+8. **Relayer Services** - Off-chain services for cross-chain coordination
+
+## DEX Aggregation System
+
+The IXFI protocol includes a sophisticated DEX aggregation system that supports 37+ protocols across 7 chains, providing optimal routing and price discovery for token swaps.
+
+### Supported DEX Protocols
+
+#### V2 AMM Protocols (Traditional)
+- **Uniswap V2** (All networks)
+- **SushiSwap V2** (All networks)
+- **PancakeSwap V2** (BSC, Ethereum)
+- **TraderJoe V1** (Avalanche)
+- **QuickSwap** (Polygon)
+- **SpookySwap** (Fantom-compatible)
+- **Dfyn** (Polygon)
+
+#### V3 Concentrated Liquidity
+- **Uniswap V3** (Ethereum, Polygon, Arbitrum, Optimism, Base)
+- **SushiSwap V3** (Multi-chain)
+- **PancakeSwap V3** (BSC, Ethereum)
+- **Algebra** (Polygon)
+- **Camelot V3** (Arbitrum)
+
+#### Solidly Forks (ve(3,3))
+- **Velodrome** (Optimism)
+- **Aerodrome** (Base)
+- **Thena** (BSC)
+- **Ramses** (Arbitrum)
+
+#### Stableswap Protocols
+- **Curve Finance** (Multi-chain)
+- **Ellipsis** (BSC)
+- **Belt Finance** (BSC)
+
+#### Specialized DEXes
+- **Balancer V2** (Multi-chain)
+- **1inch** (Multi-chain)
+- **Platypus** (Avalanche)
+- **WooFi** (Multi-chain)
+- **DODO** (Multi-chain)
+
+### Architecture Components
+
+#### CrossChainAggregator.sol
+Main aggregation contract that:
+- Orchestrates multi-DEX quote comparisons
+- Executes optimal swap routes
+- Handles cross-chain operations
+- Manages slippage protection
+
+```solidity
+function getOptimalQuote(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (uint256 bestAmount, uint256 bestRouter)
+
+function executeSwap(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    uint256 routerType,
+    bytes calldata swapData
+) external payable
+```
+
+#### MulticallLibraryV2.sol
+Batch operations library for:
+- Parallel quote fetching from 37 protocols
+- Optimal route selection
+- Gas-efficient multicall execution
+- Error handling and fallbacks
+
+```solidity
+function getMultipleQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory quotes)
+
+function _generateQuoteCalldata(
+    uint256 routerType,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) internal pure returns (bytes memory)
+```
+
+#### QuoteLibrary.sol
+Quote calculation engine supporting:
+- V2 AMM price calculations
+- V3 concentrated liquidity math
+- Curve stableswap formulas
+- Balancer weighted pool math
+
+```solidity
+// V2 DEX Quotes
+function getUniswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+
+// V3 DEX Quotes
+function getUniswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+
+// Specialized Protocols
+function getCurveQuote(address pool, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+function getBalancerV2Quote(address vault, bytes32 poolId, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+```
+
+### Router Type Mapping
+
+Each DEX protocol is assigned a unique router type ID (0-36):
+
+| Router Type | Protocol | Networks | Notes |
+|-------------|----------|----------|-------|
+| 0 | Uniswap V2 | All | Standard AMM |
+| 1 | SushiSwap V2 | All | Fork of Uniswap V2 |
+| 2 | PancakeSwap V2 | BSC, ETH | BSC native |
+| 3 | Uniswap V3 | ETH, Polygon, Arbitrum, Optimism, Base | Concentrated liquidity |
+| 4 | SushiSwap V3 | Multi-chain | V3 implementation |
+| 5 | PancakeSwap V3 | BSC, ETH | V3 concentrated liquidity |
+| 6-15 | Various V2 AMMs | Network-specific | QuickSwap, TraderJoe, etc. |
+| 16-25 | Solidly Forks | Network-specific | Velodrome, Aerodrome, etc. |
+| 26-30 | Stableswap | Multi-chain | Curve, Ellipsis, etc. |
+| 31-36 | Specialized | Multi-chain | Balancer, 1inch, DODO, etc. |
+
+### Integration Examples
+
+#### Basic Token Swap
+```solidity
+// Get quotes from all available DEXes
+(uint256 bestAmount, uint256 bestRouter) = aggregator.getOptimalQuote(
+    USDC,
+    WETH,
+    1000e6, // 1000 USDC
+    getAllRouterTypes()
+);
+
+// Execute swap with best route
+aggregator.executeSwap{value: msg.value}(
+    USDC,
+    WETH,
+    1000e6,
+    bestAmount * 995 / 1000, // 0.5% slippage
+    bestRouter,
+    swapData
+);
+```
+
+#### Cross-Chain Swap
+```solidity
+// Swap USDC on Ethereum for WBNB on BSC
+aggregator.crossChainSwap(
+    "ethereum",
+    "binance",
+    USDC,
+    WBNB,
+    1000e6,
+    minAmountOut,
+    routerType
+);
+```
 
 ## Core Contracts
 

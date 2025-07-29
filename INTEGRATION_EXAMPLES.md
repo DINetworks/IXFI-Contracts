@@ -2,11 +2,13 @@
 
 ## Table of Contents
 1. [Frontend Integration](#frontend-integration)
-2. [Smart Contract Integration](#smart-contract-integration)
-3. [Relayer API Usage](#relayer-api-usage)
-4. [SDK Examples](#sdk-examples)
-5. [Common Use Cases](#common-use-cases)
-6. [Error Handling](#error-handling)
+2. [DEX Aggregation Examples](#dex-aggregation-examples)
+3. [Cross-Chain Swap Examples](#cross-chain-swap-examples)
+4. [Smart Contract Integration](#smart-contract-integration)
+5. [Relayer API Usage](#relayer-api-usage)
+6. [SDK Examples](#sdk-examples)
+7. [Common Use Cases](#common-use-cases)
+8. [Error Handling](#error-handling)
 
 ## Frontend Integration
 
@@ -106,6 +108,168 @@ async function callCrossChainContract() {
   } catch (error) {
     console.error('Cross-chain call failed:', error);
     throw error;
+  }
+}
+```
+
+## DEX Aggregation Examples
+
+### Basic Token Swap with Optimal Routing
+
+```javascript
+// Initialize DEX Aggregator
+const aggregatorABI = [
+  // CrossChainAggregator ABI
+];
+
+const aggregatorAddresses = {
+  1: '0x...', // Ethereum
+  56: '0x...', // BSC
+  137: '0x...', // Polygon
+  43114: '0x...', // Avalanche
+  42161: '0x...', // Arbitrum
+  10: '0x...', // Optimism
+  8453: '0x...' // Base
+};
+
+const aggregator = new ethers.Contract(
+  aggregatorAddresses[chainId],
+  aggregatorABI,
+  signer
+);
+
+async function performOptimalSwap() {
+  try {
+    const tokenIn = '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632'; // USDC
+    const tokenOut = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH
+    const amountIn = ethers.utils.parseUnits('1000', 6); // 1000 USDC
+    
+    // Get all available router types (0-36)
+    const allRouterTypes = Array.from({length: 37}, (_, i) => i);
+    
+    // Get optimal quote
+    const [bestAmount, bestRouter] = await aggregator.getOptimalQuote(
+      tokenIn,
+      tokenOut,
+      amountIn,
+      allRouterTypes
+    );
+    
+    console.log(`Best quote: ${ethers.utils.formatEther(bestAmount)} WETH`);
+    console.log(`Best DEX: Router ${bestRouter}`);
+    
+    // Calculate minimum output with 0.5% slippage
+    const minAmountOut = bestAmount.mul(995).div(1000);
+    
+    // Approve token spend
+    const tokenContract = new ethers.Contract(tokenIn, erc20ABI, signer);
+    const approveTx = await tokenContract.approve(aggregator.address, amountIn);
+    await approveTx.wait();
+    
+    // Execute swap
+    const swapTx = await aggregator.executeSwap(
+      tokenIn,
+      tokenOut,
+      amountIn,
+      minAmountOut,
+      bestRouter,
+      '0x' // Empty swap data for basic swap
+    );
+    
+    console.log('Swap executed:', swapTx.hash);
+    return swapTx;
+  } catch (error) {
+    console.error('Swap failed:', error);
+    throw error;
+  }
+}
+```
+
+### Compare Quotes Across All DEXes
+
+```javascript
+async function compareAllDEXQuotes() {
+  try {
+    const tokenIn = '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632'; // USDC
+    const tokenOut = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2'; // WETH
+    const amountIn = ethers.utils.parseUnits('1000', 6);
+    
+    // Get quotes from all 37 DEX protocols
+    const allQuotes = await aggregator.getAllQuotes(
+      tokenIn,
+      tokenOut,
+      amountIn
+    );
+    
+    // Process and display results
+    const sortedQuotes = allQuotes
+      .filter(quote => quote.amountOut.gt(0)) // Filter failed quotes
+      .sort((a, b) => b.amountOut.sub(a.amountOut)) // Sort by amount desc
+      .map(quote => ({
+        router: quote.routerType,
+        dexName: getDEXName(quote.routerType),
+        amountOut: ethers.utils.formatEther(quote.amountOut),
+        price: parseFloat(ethers.utils.formatEther(quote.amountOut)) / 1000 // WETH per USDC
+      }));
+    
+    console.table(sortedQuotes);
+    
+    return sortedQuotes;
+  } catch (error) {
+    console.error('Quote comparison failed:', error);
+  }
+}
+
+function getDEXName(routerType) {
+  const dexNames = {
+    0: 'Uniswap V2',
+    1: 'SushiSwap V2',
+    2: 'PancakeSwap V2',
+    3: 'QuickSwap',
+    4: 'TraderJoe V1',
+    10: 'Uniswap V3',
+    11: 'SushiSwap V3',
+    12: 'PancakeSwap V3',
+    20: 'Velodrome',
+    21: 'Aerodrome',
+    30: 'Curve',
+    35: 'Balancer V2',
+    36: '1inch'
+  };
+  return dexNames[routerType] || `Router ${routerType}`;
+}
+```
+
+## Cross-Chain Swap Examples
+
+### Basic Cross-Chain Token Swap
+
+```javascript
+async function crossChainSwap() {
+  try {
+    const sourceChain = 'ethereum';
+    const destinationChain = 'bsc';
+    const tokenIn = '0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632'; // USDC on Ethereum
+    const tokenOut = '0x2170Ed0880ac9A755fd29B2688956BD959F933F8'; // WETH on BSC
+    const amountIn = ethers.utils.parseUnits('1000', 6); // 1000 USDC
+    const minAmountOut = ethers.utils.parseEther('0.28'); // Minimum WETH expected
+    const routerType = 2; // PancakeSwap V2 on BSC
+    
+    // Execute cross-chain swap
+    const crossChainTx = await aggregator.crossChainSwap(
+      sourceChain,
+      destinationChain,
+      tokenIn,
+      tokenOut,
+      amountIn,
+      minAmountOut,
+      routerType
+    );
+    
+    console.log('Cross-chain swap initiated:', crossChainTx.hash);
+    return crossChainTx;
+  } catch (error) {
+    console.error('Cross-chain swap failed:', error);
   }
 }
 ```

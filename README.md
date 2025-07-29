@@ -17,7 +17,11 @@ IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enab
 - **Cross-Chain Contract Calls**: Execute smart contract functions across different blockchains
 - **Gasless Transactions**: Execute transactions without holding native gas tokens
 - **1:1 XFI Backing**: All IXFI tokens are backed by native XFI on CrossFi chain
-- **Multi-Chain Support**: Ethereum, BSC, Polygon, and other EVM chains
+- **Multi-Chain Support**: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
+- **Advanced DEX Aggregation**: Support for 37+ DEX protocols including V2 and V3 variants
+- **Concentrated Liquidity Support**: Uniswap V3, SushiSwap V3, PancakeSwap V3 integration
+- **Optimized Routing**: Intelligent multi-DEX routing for best execution prices
+- **Meta-Transaction Support**: Execute cross-chain swaps without native gas tokens
     <a href="https://ixfi.network.com">
         <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
     </a>
@@ -193,6 +197,108 @@ vault.deposit(usdcToken, 100 * 10**6); // 100 USDC
 
 // Check available credits
 uint256 credits = vault.credits(userAddress);
+```
+
+## Supported DEX Protocols & Networks
+
+### 🌐 Supported Networks
+- **Ethereum Mainnet** (Chain ID: 1)
+- **BNB Smart Chain** (Chain ID: 56) 
+- **Polygon** (Chain ID: 137)
+- **Avalanche** (Chain ID: 43114)
+- **Arbitrum One** (Chain ID: 42161)
+- **Optimism** (Chain ID: 10)
+- **Base** (Chain ID: 8453)
+
+### 🔄 Supported DEX Protocols (37 Total)
+
+**AMM Protocols (Uniswap V2 Style):**
+- Uniswap V2, SushiSwap V2, PancakeSwap V2
+- QuickSwap, TraderJoe, SpookySwap, SpiritSwap
+- ApeSwap, Biswap, MDEX, Camelot, ZyberSwap
+
+**Concentrated Liquidity (Uniswap V3 Style):**
+- Uniswap V3, SushiSwap V3, PancakeSwap V3
+- Ramses, Algebra
+
+**Solidly Fork Protocols:**
+- Velodrome (Optimism), Aerodrome (Base)
+- Solidly, Thena (BSC), Chronos
+
+**Stableswap Protocols:**
+- Curve Finance, Platypus (Avalanche), Wombat
+
+**Specialized Protocols:**
+- Balancer (Weighted pools), Beethoven X (Fantom/Optimism)
+- GMX (Perpetuals), Maverick (Concentrated liquidity)
+- 1inch, ParaSwap, 0x Protocol, Kyber Network, DODO, Bancor
+
+### 📊 Cross-Chain Aggregation Features
+
+**Smart Router Selection:**
+- Automatic optimal DEX selection across 37+ protocols
+- Real-time price comparison and slippage optimization
+- Multi-hop routing for best execution prices
+- Gas cost optimization in route selection
+
+**V2 vs V3 Protocol Support:**
+- Traditional AMM (constant product) pools
+- Concentrated liquidity with custom fee tiers
+- Dynamic fee adjustment based on volatility
+- Capital efficiency optimization
+
+## Architecture Overview
+
+### Core Components
+
+**CrossChainAggregator.sol** - Main aggregation contract
+- Cross-chain swap execution and coordination
+- Integration with Axelar Network for message passing
+- Token bridging and destination chain execution
+
+**SwapCalldataGenerator.sol** - DEX interaction layer  
+- Calldata generation for 37+ DEX protocols
+- Optimal router selection using MulticallLibraryV2
+- Quote aggregation and price discovery
+
+**MulticallLibraryV2.sol** - Batch operations library
+- Efficient multi-DEX quote batching using Multicall3
+- Router configuration and management  
+- Support for all 37 router types with proper categorization
+
+**Libraries Architecture:**
+- **QuoteLibrary.sol** - Quote calculation for all DEX types
+- **CalldataLibrary.sol** - Calldata generation utilities
+- **MulticallLibraryV2.sol** - Batch quote operations
+
+### Usage Examples
+
+**Basic Cross-Chain Swap:**
+```solidity
+// Swap 100 USDC on Ethereum → USDT on BSC
+SwapData memory swapData = SwapData({
+    sourceToken: "0xA0b86a33E6441c45C74d7F7f5234f3628B8b5C22", // USDC
+    sourceAmount: 100 * 10**6,
+    destinationChain: "bsc", 
+    destinationToken: "0x55d398326f99059fF775485246999027B3197955", // USDT
+    minDestinationAmount: 99 * 10**18,
+    recipient: userAddress,
+    deadline: block.timestamp + 3600,
+    routerCalldata: calldataGenerator.generateOptimalCalldata(...)
+});
+
+aggregator.crossChainSwap(swapData, { value: gasFee });
+```
+
+**Multi-DEX Quote Comparison:**
+```solidity
+// Get quotes from all active DEXes on Ethereum
+(address bestRouter, uint256 bestOutput) = calldataGenerator.getOptimalRouter(
+    1, // Ethereum
+    tokenIn,
+    tokenOut, 
+    amountIn
+);
 ```
 
 **Execute Gasless Transactions:**

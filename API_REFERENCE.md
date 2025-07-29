@@ -2,11 +2,14 @@
 
 ## Table of Contents
 1. [IXFI Gateway](#ixfi-gateway)
-2. [MetaTxGasCreditVault](#metatxgascreditvault)
-3. [MetaTxGateway](#metatxgateway)
-4. [IXFIExecutable](#ixfiexecutable)
-5. [Events Reference](#events-reference)
-6. [Error Codes](#error-codes)
+2. [CrossChainAggregator](#crosschainaggregator)
+3. [MulticallLibraryV2](#multicalllibraryv2)
+4. [QuoteLibrary](#quotelibrary)
+5. [MetaTxGasCreditVault](#metatxgascreditvault)
+6. [MetaTxGateway](#metatxgateway)
+7. [IXFIExecutable](#ixfiexecutable)
+8. [Events Reference](#events-reference)
+9. [Error Codes](#error-codes)
 
 ## IXFI Gateway
 
@@ -114,6 +117,251 @@ function getXFIBalance() external view returns (uint256)
 function isCommandExecuted(bytes32 commandId) external view returns (bool)
 function getAllRelayers() external view returns (address[] memory)
 function getRelayerCount() external view returns (uint256)
+```
+
+## CrossChainAggregator
+
+### Main Aggregation Functions
+
+#### Quote Functions
+
+```solidity
+function getOptimalQuote(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (uint256 bestAmount, uint256 bestRouter)
+```
+**Description**: Get the best quote across specified DEX protocols
+- **Parameters**:
+  - `tokenIn`: Input token address
+  - `tokenOut`: Output token address
+  - `amountIn`: Amount of input tokens
+  - `routerTypes`: Array of router type IDs to check (0-36)
+- **Returns**: Best output amount and corresponding router type
+
+```solidity
+function getAllQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory)
+```
+**Description**: Get quotes from all 37 supported DEX protocols
+- **Returns**: Array of quote results with amounts and router types
+
+#### Swap Execution
+
+```solidity
+function executeSwap(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    uint256 routerType,
+    bytes calldata swapData
+) external payable returns (uint256 amountOut)
+```
+**Description**: Execute token swap through specified DEX protocol
+- **Parameters**:
+  - `tokenIn`: Input token address (use address(0) for ETH)
+  - `tokenOut`: Output token address
+  - `amountIn`: Exact amount of input tokens
+  - `minAmountOut`: Minimum acceptable output amount (slippage protection)
+  - `routerType`: DEX protocol to use (0-36)
+  - `swapData`: Protocol-specific swap data
+- **Events**: `SwapExecuted(address indexed user, address tokenIn, address tokenOut, uint256 amountIn, uint256 amountOut, uint256 routerType)`
+
+#### Cross-Chain Swap
+
+```solidity
+function crossChainSwap(
+    string memory sourceChain,
+    string memory destinationChain,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256 minAmountOut,
+    uint256 routerType
+) external payable
+```
+**Description**: Execute cross-chain token swap
+- **Parameters**:
+  - `sourceChain`: Source chain name
+  - `destinationChain`: Destination chain name
+  - `tokenIn`: Input token on source chain
+  - `tokenOut`: Desired output token on destination chain
+  - `amountIn`: Amount to swap
+  - `minAmountOut`: Minimum output with slippage protection
+  - `routerType`: DEX protocol to use on destination
+
+#### Batch Operations
+
+```solidity
+function multiSwap(
+    SwapParams[] memory swaps
+) external payable returns (uint256[] memory amountsOut)
+```
+**Description**: Execute multiple swaps in a single transaction
+- **Parameters**:
+  - `swaps`: Array of swap parameters
+- **Returns**: Array of output amounts for each swap
+
+### View Functions
+
+```solidity
+function getSupportedTokens(uint256 chainId) external view returns (address[] memory)
+function getRouterAddress(uint256 routerType, uint256 chainId) external view returns (address)
+function isRouterSupported(uint256 routerType, uint256 chainId) external view returns (bool)
+function getSwapFee(uint256 routerType) external view returns (uint256)
+```
+
+## MulticallLibraryV2
+
+### Batch Quote Functions
+
+```solidity
+function getMultipleQuotes(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (QuoteResult[] memory quotes)
+```
+**Description**: Get quotes from all 37 DEX protocols in parallel
+- **Returns**: Array of quote results sorted by output amount (best first)
+
+```solidity
+function getQuotesForRouters(
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint256[] memory routerTypes
+) external view returns (QuoteResult[] memory quotes)
+```
+**Description**: Get quotes from specific router types only
+- **Parameters**:
+  - `routerTypes`: Array of router type IDs to query
+
+### Utility Functions
+
+```solidity
+function findBestQuote(
+    QuoteResult[] memory quotes
+) external pure returns (uint256 bestAmount, uint256 bestRouter)
+```
+**Description**: Find the best quote from an array of results
+
+```solidity
+function filterValidQuotes(
+    QuoteResult[] memory quotes,
+    uint256 minAmount
+) external pure returns (QuoteResult[] memory validQuotes)
+```
+**Description**: Filter quotes above minimum threshold
+
+## QuoteLibrary
+
+### V2 AMM Quotes
+
+```solidity
+function getUniswapV2Quote(
+    address factory,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)
+```
+**Description**: Calculate quote for Uniswap V2 style AMM
+- **Parameters**:
+  - `factory`: Factory contract address
+  - `tokenIn`: Input token address
+  - `tokenOut`: Output token address
+  - `amountIn`: Input amount
+
+```solidity
+function getSushiswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+function getPancakeswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+function getQuickswapQuote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+```
+
+### V3 Concentrated Liquidity Quotes
+
+```solidity
+function getUniswapV3Quote(
+    address factory,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn,
+    uint24 fee
+) external view returns (uint256 amountOut)
+```
+**Description**: Calculate quote for Uniswap V3 concentrated liquidity
+- **Parameters**:
+  - `factory`: V3 factory address
+  - `fee`: Pool fee tier (500, 3000, 10000)
+
+```solidity
+function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+```
+
+### Specialized Protocol Quotes
+
+```solidity
+function getCurveQuote(
+    address pool,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)
+```
+**Description**: Calculate quote for Curve stableswap pools
+
+```solidity
+function getBalancerV2Quote(
+    address vault,
+    bytes32 poolId,
+    address tokenIn,
+    address tokenOut,
+    uint256 amountIn
+) external view returns (uint256 amountOut)
+```
+**Description**: Calculate quote for Balancer V2 weighted pools
+
+```solidity
+function getVelodrome Quote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)
+function getAerodromeQuote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)
+```
+**Description**: Calculate quotes for Solidly-based protocols (ve(3,3))
+
+### Router Type Constants
+
+```solidity
+// V2 AMM Protocols
+uint256 constant UNISWAP_V2 = 0;
+uint256 constant SUSHISWAP_V2 = 1;
+uint256 constant PANCAKESWAP_V2 = 2;
+uint256 constant QUICKSWAP = 3;
+uint256 constant TRADERJOE_V1 = 4;
+
+// V3 Concentrated Liquidity
+uint256 constant UNISWAP_V3 = 10;
+uint256 constant SUSHISWAP_V3 = 11;
+uint256 constant PANCAKESWAP_V3 = 12;
+
+// Solidly Forks
+uint256 constant VELODROME = 20;
+uint256 constant AERODROME = 21;
+uint256 constant THENA = 22;
+
+// Stableswap
+uint256 constant CURVE = 30;
+uint256 constant ELLIPSIS = 31;
+
+// Specialized
+uint256 constant BALANCER_V2 = 35;
+uint256 constant ONEINCH = 36;
 ```
 
 ### Command Structure
