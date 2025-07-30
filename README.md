@@ -1,3 +1,6 @@
+<a href="https://ixfi.fi">
+    <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
+</a>
 
 ## IXFI Cross-Chain Protocol
 
@@ -64,10 +67,6 @@ docs/
 - **IXFI Gas Credits**: Execute transactions without holding native gas tokens
 - **Meta-Transaction Support**: EIP-712 signature-based transaction execution
 - **Cross-Chain Gasless**: Seamless gasless operations across all supported chains
-    <a href="https://ixfi.network.com">
-        <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
-    </a>
-
 
 ## IXFI Protocol
 
