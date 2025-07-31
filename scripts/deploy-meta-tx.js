@@ -1,14 +1,15 @@
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
+const { ethers } = hre;
 
 async function main() {
     console.log("🚀 Deploying IXFI Meta-Transaction System...\n");
 
     const [deployer] = await ethers.getSigners();
     const network = await ethers.provider.getNetwork();
-    const isMainChain = network.name === "crossfi" || network.chainId === 4157n;
+    const isMainChain = network.name === "crossfi" || network.chainId === 4158n;
     
     console.log("Deploying contracts with account:", deployer.address);
-    console.log("Account balance:", ethers.formatEther(await ethers.provider.getBalance(deployer.address)), "ETH");
+    console.log("Account balance:", ethers.formatEther(await ethers.provider.getBalance(deployer.address)));
     console.log("Network:", network.name, "- Chain ID:", network.chainId);
     console.log("Is CrossFi (main chain):", isMainChain, "\n");
 

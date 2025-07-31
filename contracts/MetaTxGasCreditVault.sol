@@ -14,14 +14,25 @@ interface IDIAOracleV2 {
 }
 
 /**
+ * @title IIXFI
+ * @notice Interface for IXFI token contract with deposit function
+ */
+interface IIXFI {
+    function deposit() external payable;
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+}
+
+/**
  * @title MetaTxGasCreditVault
  * @notice Gas credit vault that uses IXFI as the primary gas token across all EVM chains
  * @dev Users deposit IXFI tokens to get gas credits for meta-transactions
  */
 contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     
-    // IXFI token contract
-    IERC20 public immutable ixfiToken;
+    // IXFI token contract with conversion capabilities
+    IIXFI public immutable ixfiToken;
     
     // DIA Oracle for IXFI/USD price feed
     IDIAOracleV2 public diaOracle;
@@ -29,6 +40,9 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     
     // Price feed settings
     uint256 public maxPriceAge = 3600; // Maximum age of price data (1 hour)
+    
+    // CrossFi chain ID for XFI conversion
+    uint256 public constant CROSSFI_CHAIN_ID = 4158; // CrossFi mainnet
     
     // User balances
     mapping(address => uint256) public deposits; // IXFI deposited
@@ -39,6 +53,7 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     
     // Events
     event Deposited(address indexed user, uint256 ixfiAmount, uint256 creditsAdded);
+    event XFIDeposited(address indexed user, uint256 xfiAmount, uint256 ixfiAmount, uint256 creditsAdded);
     event Withdrawn(address indexed user, uint256 ixfiAmount, uint256 creditsDeducted);
     event CreditsUsed(address indexed user, address indexed gateway, uint256 creditsUsed, uint256 gasUsd);
     event GatewayAuthorized(address indexed gateway, bool authorized);
@@ -49,8 +64,18 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     constructor(address initialOwner, address _ixfiToken, address _diaOracle) Ownable(initialOwner) {
         require(_ixfiToken != address(0), "Invalid IXFI token address");
         require(_diaOracle != address(0), "Invalid DIA Oracle address");
-        ixfiToken = IERC20(_ixfiToken);
+        ixfiToken = IIXFI(_ixfiToken);
         diaOracle = IDIAOracleV2(_diaOracle);
+    }
+
+    // Modifiers ==================================================
+    
+    /**
+     * @notice Ensures function is only called on CrossFi chain
+     */
+    modifier onlyCrossFiChain() {
+        require(block.chainid == CROSSFI_CHAIN_ID, "Only available on CrossFi chain");
+        _;
     }
 
     // Owner functions ==============================================
@@ -115,6 +140,30 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
         credits[msg.sender] += creditsAdded;
 
         emit Deposited(msg.sender, amount, creditsAdded);
+    }
+
+    /**
+     * @notice Deposit XFI to convert to IXFI and get gas credits (CrossFi chain only)
+     * @dev Receives XFI via msg.value, converts to IXFI using IXFI.deposit(), then adds credits
+     */
+    function deposit() external payable nonReentrant onlyCrossFiChain {
+        require(msg.value > 0, "Must send XFI");
+        
+        // Convert XFI to IXFI by calling IXFI contract's deposit function
+        // This will mint IXFI tokens to this contract at 1:1 ratio
+        ixfiToken.deposit{value: msg.value}();
+        
+        // IXFI received equals XFI sent (1:1 ratio)
+        uint256 ixfiReceived = msg.value;
+        
+        // Calculate USD value of the IXFI received
+        uint256 creditsAdded = calculateCreditsFromIXFI(ixfiReceived);
+        
+        // Update user balances (same logic as deposit(amount))
+        deposits[msg.sender] += ixfiReceived;
+        credits[msg.sender] += creditsAdded;
+        
+        emit XFIDeposited(msg.sender, msg.value, ixfiReceived, creditsAdded);
     }
 
     /**

@@ -34,8 +34,8 @@ module.exports = {
   },
   networks: {
     crossfi: {
-      chainId: 4157,
-      url: "https://rpc.testnet.ms", 
+      chainId: 4158,
+      url: "https://rpc.mainnet.ms", 
       accounts: [process.env.PRIVATE_KEY], 
     },
   },

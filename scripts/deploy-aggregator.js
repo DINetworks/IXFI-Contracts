@@ -1,4 +1,5 @@
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
+const { ethers } = hre;
 
 /**
  * Comprehensive deployment script for Cross-Chain Aggregator
