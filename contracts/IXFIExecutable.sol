@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import {IIXFIGateway} from "./interfaces/IIXFIGateway.sol";
-import {IAxelarExecutable} from "./interfaces/IAxelarExecutable.sol";
+import {IExecutable} from "./interfaces/IExecutable.sol";
 
 /**
  * @title IXFIExecutable
  * @dev Base contract for applications that want to receive GMP calls
  * Similar to Axelar's AxelarExecutable but for IXFI protocol
  */
-abstract contract IXFIExecutable is IAxelarExecutable {
+abstract contract IXFIExecutable is IExecutable {
     IIXFIGateway public immutable gateway;
 
     error NotGateway();

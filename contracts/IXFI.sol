@@ -1,20 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {EnumerableSet} from "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 
 contract IXFI is ERC20, Ownable {
     using EnumerableSet for EnumerableSet.AddressSet;
     using SignatureChecker for address;
-    using MessageHashUtils for bytes32;
     using ECDSA for bytes32;
 
-    uint256 crossfi_chainid = 4157; // 4158 is in mainnet 
+    uint256 crossfi_chainid = 4158; // 4158 is in mainnet 
     EnumerableSet.AddressSet private relayers;
 
     mapping(address => bool) public whitelisted;
@@ -97,18 +95,28 @@ contract IXFI is ERC20, Ownable {
 
     constructor(address owner_) 
         ERC20("Interoperable XFI", "IXFI") 
-        Ownable(owner_) 
+        Ownable() 
     {
+        // Transfer ownership to the specified owner
+        _transferOwnership(owner_);
         
         // Initialize default chains
-        chainIds["crossfi"] = 4157;
-        chainNames[4157] = "crossfi";
+        chainIds["crossfi"] = 4158;
+        chainNames[4158] = "crossfi";
         chainIds["ethereum"] = 1;
         chainNames[1] = "ethereum";
         chainIds["bsc"] = 56;
         chainNames[56] = "bsc";
         chainIds["polygon"] = 137;
         chainNames[137] = "polygon";
+        chainIds["base"] = 8453;
+        chainNames[8453] = "base";
+        chainIds["arbitrum"] = 42161;
+        chainNames[42161] = "arbitrum";
+        chainIds["avalanche"] = 43114;
+        chainNames[43114] = "avalanche";
+        chainIds["optimism"] = 10;
+        chainNames[10] = "optimism";
     }
 
     modifier onlyRelayer() {

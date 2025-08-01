@@ -695,7 +695,7 @@ await provider.executeMetaTransaction({
 #### 1. Inherit IXFIExecutable
 
 ```solidity
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "./IXFIExecutable.sol";
 

@@ -183,10 +183,10 @@ contract DEXIntegrationExample is ReentrancyGuard {
 pragma solidity ^0.8.0;
 
 import "./interfaces/IIXFIGateway.sol";
-import "./interfaces/IAxelarExecutable.sol";
+import "./interfaces/IExecutable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract CrossChainBridge is IAxelarExecutable {
+contract CrossChainBridge is IExecutable {
     IIXFIGateway public immutable gateway;
     
     mapping(bytes32 => bool) public processedCommands;
@@ -209,7 +209,7 @@ contract CrossChainBridge is IAxelarExecutable {
     );
 
     constructor(address _gateway, address _axelarGateway, address _gasService) 
-        IAxelarExecutable(_axelarGateway, _gasService) {
+        IExecutable(_axelarGateway, _gasService) {
         gateway = IIXFIGateway(_gateway);
     }
 

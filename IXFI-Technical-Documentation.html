@@ -319,11 +319,20 @@
 
 <p>IXFI (Interoperable XFI) is a comprehensive cross-chain infrastructure that enables seamless asset transfers and gasless transactions across multiple EVM-compatible blockchains. The system consists of two main components:</p>
 
-<p>1. <strong>GMP (General Message Passing) Protocol</strong> - For cross-chain communication and token transfers<br>2. <strong>Meta-Transaction System</strong> - For gasless transaction execution with IXFI-based gas credits<br>3. <strong>Cross-Chain DEX Aggregation</strong> - Multi-protocol DEX routing with 37+ supported protocols</p>
+<p>1. <strong>GMP (General Message Passing) Protocol</strong> - For cross-chain communication and token transfers
+<br>2. <strong>Meta-Transaction System</strong> - For gasless transaction execution with IXFI-based gas credits
+<br>3. <strong>Cross-Chain DEX Aggregation</strong> - Multi-protocol DEX routing with 37+ supported protocols</p>
 
 <h3>Key Features</h3>
 
-<p>- <strong>1:1 XFI Backing</strong>: IXFI tokens are fully backed by native XFI on CrossFi chain<br>- <strong>Cross-Chain Communication</strong>: Message passing protocol similar to Axelar<br>- <strong>Gasless Transactions</strong>: Users can execute transactions without holding native gas tokens<br>- <strong>Multi-Chain Support</strong>: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base<br>- <strong>Advanced DEX Aggregation</strong>: Support for 37+ DEX protocols including V2 and V3 variants<br>- <strong>Optimal Route Selection</strong>: Intelligent routing across multiple DEXes for best prices<br>- <strong>Concentrated Liquidity</strong>: Full support for Uniswap V3, SushiSwap V3, PancakeSwap V3<br>- <strong>Decentralized Relayers</strong>: Network of whitelisted relayers for cross-chain operations</p>
+<p>- <strong>1:1 XFI Backing</strong>: IXFI tokens are fully backed by native XFI on CrossFi chain
+<br>- <strong>Cross-Chain Communication</strong>: Message passing protocol similar to Axelar
+<br>- <strong>Gasless Transactions</strong>: Users can execute transactions without holding native gas tokens
+<br>- <strong>Multi-Chain Support</strong>: Ethereum, BSC, Polygon, Avalanche, Arbitrum, Optimism, Base
+<br>- <strong>Advanced DEX Aggregation</strong>: Support for 37+ DEX protocols including V2 and V3 variants
+<br>- <strong>Optimal Route Selection</strong>: Intelligent routing across multiple DEXes for best prices
+<br>- <strong>Concentrated Liquidity</strong>: Full support for Uniswap V3, SushiSwap V3, PancakeSwap V3
+<br>- <strong>Decentralized Relayers</strong>: Network of whitelisted relayers for cross-chain operations</p>
 
 <h2>Architecture</h2>
 
@@ -346,11 +355,19 @@
                     │ - IXFIRelayer   │
                     │ - MetaTxRelayer │
                     │ - Monitoring    │
-                    └─────────────────┘</code></pre></div>
+                    └─────────────────┘
+</code></pre></div>
 
 <h3>System Components</h3>
 
-<p>1. <strong>IXFI Gateway</strong> (<code>IXFI.sol</code>) - Core contract handling GMP and XFI↔IXFI conversion<br>2. <strong>MetaTxGasCreditVault</strong> (<code>MetaTxGasCreditVault.sol</code>) - Gas credit management on CrossFi<br>3. <strong>MetaTxGateway</strong> (<code>MetaTxGateway.sol</code>) - Meta-transaction execution on any chain<br>4. <strong>IXFIExecutable</strong> (<code>IXFIExecutable.sol</code>) - Base contract for dApps receiving cross-chain calls<br>5. <strong>CrossChainAggregator</strong> (<code>CrossChainAggregator.sol</code>) - Multi-protocol DEX aggregation system<br>6. <strong>MulticallLibraryV2</strong> (<code>MulticallLibraryV2.sol</code>) - Batch operations and optimal routing<br>7. <strong>QuoteLibrary</strong> (<code>QuoteLibrary.sol</code>) - Price quotation for 37+ DEX protocols<br>8. <strong>Relayer Services</strong> - Off-chain services for cross-chain coordination</p>
+<p>1. <strong>IXFI Gateway</strong> (<code>IXFI.sol</code>) - Core contract handling GMP and XFI↔IXFI conversion
+<br>2. <strong>MetaTxGasCreditVault</strong> (<code>MetaTxGasCreditVault.sol</code>) - Gas credit management on CrossFi
+<br>3. <strong>MetaTxGateway</strong> (<code>MetaTxGateway.sol</code>) - Meta-transaction execution on any chain
+<br>4. <strong>IXFIExecutable</strong> (<code>IXFIExecutable.sol</code>) - Base contract for dApps receiving cross-chain calls
+<br>5. <strong>CrossChainAggregator</strong> (<code>CrossChainAggregator.sol</code>) - Multi-protocol DEX aggregation system
+<br>6. <strong>MulticallLibraryV2</strong> (<code>MulticallLibraryV2.sol</code>) - Batch operations and optimal routing
+<br>7. <strong>QuoteLibrary</strong> (<code>QuoteLibrary.sol</code>) - Price quotation for 37+ DEX protocols
+<br>8. <strong>Relayer Services</strong> - Off-chain services for cross-chain coordination</p>
 
 <h2>DEX Aggregation System</h2>
 
@@ -409,7 +426,15 @@ function getOptimalQuote(
     uint256[] memory routerTypes
 ) external view returns (uint256 bestAmount, uint256 bestRouter)
 
-<p>function executeSwap(<br>    address tokenIn,<br>    address tokenOut,<br>    uint256 amountIn,<br>    uint256 minAmountOut,<br>    uint256 routerType,<br>    bytes calldata swapData<br>) external payable</code></pre></div></p>
+<p>function executeSwap(
+<br>    address tokenIn,
+<br>    address tokenOut,
+<br>    uint256 amountIn,
+<br>    uint256 minAmountOut,
+<br>    uint256 routerType,
+<br>    bytes calldata swapData
+<br>) external payable
+</code></pre></div></p>
 
 <h4>MulticallLibraryV2.sol</h4>
 Batch operations library for:
@@ -425,7 +450,13 @@ function getMultipleQuotes(
     uint256 amountIn
 ) external view returns (QuoteResult[] memory quotes)
 
-<p>function _generateQuoteCalldata(<br>    uint256 routerType,<br>    address tokenIn,<br>    address tokenOut,<br>    uint256 amountIn<br>) internal pure returns (bytes memory)</code></pre></div></p>
+<p>function _generateQuoteCalldata(
+<br>    uint256 routerType,
+<br>    address tokenIn,
+<br>    address tokenOut,
+<br>    uint256 amountIn
+<br>) internal pure returns (bytes memory)
+</code></pre></div></p>
 
 <h4>QuoteLibrary.sol</h4>
 Quote calculation engine supporting:
@@ -438,9 +469,15 @@ Quote calculation engine supporting:
 // V2 DEX Quotes
 function getUniswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
 
-<p>// V3 DEX Quotes<br>function getUniswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)<br>function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)<br>function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)</p>
+<p>// V3 DEX Quotes
+<br>function getUniswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+<br>function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+<br>function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)</p>
 
-<p>// Specialized Protocols<br>function getCurveQuote(address pool, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)<br>function getBalancerV2Quote(address vault, bytes32 poolId, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)</code></pre></div></p>
+<p>// Specialized Protocols
+<br>function getCurveQuote(address pool, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+<br>function getBalancerV2Quote(address vault, bytes32 poolId, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+</code></pre></div></p>
 
 <h3>Router Type Mapping</h3>
 
@@ -470,7 +507,16 @@ function getUniswapV2Quote(address factory, address tokenIn, address tokenOut, u
     getAllRouterTypes()
 );
 
-<p>// Execute swap with best route<br>aggregator.executeSwap{value: msg.value}(<br>    USDC,<br>    WETH,<br>    1000e6,<br>    bestAmount * 995 / 1000, // 0.5% slippage<br>    bestRouter,<br>    swapData<br>);</code></pre></div></p>
+<p>// Execute swap with best route
+<br>aggregator.executeSwap{value: msg.value}(
+<br>    USDC,
+<br>    WETH,
+<br>    1000e6,
+<br>    bestAmount * 995 / 1000, // 0.5% slippage
+<br>    bestRouter,
+<br>    swapData
+<br>);
+</code></pre></div></p>
 
 <h4>Cross-Chain Swap</h4>
 <div class="code-section"><pre><code>
@@ -483,13 +529,18 @@ aggregator.crossChainSwap(
     1000e6,
     minAmountOut,
     routerType
-);</code></pre></div>
+);
+</code></pre></div>
 
 <h2>Core Contracts</h2>
 
 <h3>IXFI.sol - Main Gateway Contract</h3>
 
-<p>The core contract that handles:<br>- XFI ↔ IXFI conversion (1:1 ratio)<br>- Cross-chain message passing<br>- Token transfers between chains<br>- Relayer management</p>
+<p>The core contract that handles:
+<br>- XFI ↔ IXFI conversion (1:1 ratio)
+<br>- Cross-chain message passing
+<br>- Token transfers between chains
+<br>- Relayer management</p>
 
 <h4>Key Functions</h4>
 
@@ -498,9 +549,14 @@ aggregator.crossChainSwap(
 function deposit() public payable onlyCrossfiChain
 function withdraw(uint256 amount_) public onlyCrossfiChain
 
-<p>// Cross-chain Operations<br>function callContract(string memory destinationChain, string memory destinationContractAddress, bytes memory payload) external<br>function callContractWithToken(string memory destinationChain, string memory destinationContractAddress, bytes memory payload, string memory symbol, uint256 amount) external<br>function sendToken(string memory destinationChain, string memory destinationAddress, string memory symbol, uint256 amount) external</p>
+<p>// Cross-chain Operations
+<br>function callContract(string memory destinationChain, string memory destinationContractAddress, bytes memory payload) external
+<br>function callContractWithToken(string memory destinationChain, string memory destinationContractAddress, bytes memory payload, string memory symbol, uint256 amount) external
+<br>function sendToken(string memory destinationChain, string memory destinationAddress, string memory symbol, uint256 amount) external</p>
 
-<p>// Relayer Functions<br>function execute(bytes32 commandId, Command[] memory commands, bytes memory signature) external onlyRelayer</code></pre></div></p>
+<p>// Relayer Functions
+<br>function execute(bytes32 commandId, Command[] memory commands, bytes memory signature) external onlyRelayer
+</code></pre></div></p>
 
 <h4>State Variables</h4>
 
@@ -509,7 +565,8 @@ uint256 crossfi_chainid = 4157; // 4158 for mainnet
 mapping(address =&gt; bool) public whitelisted; // Whitelisted relayers
 mapping(bytes32 =&gt; bool) public commandExecuted; // Executed commands
 mapping(string =&gt; uint256) public chainIds; // Supported chains
-mapping(bytes32 =&gt; bytes) public approvedPayloads; // Approved payloads</code></pre></div>
+mapping(bytes32 =&gt; bytes) public approvedPayloads; // Approved payloads
+</code></pre></div>
 
 <h4>Events</h4>
 
@@ -518,7 +575,8 @@ event ContractCall(address indexed sender, string destinationChain, string desti
 event ContractCallWithToken(address indexed sender, string destinationChain, string destinationContractAddress, bytes32 indexed payloadHash, bytes payload, string symbol, uint256 amount);
 event TokenSent(address indexed sender, string destinationChain, string destinationAddress, string symbol, uint256 amount);
 event Deposited(address indexed user, uint256 amount);
-event Withdrawn(address indexed user, uint256 amount);</code></pre></div>
+event Withdrawn(address indexed user, uint256 amount);
+</code></pre></div>
 
 <h3>MetaTxGasCreditVault.sol - Gas Credit Management</h3>
 
@@ -526,7 +584,10 @@ event Withdrawn(address indexed user, uint256 amount);</code></pre></div>
 
 <h4>Key Features</h4>
 
-<p>- <strong>USD-Based Credits</strong>: Gas credits denominated in USD cents<br>- <strong>DIA Oracle Integration</strong>: Real-time IXFI/USD price feeds<br>- <strong>Gateway Authorization</strong>: Only authorized gateways can consume credits<br>- <strong>Price Validation</strong>: Ensures price data freshness</p>
+<p>- <strong>USD-Based Credits</strong>: Gas credits denominated in USD cents
+<br>- <strong>DIA Oracle Integration</strong>: Real-time IXFI/USD price feeds
+<br>- <strong>Gateway Authorization</strong>: Only authorized gateways can consume credits
+<br>- <strong>Price Validation</strong>: Ensures price data freshness</p>
 
 <h4>Key Functions</h4>
 
@@ -535,18 +596,27 @@ event Withdrawn(address indexed user, uint256 amount);</code></pre></div>
 function deposit(uint256 amount) external nonReentrant
 function withdraw(uint256 amount) external nonReentrant
 
-<p>// Gateway Functions<br>function consumeCredits(address user, uint256 gasUsd) external returns (bool success)</p>
+<p>// Gateway Functions
+<br>function consumeCredits(address user, uint256 gasUsd) external returns (bool success)</p>
 
-<p>// Owner Functions<br>function setDIAOracle(address newOracle) external onlyOwner<br>function setIXFIPriceKey(string memory newKey) external onlyOwner<br>function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner</p>
+<p>// Owner Functions
+<br>function setDIAOracle(address newOracle) external onlyOwner
+<br>function setIXFIPriceKey(string memory newKey) external onlyOwner
+<br>function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner</p>
 
-<p>// View Functions<br>function calculateCreditsFromIXFI(uint256 ixfiAmount) public view returns (uint256 usdCredits)<br>function hasEnoughCredits(address user, uint256 gasUsd) external view returns (bool hasEnough)<br>function getIXFIPrice() public view returns (uint128 price, uint128 timestamp)</code></pre></div></p>
+<p>// View Functions
+<br>function calculateCreditsFromIXFI(uint256 ixfiAmount) public view returns (uint256 usdCredits)
+<br>function hasEnoughCredits(address user, uint256 gasUsd) external view returns (bool hasEnough)
+<br>function getIXFIPrice() public view returns (uint128 price, uint128 timestamp)
+</code></pre></div></p>
 
 <h4>Oracle Integration</h4>
 
 <div class="code-section"><pre><code>
 interface IDIAOracleV2 {
     function getValue(string memory key) external view returns (uint128, uint128);
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>MetaTxGateway.sol - Meta-Transaction Execution</h3>
 
@@ -554,7 +624,10 @@ interface IDIAOracleV2 {
 
 <h4>Key Features</h4>
 
-<p>- <strong>EIP-712 Compliance</strong>: Standard meta-transaction signatures<br>- <strong>Nonce Management</strong>: Replay attack protection<br>- <strong>Relayer Authorization</strong>: Only authorized relayers can execute<br>- <strong>Gas Independence</strong>: No vault dependency on non-CrossFi chains</p>
+<p>- <strong>EIP-712 Compliance</strong>: Standard meta-transaction signatures
+<br>- <strong>Nonce Management</strong>: Replay attack protection
+<br>- <strong>Relayer Authorization</strong>: Only authorized relayers can execute
+<br>- <strong>Gas Independence</strong>: No vault dependency on non-CrossFi chains</p>
 
 <h4>Key Functions</h4>
 
@@ -562,11 +635,17 @@ interface IDIAOracleV2 {
 // Meta-transaction Execution
 function executeMetaTransaction(MetaTransaction memory metaTx, bytes memory signature) external onlyRelayer nonReentrant
 
-<p>// Batch Operations<br>function executeBatchMetaTransactions(MetaTransaction[] memory metaTxs, bytes[] memory signatures) external onlyRelayer nonReentrant</p>
+<p>// Batch Operations
+<br>function executeBatchMetaTransactions(MetaTransaction[] memory metaTxs, bytes[] memory signatures) external onlyRelayer nonReentrant</p>
 
-<p>// Management<br>function setRelayerAuthorization(address relayer, bool authorized) external onlyOwner</p>
+<p>// Management
+<br>function setRelayerAuthorization(address relayer, bool authorized) external onlyOwner</p>
 
-<p>// View Functions<br>function getNonce(address user) external view returns (uint256)<br>function getDomainSeparator() public view returns (bytes32)<br>function getMetaTransactionHash(MetaTransaction memory metaTx) public view returns (bytes32)</code></pre></div></p>
+<p>// View Functions
+<br>function getNonce(address user) external view returns (uint256)
+<br>function getDomainSeparator() public view returns (bytes32)
+<br>function getMetaTransactionHash(MetaTransaction memory metaTx) public view returns (bytes32)
+</code></pre></div></p>
 
 <h4>MetaTransaction Structure</h4>
 
@@ -578,7 +657,8 @@ struct MetaTransaction {
     bytes data;        // Function call data
     uint256 nonce;     // User&#039;s current nonce
     uint256 deadline;  // Transaction deadline
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>IXFIExecutable.sol - dApp Integration Base</h3>
 
@@ -591,13 +671,21 @@ function execute(bytes32 commandId, string calldata sourceChain, string calldata
 
 <p>function executeWithToken(bytes32 commandId, string calldata sourceChain, string calldata sourceAddress, bytes calldata payload, string calldata symbol, uint256 amount) external override onlyGateway</p>
 
-<p>// Abstract functions to implement<br>function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal virtual;<br>function _executeWithToken(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload, string calldata symbol, uint256 amount) internal virtual;</code></pre></div></p>
+<p>// Abstract functions to implement
+<br>function _execute(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload) internal virtual;
+<br>function _executeWithToken(string calldata sourceChain, string calldata sourceAddress, bytes calldata payload, string calldata symbol, uint256 amount) internal virtual;
+</code></pre></div></p>
 
 <h2>GMP Protocol</h2>
 
 <h3>Message Flow</h3>
 
-<p>1. <strong>Initiation</strong>: User calls <code>callContract()</code> or <code>callContractWithToken()</code> on source chain<br>2. <strong>Event Emission</strong>: Contract emits cross-chain event with payload<br>3. <strong>Relayer Monitoring</strong>: Relayers monitor events on all chains<br>4. <strong>Command Creation</strong>: Relayer creates execution commands for destination chain<br>5. <strong>Execution</strong>: Relayer calls <code>execute()</code> on destination chain with signed commands<br>6. <strong>Validation</strong>: Contract validates signature and executes commands</p>
+<p>1. <strong>Initiation</strong>: User calls <code>callContract()</code> or <code>callContractWithToken()</code> on source chain
+<br>2. <strong>Event Emission</strong>: Contract emits cross-chain event with payload
+<br>3. <strong>Relayer Monitoring</strong>: Relayers monitor events on all chains
+<br>4. <strong>Command Creation</strong>: Relayer creates execution commands for destination chain
+<br>5. <strong>Execution</strong>: Relayer calls <code>execute()</code> on destination chain with signed commands
+<br>6. <strong>Validation</strong>: Contract validates signature and executes commands</p>
 
 <h3>Command Types</h3>
 
@@ -605,11 +693,15 @@ function execute(bytes32 commandId, string calldata sourceChain, string calldata
 uint256 public constant COMMAND_APPROVE_CONTRACT_CALL = 0;
 uint256 public constant COMMAND_APPROVE_CONTRACT_CALL_WITH_MINT = 1;
 uint256 public constant COMMAND_BURN_TOKEN = 2;
-uint256 public constant COMMAND_MINT_TOKEN = 4;</code></pre></div>
+uint256 public constant COMMAND_MINT_TOKEN = 4;
+</code></pre></div>
 
 <h3>Security Model</h3>
 
-<p>- <strong>Relayer Consensus</strong>: Multiple whitelisted relayers must agree<br>- <strong>Signature Verification</strong>: All commands must be signed by authorized relayers<br>- <strong>Replay Protection</strong>: Commands can only be executed once<br>- <strong>Payload Validation</strong>: Payload hashes are verified on execution</p>
+<p>- <strong>Relayer Consensus</strong>: Multiple whitelisted relayers must agree
+<br>- <strong>Signature Verification</strong>: All commands must be signed by authorized relayers
+<br>- <strong>Replay Protection</strong>: Commands can only be executed once
+<br>- <strong>Payload Validation</strong>: Payload hashes are verified on execution</p>
 
 <h2>Meta-Transaction System</h2>
 
@@ -617,11 +709,17 @@ uint256 public constant COMMAND_MINT_TOKEN = 4;</code></pre></div>
 
 <p>The meta-transaction system operates on a distributed model:</p>
 
-<p>- <strong>CrossFi Chain</strong>: Hosts <code>MetaTxGasCreditVault</code> for centralized credit management<br>- <strong>Other Chains</strong>: Host <code>MetaTxGateway</code> for transaction execution<br>- <strong>MetaTxRelayer</strong>: Coordinates between vault and gateways</p>
+<p>- <strong>CrossFi Chain</strong>: Hosts <code>MetaTxGasCreditVault</code> for centralized credit management
+<br>- <strong>Other Chains</strong>: Host <code>MetaTxGateway</code> for transaction execution
+<br>- <strong>MetaTxRelayer</strong>: Coordinates between vault and gateways</p>
 
 <h3>Transaction Flow</h3>
 
-<p>1. <strong>Credit Deposit</strong>: User deposits IXFI on CrossFi for gas credits<br>2. <strong>Transaction Signing</strong>: User signs meta-transaction with EIP-712<br>3. <strong>Credit Check</strong>: Relayer verifies credits on CrossFi vault<br>4. <strong>Execution</strong>: Relayer executes transaction on target chain<br>5. <strong>Credit Deduction</strong>: Relayer deducts gas costs from CrossFi vault</p>
+<p>1. <strong>Credit Deposit</strong>: User deposits IXFI on CrossFi for gas credits
+<br>2. <strong>Transaction Signing</strong>: User signs meta-transaction with EIP-712
+<br>3. <strong>Credit Check</strong>: Relayer verifies credits on CrossFi vault
+<br>4. <strong>Execution</strong>: Relayer executes transaction on target chain
+<br>5. <strong>Credit Deduction</strong>: Relayer deducts gas costs from CrossFi vault</p>
 
 <h3>EIP-712 Domain</h3>
 
@@ -631,7 +729,8 @@ uint256 public constant COMMAND_MINT_TOKEN = 4;</code></pre></div>
     version: &quot;1&quot;,
     chainId: &lt;target_chain_id&gt;,
     verifyingContract: &lt;gateway_address&gt;
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>Gas Calculation</h3>
 
@@ -639,13 +738,17 @@ uint256 public constant COMMAND_MINT_TOKEN = 4;</code></pre></div>
 
 <div class="code-section"><pre><code>
 gasUsd = gasUsed <em> gasPrice </em> nativeTokenPrice
-creditsNeeded = gasUsd (in cents)</code></pre></div>
+creditsNeeded = gasUsd (in cents)
+</code></pre></div>
 
 <h2>Deployment Guide</h2>
 
 <h3>Prerequisites</h3>
 
-<p>1. Node.js >= 18.0.0<br>2. Hardhat development environment<br>3. DIA Oracle deployment addresses<br>4. Sufficient native tokens for deployment</p>
+<p>1. Node.js >= 18.0.0
+<br>2. Hardhat development environment
+<br>3. DIA Oracle deployment addresses
+<br>4. Sufficient native tokens for deployment</p>
 
 <h3>Deployment Steps</h3>
 
@@ -661,7 +764,8 @@ npm install
 cd relayer &amp;&amp; npm install &amp;&amp; cd ..
 
 <h1>Setup environment</h1>
-npm run setup</code></pre></div>
+npm run setup
+</code></pre></div>
 
 <h4>2. Configure Networks</h4>
 
@@ -680,7 +784,8 @@ networks: {
     accounts: [process.env.PRIVATE_KEY]
   }
   // Add other chains...
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h4>3. Deploy Contracts</h4>
 
@@ -694,7 +799,8 @@ npx hardhat run scripts/deploy-meta-tx.js --network crossfi
 npx hardhat run scripts/deploy-meta-tx.js --network ethereum
 
 <h1>Whitelist relayers</h1>
-npx hardhat run scripts/whitelist-relayer.js --network crossfi</code></pre></div>
+npx hardhat run scripts/whitelist-relayer.js --network crossfi
+</code></pre></div>
 
 <h4>4. Configure Relayers</h4>
 
@@ -706,7 +812,8 @@ cp config.example.json config.json
 
 <h1>Setup Meta-Transaction relayer</h1>
 cp meta-tx-config.example.json meta-tx-config.json
-<h1>Edit meta-tx-config.json</h1></code></pre></div>
+<h1>Edit meta-tx-config.json</h1>
+</code></pre></div>
 
 <h4>5. Start Relayers</h4>
 
@@ -715,7 +822,8 @@ cp meta-tx-config.example.json meta-tx-config.json
 npm run start:gmp
 
 <h1>Start Meta-Transaction relayer (separate terminal)</h1>
-npm run start:meta-tx</code></pre></div>
+npm run start:meta-tx
+</code></pre></div>
 
 <h3>Configuration Files</h3>
 
@@ -740,14 +848,15 @@ npm run start:meta-tx</code></pre></div>
       &quot;blockConfirmations&quot;: 12
     }
   }
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h4>Meta-Transaction Relayer Config</h4>
 
 <div class="code-section"><pre><code>
 {
   &quot;relayerPrivateKey&quot;: &quot;0x...&quot;,
-  &quot;chains&quot;: {
+  &quot;chains&qu0.8.24
     &quot;crossfi&quot;: {
       &quot;rpc&quot;: &quot;https://rpc.testnet.ms&quot;,
       &quot;vaultAddress&quot;: &quot;0x...&quot;,
@@ -762,7 +871,8 @@ npm run start:meta-tx</code></pre></div>
     &quot;port&quot;: 3001,
     &quot;corsOrigins&quot;: [&quot;http://localhost:3000&quot;]
   }
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h2>API Reference</h2>
 
@@ -776,7 +886,8 @@ Response: {
   &quot;chains&quot;: {...},
   &quot;processedEvents&quot;: 1234,
   &quot;relayerAddress&quot;: &quot;0x...&quot;
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h4>Meta-Transaction Submission</h4>
 <div class="code-section"><pre><code>
@@ -792,7 +903,8 @@ Body: {
   },
   &quot;signature&quot;: &quot;0x...&quot;,
   &quot;targetChain&quot;: &quot;ethereum&quot;
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h4>Credit Balance</h4>
 <div class="code-section"><pre><code>
@@ -800,7 +912,8 @@ GET /api/credits/:userAddress
 Response: {
   &quot;balance&quot;: 1000,
   &quot;balanceUsd&quot;: &quot;10.00&quot;
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>JavaScript SDK</h3>
 
@@ -809,23 +922,48 @@ Response: {
 <div class="code-section"><pre><code>
 const { IXFIProvider } = require(&#039;@ixfi/sdk&#039;);
 
-<p>const provider = new IXFIProvider({<br>  crossfiRpc: &#039;https://rpc.testnet.ms&#039;,<br>  ethereumRpc: &#039;https://mainnet.infura.io/v3/YOUR_KEY&#039;,<br>  relayerUrl: &#039;http://localhost:3001&#039;<br>});</p>
+<p>const provider = new IXFIProvider({
+<br>  crossfiRpc: &#039;https://rpc.testnet.ms&#039;,
+<br>  ethereumRpc: &#039;https://mainnet.infura.io/v3/YOUR_KEY&#039;,
+<br>  relayerUrl: &#039;http://localhost:3001&#039;
+<br>});</p>
 
-<p>// Deposit XFI for IXFI<br>await provider.deposit(&#039;100&#039;); // 100 XFI</p>
+<p>// Deposit XFI for IXFI
+<br>await provider.deposit(&#039;100&#039;); // 100 XFI</p>
 
-<p>// Send cross-chain transaction<br>await provider.callContract(<br>  &#039;ethereum&#039;,<br>  &#039;0xTargetContract&#039;,<br>  &#039;0xPayloadData&#039;<br>);</p>
+<p>// Send cross-chain transaction
+<br>await provider.callContract(
+<br>  &#039;ethereum&#039;,
+<br>  &#039;0xTargetContract&#039;,
+<br>  &#039;0xPayloadData&#039;
+<br>);</p>
 
-<p>// Execute gasless transaction<br>await provider.executeMetaTransaction({<br>  to: &#039;0xTargetContract&#039;,<br>  data: &#039;0xFunctionCall&#039;,<br>  deadline: Date.now() + 3600000 // 1 hour<br>});</code></pre></div></p>
+<p>// Execute gasless transaction
+<br>await provider.executeMetaTransaction({
+<br>  to: &#039;0xTargetContract&#039;,
+<br>  data: &#039;0xFunctionCall&#039;,
+<br>  deadline: Date.now() + 3600000 // 1 hour
+<br>});
+</code></pre></div></p>
 
 <h2>Security Considerations</h2>
 
 <h3>Access Controls</h3>
 
-<p>1. <strong>Owner Privileges</strong>:<br>   - Add/remove relayers<br>   - Update chain configurations<br>   - Set oracle addresses<br>   - Emergency pause functions</p>
+<p>1. <strong>Owner Privileges</strong>:
+<br>   - Add/remove relayers
+<br>   - Update chain configurations
+<br>   - Set oracle addresses
+<br>   - Emergency pause functions</p>
 
-<p>2. <strong>Relayer Permissions</strong>:<br>   - Execute cross-chain commands<br>   - Submit meta-transactions<br>   - Access failure recovery mechanisms</p>
+<p>2. <strong>Relayer Permissions</strong>:
+<br>   - Execute cross-chain commands
+<br>   - Submit meta-transactions
+<br>   - Access failure recovery mechanisms</p>
 
-<p>3. <strong>Gateway Authorizations</strong>:<br>   - Consume gas credits<br>   - Execute meta-transactions on behalf of users</p>
+<p>3. <strong>Gateway Authorizations</strong>:
+<br>   - Consume gas credits
+<br>   - Execute meta-transactions on behalf of users</p>
 
 <h3>Attack Vectors & Mitigations</h3>
 
@@ -847,7 +985,11 @@ const { IXFIProvider } = require(&#039;@ixfi/sdk&#039;);
 
 <h3>Best Practices</h3>
 
-<p>1. <strong>Regular Security Audits</strong>: Schedule periodic security reviews<br>2. <strong>Monitoring</strong>: Implement comprehensive monitoring and alerting<br>3. <strong>Gradual Rollout</strong>: Start with limited functionality and scale<br>4. <strong>Emergency Procedures</strong>: Have emergency pause and recovery mechanisms<br>5. <strong>Key Management</strong>: Use hardware wallets for critical operations</p>
+<p>1. <strong>Regular Security Audits</strong>: Schedule periodic security reviews
+<br>2. <strong>Monitoring</strong>: Implement comprehensive monitoring and alerting
+<br>3. <strong>Gradual Rollout</strong>: Start with limited functionality and scale
+<br>4. <strong>Emergency Procedures</strong>: Have emergency pause and recovery mechanisms
+<br>5. <strong>Key Management</strong>: Use hardware wallets for critical operations</p>
 
 <h2>Integration Guide</h2>
 
@@ -860,11 +1002,31 @@ pragma solidity ^0.8.20;
 
 <p>import &quot;./IXFIExecutable.sol&quot;;</p>
 
-<p>contract MyDApp is IXFIExecutable {<br>    constructor(address gateway_) IXFIExecutable(gateway_) {}</p>
+<p>contract MyDApp is IXFIExecutable {
+<br>    constructor(address gateway_) IXFIExecutable(gateway_) {}</p>
 
-<p>function _execute(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload<br>    ) internal override {<br>        // Handle cross-chain call<br>        (uint256 value, address recipient) = abi.decode(payload, (uint256, address));<br>        // Process the cross-chain data<br>    }</p>
+<p>function _execute(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload
+<br>    ) internal override {
+<br>        // Handle cross-chain call
+<br>        (uint256 value, address recipient) = abi.decode(payload, (uint256, address));
+<br>        // Process the cross-chain data
+<br>    }</p>
 
-<p>function _executeWithToken(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload,<br>        string calldata symbol,<br>        uint256 amount<br>    ) internal override {<br>        // Handle cross-chain call with tokens<br>        // IXFI tokens are already minted to this contract<br>    }<br>}</code></pre></div></p>
+<p>function _executeWithToken(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload,
+<br>        string calldata symbol,
+<br>        uint256 amount
+<br>    ) internal override {
+<br>        // Handle cross-chain call with tokens
+<br>        // IXFI tokens are already minted to this contract
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h4>2. Frontend Integration</h4>
 
@@ -875,11 +1037,21 @@ const ixfi = new IXFIProvider({
   relayerUrl: &#039;http://localhost:3001&#039;
 });
 
-<p>// Check user&#039;s gas credits<br>const credits = await ixfi.getCreditBalance(userAddress);</p>
+<p>// Check user&#039;s gas credits
+<br>const credits = await ixfi.getCreditBalance(userAddress);</p>
 
-<p>// Execute gasless transaction<br>const metaTx = {<br>  from: userAddress,<br>  to: contractAddress,<br>  data: encodedFunctionCall,<br>  nonce: await ixfi.getNonce(userAddress),<br>  deadline: Date.now() + 3600000<br>};</p>
+<p>// Execute gasless transaction
+<br>const metaTx = {
+<br>  from: userAddress,
+<br>  to: contractAddress,
+<br>  data: encodedFunctionCall,
+<br>  nonce: await ixfi.getNonce(userAddress),
+<br>  deadline: Date.now() + 3600000
+<br>};</p>
 
-<p>const signature = await signer.signTypedData(domain, types, metaTx);<br>await ixfi.submitMetaTransaction(metaTx, signature, &#039;ethereum&#039;);</code></pre></div></p>
+<p>const signature = await signer.signTypedData(domain, types, metaTx);
+<br>await ixfi.submitMetaTransaction(metaTx, signature, &#039;ethereum&#039;);
+</code></pre></div></p>
 
 <h3>For Relayer Operators</h3>
 
@@ -899,7 +1071,8 @@ setInterval(async () =&gt; {
     // Send alerts
     await sendAlert(&#039;Relayer unhealthy&#039;, health);
   }
-}, 30000);</code></pre></div>
+}, 30000);
+</code></pre></div>
 
 <h4>3. Backup Strategies</h4>
 - Regular database backups
@@ -917,9 +1090,14 @@ describe(&quot;IXFI Cross-Chain&quot;, function () {
     const ixfi = await deployIXFI();
     const target = await deployTarget();
 
-<p>// Execute cross-chain call<br>    await ixfi.callContract(&quot;ethereum&quot;, target.address, payload);</p>
+<p>// Execute cross-chain call
+<br>    await ixfi.callContract(&quot;ethereum&quot;, target.address, payload);</p>
 
-<p>// Verify execution<br>    expect(await target.executed()).to.be.true;<br>  });<br>});</code></pre></div></p>
+<p>// Verify execution
+<br>    expect(await target.executed()).to.be.true;
+<br>  });
+<br>});
+</code></pre></div></p>
 
 <h4>Integration Tests</h4>
 
@@ -930,11 +1108,20 @@ describe(&quot;Meta-Transaction Flow&quot;, function () {
     const vault = await deployVault();
     const gateway = await deployGateway();
 
-<p>// User deposits credits<br>    await vault.deposit(ethers.parseEther(&quot;10&quot;));</p>
+<p>// User deposits credits
+<br>    await vault.deposit(ethers.parseEther(&quot;10&quot;));</p>
 
-<p>// Execute meta-transaction<br>    const metaTx = createMetaTx();<br>    const signature = await signMetaTx(metaTx);<br>    await gateway.executeMetaTransaction(metaTx, signature);</p>
+<p>// Execute meta-transaction
+<br>    const metaTx = createMetaTx();
+<br>    const signature = await signMetaTx(metaTx);
+<br>    await gateway.executeMetaTransaction(metaTx, signature);</p>
 
-<p>// Verify execution and credit deduction<br>    expect(await target.executed()).to.be.true;<br>    expect(await vault.getCreditBalance(user.address)).to.be.lt(initialCredits);<br>  });<br>});</code></pre></div></p>
+<p>// Verify execution and credit deduction
+<br>    expect(await target.executed()).to.be.true;
+<br>    expect(await vault.getCreditBalance(user.address)).to.be.lt(initialCredits);
+<br>  });
+<br>});
+</code></pre></div></p>
 
 <p>---</p>
 
@@ -956,14 +1143,16 @@ describe(&quot;Meta-Transaction Flow&quot;, function () {
 <h4>XFI ↔ IXFI Conversion</h4>
 
 <div class="code-section"><pre><code>
-function deposit() public payable onlyCrossfiChain</code></pre></div>
+function deposit() public payable onlyCrossfiChain
+</code></pre></div>
 <strong>Description</strong>: Deposit native XFI to mint equivalent IXFI tokens (1:1 ratio)
 - <strong>Requirements</strong>: Must be called on CrossFi chain
 - <strong>Parameters</strong>: None (amount specified in msg.value)
 - <strong>Events</strong>: <code>Deposited(address indexed user, uint256 amount)</code>
 
 <div class="code-section"><pre><code>
-function withdraw(uint256 amount_) public onlyCrossfiChain</code></pre></div>
+function withdraw(uint256 amount_) public onlyCrossfiChain
+</code></pre></div>
 <strong>Description</strong>: Burn IXFI tokens to withdraw equivalent native XFI
 - <strong>Requirements</strong>: Must be called on CrossFi chain, sufficient IXFI balance
 - <strong>Parameters</strong>: 
@@ -977,7 +1166,8 @@ function callContract(
     string memory destinationChain,
     string memory destinationContractAddress,
     bytes memory payload
-) external</code></pre></div>
+) external
+</code></pre></div>
 <strong>Description</strong>: Initiate a cross-chain contract call
 - <strong>Parameters</strong>:
   - <code>destinationChain</code>: Name of destination chain (e.g., "ethereum", "bsc")
@@ -992,7 +1182,8 @@ function callContractWithToken(
     bytes memory payload,
     string memory symbol,
     uint256 amount
-) external</code></pre></div>
+) external
+</code></pre></div>
 <strong>Description</strong>: Cross-chain contract call with token transfer
 - <strong>Requirements</strong>: User must have sufficient IXFI balance
 - <strong>Parameters</strong>:
@@ -1009,7 +1200,8 @@ function sendToken(
     string memory destinationAddress,
     string memory symbol,
     uint256 amount
-) external</code></pre></div>
+) external
+</code></pre></div>
 <strong>Description</strong>: Send tokens to an address on another chain
 - <strong>Parameters</strong>:
   - <code>destinationChain</code>: Destination chain name
@@ -1024,7 +1216,8 @@ function execute(
     bytes32 commandId,
     Command[] memory commands,
     bytes memory signature
-) external onlyRelayer notExecuted(commandId)</code></pre></div>
+) external onlyRelayer notExecuted(commandId)
+</code></pre></div>
 <strong>Description</strong>: Execute cross-chain commands (relayer only)
 - <strong>Requirements</strong>: Must be whitelisted relayer
 - <strong>Parameters</strong>:
@@ -1038,7 +1231,8 @@ function execute(
 function addWhitelistedRelayer(address relayer) public onlyOwner
 function removeWhitelistedRelayer(address relayer) public onlyOwner
 function addChain(string memory chainName, uint256 chainId) external onlyOwner
-function removeChain(string memory chainName) external onlyOwner</code></pre></div>
+function removeChain(string memory chainName) external onlyOwner
+</code></pre></div>
 
 <h4>View Functions</h4>
 
@@ -1047,7 +1241,8 @@ function isFullyBacked() external view returns (bool)
 function getXFIBalance() external view returns (uint256)
 function isCommandExecuted(bytes32 commandId) external view returns (bool)
 function getAllRelayers() external view returns (address[] memory)
-function getRelayerCount() external view returns (uint256)</code></pre></div>
+function getRelayerCount() external view returns (uint256)
+</code></pre></div>
 
 <h2>CrossChainAggregator</h2>
 
@@ -1061,7 +1256,8 @@ function getOptimalQuote(
     address tokenOut,
     uint256 amountIn,
     uint256[] memory routerTypes
-) external view returns (uint256 bestAmount, uint256 bestRouter)</code></pre></div>
+) external view returns (uint256 bestAmount, uint256 bestRouter)
+</code></pre></div>
 <strong>Description</strong>: Get the best quote across specified DEX protocols
 - <strong>Parameters</strong>:
   - <code>tokenIn</code>: Input token address
@@ -1075,7 +1271,8 @@ function getAllQuotes(
     address tokenIn,
     address tokenOut,
     uint256 amountIn
-) external view returns (QuoteResult[] memory)</code></pre></div>
+) external view returns (QuoteResult[] memory)
+</code></pre></div>
 <strong>Description</strong>: Get quotes from all 37 supported DEX protocols
 - <strong>Returns</strong>: Array of quote results with amounts and router types
 
@@ -1089,7 +1286,8 @@ function executeSwap(
     uint256 minAmountOut,
     uint256 routerType,
     bytes calldata swapData
-) external payable returns (uint256 amountOut)</code></pre></div>
+) external payable returns (uint256 amountOut)
+</code></pre></div>
 <strong>Description</strong>: Execute token swap through specified DEX protocol
 - <strong>Parameters</strong>:
   - <code>tokenIn</code>: Input token address (use address(0) for ETH)
@@ -1111,7 +1309,8 @@ function crossChainSwap(
     uint256 amountIn,
     uint256 minAmountOut,
     uint256 routerType
-) external payable</code></pre></div>
+) external payable
+</code></pre></div>
 <strong>Description</strong>: Execute cross-chain token swap
 - <strong>Parameters</strong>:
   - <code>sourceChain</code>: Source chain name
@@ -1127,7 +1326,8 @@ function crossChainSwap(
 <div class="code-section"><pre><code>
 function multiSwap(
     SwapParams[] memory swaps
-) external payable returns (uint256[] memory amountsOut)</code></pre></div>
+) external payable returns (uint256[] memory amountsOut)
+</code></pre></div>
 <strong>Description</strong>: Execute multiple swaps in a single transaction
 - <strong>Parameters</strong>:
   - <code>swaps</code>: Array of swap parameters
@@ -1139,7 +1339,8 @@ function multiSwap(
 function getSupportedTokens(uint256 chainId) external view returns (address[] memory)
 function getRouterAddress(uint256 routerType, uint256 chainId) external view returns (address)
 function isRouterSupported(uint256 routerType, uint256 chainId) external view returns (bool)
-function getSwapFee(uint256 routerType) external view returns (uint256)</code></pre></div>
+function getSwapFee(uint256 routerType) external view returns (uint256)
+</code></pre></div>
 
 <h2>MulticallLibraryV2</h2>
 
@@ -1150,7 +1351,8 @@ function getMultipleQuotes(
     address tokenIn,
     address tokenOut,
     uint256 amountIn
-) external view returns (QuoteResult[] memory quotes)</code></pre></div>
+) external view returns (QuoteResult[] memory quotes)
+</code></pre></div>
 <strong>Description</strong>: Get quotes from all 37 DEX protocols in parallel
 - <strong>Returns</strong>: Array of quote results sorted by output amount (best first)
 
@@ -1160,7 +1362,8 @@ function getQuotesForRouters(
     address tokenOut,
     uint256 amountIn,
     uint256[] memory routerTypes
-) external view returns (QuoteResult[] memory quotes)</code></pre></div>
+) external view returns (QuoteResult[] memory quotes)
+</code></pre></div>
 <strong>Description</strong>: Get quotes from specific router types only
 - <strong>Parameters</strong>:
   - <code>routerTypes</code>: Array of router type IDs to query
@@ -1170,14 +1373,16 @@ function getQuotesForRouters(
 <div class="code-section"><pre><code>
 function findBestQuote(
     QuoteResult[] memory quotes
-) external pure returns (uint256 bestAmount, uint256 bestRouter)</code></pre></div>
+) external pure returns (uint256 bestAmount, uint256 bestRouter)
+</code></pre></div>
 <strong>Description</strong>: Find the best quote from an array of results
 
 <div class="code-section"><pre><code>
 function filterValidQuotes(
     QuoteResult[] memory quotes,
     uint256 minAmount
-) external pure returns (QuoteResult[] memory validQuotes)</code></pre></div>
+) external pure returns (QuoteResult[] memory validQuotes)
+</code></pre></div>
 <strong>Description</strong>: Filter quotes above minimum threshold
 
 <h2>QuoteLibrary</h2>
@@ -1190,7 +1395,8 @@ function getUniswapV2Quote(
     address tokenIn,
     address tokenOut,
     uint256 amountIn
-) external view returns (uint256 amountOut)</code></pre></div>
+) external view returns (uint256 amountOut)
+</code></pre></div>
 <strong>Description</strong>: Calculate quote for Uniswap V2 style AMM
 - <strong>Parameters</strong>:
   - <code>factory</code>: Factory contract address
@@ -1201,7 +1407,8 @@ function getUniswapV2Quote(
 <div class="code-section"><pre><code>
 function getSushiswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
 function getPancakeswapV2Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
-function getQuickswapQuote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)</code></pre></div>
+function getQuickswapQuote(address factory, address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256)
+</code></pre></div>
 
 <h3>V3 Concentrated Liquidity Quotes</h3>
 
@@ -1212,7 +1419,8 @@ function getUniswapV3Quote(
     address tokenOut,
     uint256 amountIn,
     uint24 fee
-) external view returns (uint256 amountOut)</code></pre></div>
+) external view returns (uint256 amountOut)
+</code></pre></div>
 <strong>Description</strong>: Calculate quote for Uniswap V3 concentrated liquidity
 - <strong>Parameters</strong>:
   - <code>factory</code>: V3 factory address
@@ -1220,7 +1428,8 @@ function getUniswapV3Quote(
 
 <div class="code-section"><pre><code>
 function getSushiswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
-function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)</code></pre></div>
+function getPancakeswapV3Quote(address factory, address tokenIn, address tokenOut, uint256 amountIn, uint24 fee) external view returns (uint256)
+</code></pre></div>
 
 <h3>Specialized Protocol Quotes</h3>
 
@@ -1230,7 +1439,8 @@ function getCurveQuote(
     address tokenIn,
     address tokenOut,
     uint256 amountIn
-) external view returns (uint256 amountOut)</code></pre></div>
+) external view returns (uint256 amountOut)
+</code></pre></div>
 <strong>Description</strong>: Calculate quote for Curve stableswap pools
 
 <div class="code-section"><pre><code>
@@ -1240,12 +1450,14 @@ function getBalancerV2Quote(
     address tokenIn,
     address tokenOut,
     uint256 amountIn
-) external view returns (uint256 amountOut)</code></pre></div>
+) external view returns (uint256 amountOut)
+</code></pre></div>
 <strong>Description</strong>: Calculate quote for Balancer V2 weighted pools
 
 <div class="code-section"><pre><code>
 function getVelodrome Quote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)
-function getAerodromeQuote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)</code></pre></div>
+function getAerodromeQuote(address router, address tokenIn, address tokenOut, uint256 amountIn, bool stable) external view returns (uint256)
+</code></pre></div>
 <strong>Description</strong>: Calculate quotes for Solidly-based protocols (ve(3,3))
 
 <h3>Router Type Constants</h3>
@@ -1258,13 +1470,24 @@ uint256 constant PANCAKESWAP_V2 = 2;
 uint256 constant QUICKSWAP = 3;
 uint256 constant TRADERJOE_V1 = 4;
 
-<p>// V3 Concentrated Liquidity<br>uint256 constant UNISWAP_V3 = 10;<br>uint256 constant SUSHISWAP_V3 = 11;<br>uint256 constant PANCAKESWAP_V3 = 12;</p>
+<p>// V3 Concentrated Liquidity
+<br>uint256 constant UNISWAP_V3 = 10;
+<br>uint256 constant SUSHISWAP_V3 = 11;
+<br>uint256 constant PANCAKESWAP_V3 = 12;</p>
 
-<p>// Solidly Forks<br>uint256 constant VELODROME = 20;<br>uint256 constant AERODROME = 21;<br>uint256 constant THENA = 22;</p>
+<p>// Solidly Forks
+<br>uint256 constant VELODROME = 20;
+<br>uint256 constant AERODROME = 21;
+<br>uint256 constant THENA = 22;</p>
 
-<p>// Stableswap<br>uint256 constant CURVE = 30;<br>uint256 constant ELLIPSIS = 31;</p>
+<p>// Stableswap
+<br>uint256 constant CURVE = 30;
+<br>uint256 constant ELLIPSIS = 31;</p>
 
-<p>// Specialized<br>uint256 constant BALANCER_V2 = 35;<br>uint256 constant ONEINCH = 36;</code></pre></div></p>
+<p>// Specialized
+<br>uint256 constant BALANCER_V2 = 35;
+<br>uint256 constant ONEINCH = 36;
+</code></pre></div></p>
 
 <h3>Command Structure</h3>
 
@@ -1272,23 +1495,30 @@ uint256 constant TRADERJOE_V1 = 4;
 struct Command {
     uint256 commandType;
     bytes data;
-}</code></pre></div>
+}
+</code></pre></div>
 
-<p><strong>Command Types</strong>:<br>- <code>COMMAND_APPROVE_CONTRACT_CALL = 0</code><br>- <code>COMMAND_APPROVE_CONTRACT_CALL_WITH_MINT = 1</code><br>- <code>COMMAND_BURN_TOKEN = 2</code><br>- <code>COMMAND_MINT_TOKEN = 4</code></p>
+<p><strong>Command Types</strong>:
+<br>- <code>COMMAND_APPROVE_CONTRACT_CALL = 0</code>
+<br>- <code>COMMAND_APPROVE_CONTRACT_CALL_WITH_MINT = 1</code>
+<br>- <code>COMMAND_BURN_TOKEN = 2</code>
+<br>- <code>COMMAND_MINT_TOKEN = 4</code></p>
 
 <h2>MetaTxGasCreditVault</h2>
 
 <h3>User Functions</h3>
 
 <div class="code-section"><pre><code>
-function deposit(uint256 amount) external nonReentrant</code></pre></div>
+function deposit(uint256 amount) external nonReentrant
+</code></pre></div>
 <strong>Description</strong>: Deposit IXFI tokens to get gas credits
 - <strong>Parameters</strong>: <code>amount</code> - IXFI amount to deposit
 - <strong>Returns</strong>: Credits added to user balance
 - <strong>Events</strong>: <code>Deposited(user, ixfiAmount, creditsAdded)</code>
 
 <div class="code-section"><pre><code>
-function withdraw(uint256 amount) external nonReentrant</code></pre></div>
+function withdraw(uint256 amount) external nonReentrant
+</code></pre></div>
 <strong>Description</strong>: Withdraw IXFI tokens by burning gas credits
 - <strong>Parameters</strong>: <code>amount</code> - IXFI amount to withdraw
 - <strong>Events</strong>: <code>Withdrawn(user, ixfiAmount, creditsDeducted)</code>
@@ -1296,7 +1526,8 @@ function withdraw(uint256 amount) external nonReentrant</code></pre></div>
 <h3>Gateway Functions</h3>
 
 <div class="code-section"><pre><code>
-function consumeCredits(address user, uint256 gasUsd) external returns (bool success)</code></pre></div>
+function consumeCredits(address user, uint256 gasUsd) external returns (bool success)
+</code></pre></div>
 <strong>Description</strong>: Consume user's gas credits (authorized gateways only)
 - <strong>Parameters</strong>:
   - <code>user</code>: User whose credits to consume
@@ -1307,20 +1538,23 @@ function consumeCredits(address user, uint256 gasUsd) external returns (bool suc
 <h3>Oracle Functions</h3>
 
 <div class="code-section"><pre><code>
-function calculateCreditsFromIXFI(uint256 ixfiAmount) public view returns (uint256 usdCredits)</code></pre></div>
+function calculateCreditsFromIXFI(uint256 ixfiAmount) public view returns (uint256 usdCredits)
+</code></pre></div>
 <strong>Description</strong>: Calculate USD credits from IXFI amount using current price
 - <strong>Parameters</strong>: <code>ixfiAmount</code> - Amount of IXFI tokens
 - <strong>Returns</strong>: Equivalent USD credits (in cents)
 
 <div class="code-section"><pre><code>
-function getIXFIPrice() public view returns (uint128 price, uint128 timestamp)</code></pre></div>
+function getIXFIPrice() public view returns (uint128 price, uint128 timestamp)
+</code></pre></div>
 <strong>Description</strong>: Get current IXFI price from DIA Oracle
 - <strong>Returns</strong>: 
   - <code>price</code>: Price with 8 decimals
   - <code>timestamp</code>: Price timestamp
 
 <div class="code-section"><pre><code>
-function hasEnoughCredits(address user, uint256 gasUsd) external view returns (bool hasEnough)</code></pre></div>
+function hasEnoughCredits(address user, uint256 gasUsd) external view returns (bool hasEnough)
+</code></pre></div>
 <strong>Description</strong>: Check if user has sufficient credits for transaction
 - <strong>Parameters</strong>:
   - <code>user</code>: User address
@@ -1333,7 +1567,8 @@ function hasEnoughCredits(address user, uint256 gasUsd) external view returns (b
 function setDIAOracle(address newOracle) external onlyOwner
 function setIXFIPriceKey(string memory newKey) external onlyOwner
 function setMaxPriceAge(uint256 newMaxAge) external onlyOwner
-function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner</code></pre></div>
+function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner
+</code></pre></div>
 
 <h2>MetaTxGateway</h2>
 
@@ -1347,7 +1582,8 @@ struct MetaTransaction {
     bytes data;        // Function call data
     uint256 nonce;     // User&#039;s current nonce
     uint256 deadline;  // Transaction deadline
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>Core Functions</h3>
 
@@ -1355,7 +1591,8 @@ struct MetaTransaction {
 function executeMetaTransaction(
     MetaTransaction calldata metaTx,
     bytes calldata signature
-) external nonReentrant returns (bool success)</code></pre></div>
+) external nonReentrant returns (bool success)
+</code></pre></div>
 <strong>Description</strong>: Execute a gasless transaction
 - <strong>Requirements</strong>: Authorized relayer, valid signature, not expired
 - <strong>Parameters</strong>:
@@ -1368,7 +1605,8 @@ function executeMetaTransaction(
 function executeBatchMetaTransactions(
     MetaTransaction[] calldata metaTxs,
     bytes[] calldata signatures
-) external nonReentrant returns (bool[] memory results)</code></pre></div>
+) external nonReentrant returns (bool[] memory results)
+</code></pre></div>
 <strong>Description</strong>: Execute multiple meta-transactions in batch
 - <strong>Parameters</strong>:
   - <code>metaTxs</code>: Array of meta-transactions
@@ -1379,19 +1617,22 @@ function executeBatchMetaTransactions(
 <div class="code-section"><pre><code>
 function getDomainSeparator() public view returns (bytes32)
 function getMetaTransactionHash(MetaTransaction memory metaTx) public view returns (bytes32)
-function getNonce(address user) external view returns (uint256)</code></pre></div>
+function getNonce(address user) external view returns (uint256)
+</code></pre></div>
 
 <h3>Management Functions</h3>
 
 <div class="code-section"><pre><code>
-function setRelayerAuthorization(address relayer, bool authorized) external onlyOwner</code></pre></div>
+function setRelayerAuthorization(address relayer, bool authorized) external onlyOwner
+</code></pre></div>
 
 <h2>IXFIExecutable</h2>
 
 <h3>Abstract Contract for dApp Integration</h3>
 
 <div class="code-section"><pre><code>
-abstract contract IXFIExecutable is IAxelarExecutable</code></pre></div>
+abstract contract IXFIExecutable is IExecutable
+</code></pre></div>
 
 <h3>Core Functions</h3>
 
@@ -1401,13 +1642,14 @@ function execute(
     string calldata sourceChain,
     string calldata sourceAddress,
     bytes calldata payload
-) external override onlyGateway</code></pre></div>
+) external override onlyGateway
+</code></pre></div>
 <strong>Description</strong>: Receive cross-chain calls (implemented)
 - <strong>Requirements</strong>: Only IXFI gateway can call
 - <strong>Parameters</strong>:
   - <code>commandId</code>: Unique command ID
   - <code>sourceChain</code>: Origin chain name
-  - <code>sourceAddress</code>: Sender address on source chain
+  - <code>sourceAddress</code>: Sender address on source chain0.8.24
   - <code>payload</code>: Call data
 
 <div class="code-section"><pre><code>
@@ -1418,7 +1660,8 @@ function executeWithToken(
     bytes calldata payload,
     string calldata symbol,
     uint256 amount
-) external override onlyGateway</code></pre></div>
+) external override onlyGateway
+</code></pre></div>
 <strong>Description</strong>: Receive cross-chain calls with tokens
 - <strong>Note</strong>: IXFI tokens are pre-minted to contract before call
 
@@ -1429,7 +1672,8 @@ function _execute(
     string calldata sourceChain,
     string calldata sourceAddress,
     bytes calldata payload
-) internal virtual</code></pre></div>
+) internal virtual
+</code></pre></div>
 
 <div class="code-section"><pre><code>
 function _executeWithToken(
@@ -1438,7 +1682,8 @@ function _executeWithToken(
     bytes calldata payload,
     string calldata symbol,
     uint256 amount
-) internal virtual</code></pre></div>
+) internal virtual
+</code></pre></div>
 
 <h3>Example Implementation</h3>
 
@@ -1446,13 +1691,33 @@ function _executeWithToken(
 contract MyDApp is IXFIExecutable {
     constructor(address gateway_) IXFIExecutable(gateway_) {}
 
-<p>function _execute(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload<br>    ) internal override {<br>        // Decode payload<br>        (string memory message) = abi.decode(payload, (string));</p>
+<p>function _execute(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload
+<br>    ) internal override {
+<br>        // Decode payload
+<br>        (string memory message) = abi.decode(payload, (string));</p>
 
-<p>// Process cross-chain message<br>        processMessage(sourceChain, sourceAddress, message);<br>    }</p>
+<p>// Process cross-chain message
+<br>        processMessage(sourceChain, sourceAddress, message);
+<br>    }</p>
 
-<p>function _executeWithToken(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload,<br>        string calldata symbol,<br>        uint256 amount<br>    ) internal override {<br>        // IXFI tokens already minted to this contract<br>        IERC20 ixfi = IERC20(gateway.getTokenAddress(&quot;IXFI&quot;));</p>
+<p>function _executeWithToken(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload,
+<br>        string calldata symbol,
+<br>        uint256 amount
+<br>    ) internal override {
+<br>        // IXFI tokens already minted to this contract
+<br>        IERC20 ixfi = IERC20(gateway.getTokenAddress(&quot;IXFI&quot;));</p>
 
-<p>// Process the tokens and payload<br>        processPayment(amount, payload);<br>    }<br>}</code></pre></div></p>
+<p>// Process the tokens and payload
+<br>        processPayment(amount, payload);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h2>Events Reference</h2>
 
@@ -1467,15 +1732,39 @@ event ContractCall(
     bytes payload
 );
 
-<p>event ContractCallWithToken(<br>    address indexed sender,<br>    string destinationChain,<br>    string destinationContractAddress,<br>    bytes32 indexed payloadHash,<br>    bytes payload,<br>    string symbol,<br>    uint256 amount<br>);</p>
+<p>event ContractCallWithToken(
+<br>    address indexed sender,
+<br>    string destinationChain,
+<br>    string destinationContractAddress,
+<br>    bytes32 indexed payloadHash,
+<br>    bytes payload,
+<br>    string symbol,
+<br>    uint256 amount
+<br>);</p>
 
-<p>event TokenSent(<br>    address indexed sender,<br>    string destinationChain,<br>    string destinationAddress,<br>    string symbol,<br>    uint256 amount<br>);</p>
+<p>event TokenSent(
+<br>    address indexed sender,
+<br>    string destinationChain,
+<br>    string destinationAddress,
+<br>    string symbol,
+<br>    uint256 amount
+<br>);</p>
 
-<p>event Deposited(address indexed user, uint256 amount);<br>event Withdrawn(address indexed user, uint256 amount);</p>
+<p>event Deposited(address indexed user, uint256 amount);
+<br>event Withdrawn(address indexed user, uint256 amount);</p>
 
-<p>event ContractCallApproved(<br>    bytes32 indexed commandId,<br>    string sourceChain,<br>    string sourceAddress,<br>    address indexed contractAddress,<br>    bytes32 indexed payloadHash,<br>    bytes32 sourceTxHash,<br>    uint256 sourceEventIndex<br>);</p>
+<p>event ContractCallApproved(
+<br>    bytes32 indexed commandId,
+<br>    string sourceChain,
+<br>    string sourceAddress,
+<br>    address indexed contractAddress,
+<br>    bytes32 indexed payloadHash,
+<br>    bytes32 sourceTxHash,
+<br>    uint256 sourceEventIndex
+<br>);</p>
 
-<p>event Executed(bytes32 indexed commandId);</code></pre></div></p>
+<p>event Executed(bytes32 indexed commandId);
+</code></pre></div></p>
 
 <h3>MetaTxGasCreditVault Events</h3>
 
@@ -1484,7 +1773,8 @@ event Deposited(address indexed user, uint256 ixfiAmount, uint256 creditsAdded);
 event Withdrawn(address indexed user, uint256 ixfiAmount, uint256 creditsDeducted);
 event CreditsUsed(address indexed user, address indexed gateway, uint256 creditsUsed, uint256 gasUsd);
 event GatewayAuthorized(address indexed gateway, bool authorized);
-event OracleUpdated(address newOracle);</code></pre></div>
+event OracleUpdated(address newOracle);
+</code></pre></div>
 
 <h3>MetaTxGateway Events</h3>
 
@@ -1496,7 +1786,8 @@ event MetaTransactionExecuted(
     uint256 gasUsed,
     bool success
 );
-event RelayerAuthorized(address indexed relayer, bool authorized);</code></pre></div>
+event RelayerAuthorized(address indexed relayer, bool authorized);
+</code></pre></div>
 
 <h2>Error Codes</h2>
 
@@ -1516,7 +1807,8 @@ error InvalidChain();                 // Chain not supported
 error CommandAlreadyExecuted();       // Command ID already used
 error UnauthorizedRelayer();          // Relayer not whitelisted
 error PriceDataStale();              // Oracle price too old
-error InvalidPriceData();            // Oracle returned invalid price</code></pre></div>
+error InvalidPriceData();            // Oracle returned invalid price
+</code></pre></div>
 
 <h3>Revert Messages</h3>
 
@@ -1532,7 +1824,8 @@ error InvalidPriceData();            // Oracle returned invalid price</code></p
 &quot;Amount must be greater than zero&quot;    // Zero amount specified
 &quot;Caller not whitelisted relayers&quot;    // Unauthorized relayer access
 &quot;Command already executed&quot;            // Command replay attempt
-&quot;Invalid signer&quot;                      // Signature from wrong address</code></pre></div>
+&quot;Invalid signer&quot;                      // Signature from wrong address
+</code></pre></div>
 
 <h2>Gas Costs</h2>
 
@@ -1550,7 +1843,11 @@ error InvalidPriceData();            // Oracle returned invalid price</code></p
 <tr><td>Meta-tx withdrawal</td><td>~65,000</td><td>Credit withdrawal to IXFI</td></tr>
 </table><h3>Optimization Tips</h3>
 
-<p>1. <strong>Batch Operations</strong>: Use batch functions when possible<br>2. <strong>Payload Size</strong>: Keep cross-chain payloads minimal<br>3. <strong>Credit Management</strong>: Deposit larger amounts less frequently<br>4. <strong>Chain Selection</strong>: Consider gas costs when choosing chains<br>5. <strong>Contract Design</strong>: Implement efficient <code>_execute</code> functions</p></div><div class="section"><h1 id="deployment-guide">3. Deployment Guide</h1><h2>Table of Contents</h2>
+<p>1. <strong>Batch Operations</strong>: Use batch functions when possible
+<br>2. <strong>Payload Size</strong>: Keep cross-chain payloads minimal
+<br>3. <strong>Credit Management</strong>: Deposit larger amounts less frequently
+<br>4. <strong>Chain Selection</strong>: Consider gas costs when choosing chains
+<br>5. <strong>Contract Design</strong>: Implement efficient <code>_execute</code> functions</p></div><div class="section"><h1 id="deployment-guide">3. Deployment Guide</h1><h2>Table of Contents</h2>
 1. <a href="#prerequisites">Prerequisites</a>
 2. <a href="#environment-setup">Environment Setup</a>
 3. <a href="#network-configuration">Network Configuration</a>
@@ -1597,7 +1894,8 @@ npm install
 <h1>Install relayer dependencies</h1>
 cd relayer
 npm install
-cd ..</code></pre></div>
+cd ..
+</code></pre></div>
 
 <h3>2. Environment Configuration</h3>
 
@@ -1622,7 +1920,8 @@ POLYGONSCAN_API_KEY=your_polygonscan_key
 CROSSFI_DIA_ORACLE=0x...
 ETHEREUM_DIA_ORACLE=0x...
 BSC_DIA_ORACLE=0x...
-POLYGON_DIA_ORACLE=0x...</code></pre></div>
+POLYGON_DIA_ORACLE=0x...
+</code></pre></div>
 
 <p>Create <code>relayer/.env</code>:</p>
 
@@ -1637,7 +1936,8 @@ CORS_ORIGINS=http://localhost:3000,https://your-dapp.com
 <h1>Monitoring</h1>
 HEALTH_CHECK_INTERVAL=30000
 MAX_RETRY_ATTEMPTS=3
-RETRY_DELAY=5000</code></pre></div>
+RETRY_DELAY=5000
+</code></pre></div>
 
 <h2>Network Configuration</h2>
 
@@ -1649,7 +1949,78 @@ RETRY_DELAY=5000</code></pre></div>
 require(&quot;@nomicfoundation/hardhat-toolbox&quot;);
 require(&quot;dotenv&quot;).config();
 
-<p>module.exports = {<br>  solidity: {<br>    version: &quot;0.8.20&quot;,<br>    settings: {<br>      optimizer: {<br>        enabled: true,<br>        runs: 200<br>      }<br>    }<br>  },<br>  networks: {<br>    // CrossFi Testnet<br>    crossfi: {<br>      chainId: 4157,<br>      url: process.env.CROSSFI_RPC,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // CrossFi Mainnet<br>    crossfiMainnet: {<br>      chainId: 4158,<br>      url: &quot;https://rpc.mainnet.ms&quot;,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // Ethereum Mainnet<br>    ethereum: {<br>      chainId: 1,<br>      url: process.env.ETHEREUM_RPC,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // Ethereum Sepolia<br>    sepolia: {<br>      chainId: 11155111,<br>      url: &quot;https://sepolia.infura.io/v3/&quot; + process.env.INFURA_KEY,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // Binance Smart Chain<br>    bsc: {<br>      chainId: 56,<br>      url: process.env.BSC_RPC,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // BSC Testnet<br>    bscTestnet: {<br>      chainId: 97,<br>      url: &quot;https://data-seed-prebsc-1-s1.binance.org:8545&quot;,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // Polygon Mainnet<br>    polygon: {<br>      chainId: 137,<br>      url: process.env.POLYGON_RPC,<br>      accounts: [process.env.PRIVATE_KEY]<br>    },<br>    // Polygon Mumbai<br>    mumbai: {<br>      chainId: 80001,<br>      url: &quot;https://rpc-mumbai.maticvigil.com&quot;,<br>      accounts: [process.env.PRIVATE_KEY]<br>    }<br>  },<br>  etherscan: {<br>    apiKey: {<br>      mainnet: process.env.ETHERSCAN_API_KEY,<br>      sepolia: process.env.ETHERSCAN_API_KEY,<br>      bsc: process.env.BSCSCAN_API_KEY,<br>      bscTestnet: process.env.BSCSCAN_API_KEY,<br>      polygon: process.env.POLYGONSCAN_API_KEY,<br>      polygonMumbai: process.env.POLYGONSCAN_API_KEY<br>    }<br>  }<br>};</code></pre></div></p>
+<p>module.exports = {
+<br>  solidity: {
+<br>    version: &quot;0.8.20&quot;,
+<br>    settings: {
+<br>      optimizer: {
+<br>        enabled: true,
+<br>        runs: 200
+<br>      }
+<br>    }
+<br>  },
+<br>  networks: {
+<br>    // CrossFi Testnet
+<br>    crossfi: {
+<br>      chainId: 4157,
+<br>      url: process.env.CROSSFI_RPC,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // CrossFi Mainnet
+<br>    crossfiMainnet: {
+<br>      chainId: 4158,
+<br>      url: &quot;https://rpc.mainnet.ms&quot;,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // Ethereum Mainnet
+<br>    ethereum: {
+<br>      chainId: 1,
+<br>      url: process.env.ETHEREUM_RPC,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // Ethereum Sepolia
+<br>    sepolia: {
+<br>      chainId: 11155111,
+<br>      url: &quot;https://sepolia.infura.io/v3/&quot; + process.env.INFURA_KEY,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // Binance Smart Chain
+<br>    bsc: {
+<br>      chainId: 56,
+<br>      url: process.env.BSC_RPC,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // BSC Testnet
+<br>    bscTestnet: {
+<br>      chainId: 97,
+<br>      url: &quot;https://data-seed-prebsc-1-s1.binance.org:8545&quot;,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // Polygon Mainnet
+<br>    polygon: {
+<br>      chainId: 137,
+<br>      url: process.env.POLYGON_RPC,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    },
+<br>    // Polygon Mumbai
+<br>    mumbai: {
+<br>      chainId: 80001,
+<br>      url: &quot;https://rpc-mumbai.maticvigil.com&quot;,
+<br>      accounts: [process.env.PRIVATE_KEY]
+<br>    }
+<br>  },
+<br>  etherscan: {
+<br>    apiKey: {
+<br>      mainnet: process.env.ETHERSCAN_API_KEY,
+<br>      sepolia: process.env.ETHERSCAN_API_KEY,
+<br>      bsc: process.env.BSCSCAN_API_KEY,
+<br>      bscTestnet: process.env.BSCSCAN_API_KEY,
+<br>      polygon: process.env.POLYGONSCAN_API_KEY,
+<br>      polygonMumbai: process.env.POLYGONSCAN_API_KEY
+<br>    }
+<br>  }
+<br>};
+</code></pre></div></p>
 
 <h2>Contract Deployment</h2>
 
@@ -1659,9 +2030,17 @@ require(&quot;dotenv&quot;).config();
 
 <div class="code-section"><pre><code>
 <h1>Deploy IXFI gateway on CrossFi</h1>
-npx hardhat run scripts/deploy-gmp.js --network crossfi</code></pre></div>
+npx hardhat run scripts/deploy-gmp.js --network crossfi
+</code></pre></div>
 
-<p>Expected output:<br><div class="code-section"><pre><code><br>Deploying IXFI on CrossFi...<br>IXFI deployed to: 0x1234567890123456789012345678901234567890<br>Owner: 0xYourDeployerAddress<br>Initial chains configured: crossfi, ethereum, bsc, polygon<br>✅ CrossFi deployment complete</code></pre></div></p>
+<p>Expected output:
+<br><div class="code-section"><pre><code>
+<br>Deploying IXFI on CrossFi...
+<br>IXFI deployed to: 0x1234567890123456789012345678901234567890
+<br>Owner: 0xYourDeployerAddress
+<br>Initial chains configured: crossfi, ethereum, bsc, polygon
+<br>✅ CrossFi deployment complete
+</code></pre></div></p>
 
 <h4>Step 2: Deploy on Other Chains</h4>
 
@@ -1673,16 +2052,25 @@ npx hardhat run scripts/deploy-gmp.js --network ethereum
 npx hardhat run scripts/deploy-gmp.js --network bsc
 
 <h1>Deploy on Polygon</h1>
-npx hardhat run scripts/deploy-gmp.js --network polygon</code></pre></div>
+npx hardhat run scripts/deploy-gmp.js --network polygon
+</code></pre></div>
 
 <h3>2. Deploy Meta-Transaction System</h3>
 
 <h4>Step 1: Deploy Vault on CrossFi</h4>
 
 <div class="code-section"><pre><code>
-npx hardhat run scripts/deploy-meta-tx.js --network crossfi</code></pre></div>
+npx hardhat run scripts/deploy-meta-tx.js --network crossfi
+</code></pre></div>
 
-<p>Expected output:<br><div class="code-section"><pre><code><br>Deploying Meta-Transaction System on CrossFi...<br>MetaTxGasCreditVault deployed to: 0xAbcdef1234567890123456789012345678901234<br>DIA Oracle: 0x...<br>IXFI Token: 0x...<br>✅ Vault deployment complete</code></pre></div></p>
+<p>Expected output:
+<br><div class="code-section"><pre><code>
+<br>Deploying Meta-Transaction System on CrossFi...
+<br>MetaTxGasCreditVault deployed to: 0xAbcdef1234567890123456789012345678901234
+<br>DIA Oracle: 0x...
+<br>IXFI Token: 0x...
+<br>✅ Vault deployment complete
+</code></pre></div></p>
 
 <h4>Step 2: Deploy Gateways on Other Chains</h4>
 
@@ -1694,7 +2082,8 @@ npx hardhat run scripts/deploy-meta-tx.js --network ethereum
 npx hardhat run scripts/deploy-meta-tx.js --network bsc
 
 <h1>Deploy on Polygon</h1>
-npx hardhat run scripts/deploy-meta-tx.js --network polygon</code></pre></div>
+npx hardhat run scripts/deploy-meta-tx.js --network polygon
+</code></pre></div>
 
 <h3>3. Record Deployment Addresses</h3>
 
@@ -1731,7 +2120,8 @@ npx hardhat run scripts/deploy-meta-tx.js --network polygon</code></pre></div>
     &quot;bsc&quot;: &quot;0x...&quot;,
     &quot;polygon&quot;: &quot;0x...&quot;
   }
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h2>Relayer Setup</h2>
 
@@ -1742,7 +2132,8 @@ npx hardhat run scripts/deploy-meta-tx.js --network polygon</code></pre></div>
 npx hardhat run scripts/whitelist-relayer.js --network crossfi
 npx hardhat run scripts/whitelist-relayer.js --network ethereum
 npx hardhat run scripts/whitelist-relayer.js --network bsc
-npx hardhat run scripts/whitelist-relayer.js --network polygon</code></pre></div>
+npx hardhat run scripts/whitelist-relayer.js --network polygon
+</code></pre></div>
 
 <h3>2. Relayer Configuration Files</h3>
 
@@ -1788,7 +2179,8 @@ npx hardhat run scripts/whitelist-relayer.js --network polygon</code></pre></di
     &quot;level&quot;: &quot;info&quot;,
     &quot;file&quot;: &quot;logs/gmp-relayer.log&quot;
   }
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h4>Meta-Transaction Relayer Config (<code>relayer/meta-tx-config.json</code>)</h4>
 
@@ -1821,7 +2213,7 @@ npx hardhat run scripts/whitelist-relayer.js --network polygon</code></pre></di
   &quot;server&quot;: {
     &quot;port&quot;: 3001,
     &quot;corsOrigins&quot;: [
-      &quot;http://localhost:3000&quot;,
+      &quot;http:0.8.24lhost:3000&quot;,
       &quot;https://your-dapp.com&quot;
     ]
   },
@@ -1830,7 +2222,8 @@ npx hardhat run scripts/whitelist-relayer.js --network polygon</code></pre></di
     &quot;minCreditBuffer&quot;: 100,
     &quot;maxRetries&quot;: 3
   }
-}</code></pre></div>
+}
+</code></pre></div>
 
 <h3>3. Start Relayer Services</h3>
 
@@ -1841,7 +2234,8 @@ cd relayer
 npm run start:gmp
 
 <h1>Start Meta-Transaction relayer (in separate terminal)</h1>
-npm run start:meta-tx</code></pre></div>
+npm run start:meta-tx
+</code></pre></div>
 
 <h2>Post-Deployment Configuration</h2>
 
@@ -1849,25 +2243,41 @@ npm run start:meta-tx</code></pre></div>
 
 <div class="code-section"><pre><code>
 <h1>Authorize gateways to consume credits</h1>
-npx hardhat run scripts/configure-vault.js --network crossfi</code></pre></div>
+npx hardhat run scripts/configure-vault.js --network crossfi
+</code></pre></div>
 
-<p>Script content:<br><div class="code-section"><pre><code><br>async function main() {<br>  const vaultAddress = &quot;0x...&quot;; // Your vault address<br>  const gatewayAddresses = [<br>    &quot;0x...&quot;, // Ethereum gateway<br>    &quot;0x...&quot;, // BSC gateway<br>    &quot;0x...&quot;  // Polygon gateway<br>  ];</p>
+<p>Script content:
+<br><div class="code-section"><pre><code>
+<br>async function main() {
+<br>  const vaultAddress = &quot;0x...&quot;; // Your vault address
+<br>  const gatewayAddresses = [
+<br>    &quot;0x...&quot;, // Ethereum gateway
+<br>    &quot;0x...&quot;, // BSC gateway
+<br>    &quot;0x...&quot;  // Polygon gateway
+<br>  ];</p>
 
 <p>const vault = await ethers.getContractAt(&quot;MetaTxGasCreditVault&quot;, vaultAddress);</p>
 
-<p>for (const gateway of gatewayAddresses) {<br>    await vault.setGatewayAuthorization(gateway, true);<br>    console.log(<code>Authorized gateway: ${gateway}</code>);<br>  }<br>}</code></pre></div></p>
+<p>for (const gat0.8.24f gatewayAddresses) {
+<br>    await vault.setGatewayAuthorization(gateway, true);
+<br>    console.log(<code>Authorized gateway: ${gateway}</code>);
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>2. Configure Chain Registry</h3>
 
 <div class="code-section"><pre><code>
 <h1>Update chain configurations if needed</h1>
-npx hardhat run scripts/update-chains.js --network crossfi</code></pre></div>
+npx hardhat run scripts/update-chains.js --network crossfi
+</code></pre></div>
 
 <h3>3. Initial Token Supply</h3>
 
 <div class="code-section"><pre><code>
 <h1>Deposit initial XFI to create IXFI supply</h1>
-npx hardhat run scripts/initial-deposit.js --network crossfi</code></pre></div>
+npx hardhat run scripts/initial-deposit.js --network crossfi
+</code></pre></div>
 
 <h2>Testing and Validation</h2>
 
@@ -1879,7 +2289,8 @@ npm test
 
 <h1>Run specific test suites</h1>
 npx hardhat test test/test-gmp.js
-npx hardhat test test/test-meta-tx-new.js</code></pre></div>
+npx hardhat test test/test-meta-tx-new.js
+</code></pre></div>
 
 <h3>2. Integration Testing</h3>
 
@@ -1888,7 +2299,8 @@ npx hardhat test test/test-meta-tx-new.js</code></pre></div>
 npx hardhat run scripts/test-cross-chain.js --network crossfi
 
 <h1>Test meta-transactions</h1>
-npx hardhat run scripts/test-meta-tx.js --network ethereum</code></pre></div>
+npx hardhat run scripts/test-meta-tx.js --network ethereum
+</code></pre></div>
 
 <h3>3. Relayer Health Check</h3>
 
@@ -1897,9 +2309,23 @@ npx hardhat run scripts/test-meta-tx.js --network ethereum</code></pre></div>
 curl http://localhost:3000/health
 
 <h1>Check Meta-TX relayer</h1>
-curl http://localhost:3001/health</code></pre></div>
+curl http://localhost:3001/health
+</code></pre></div>
 
-<p>Expected responses:<br><div class="code-section"><pre><code><br>{<br>  &quot;status&quot;: &quot;healthy&quot;,<br>  &quot;chains&quot;: {<br>    &quot;crossfi&quot;: &quot;connected&quot;,<br>    &quot;ethereum&quot;: &quot;connected&quot;,<br>    &quot;bsc&quot;: &quot;connected&quot;,<br>    &quot;polygon&quot;: &quot;connected&quot;<br>  },<br>  &quot;relayerAddress&quot;: &quot;0x...&quot;,<br>  &quot;processedEvents&quot;: 0<br>}</code></pre></div></p>
+<p>Expected responses:
+<br><div class="code-section"><pre><code>
+<br>{
+<br>  &quot;status&quot;: &quot;healthy&quot;,
+<br>  &quot;chains&quot;: {
+<br>    &quot;crossfi&quot;: &quot;connected&quot;,
+<br>    &quot;ethereum&quot;: &quot;connected&quot;,
+<br>    &quot;bsc&quot;: &quot;connected&quot;,
+<br>    &quot;polygon&quot;: &quot;connected&quot;
+<br>  },
+<br>  &quot;relayerAddress&quot;: &quot;0x...&quot;,
+<br>  &quot;processedEvents&quot;: 0
+<br>}
+</code></pre></div></p>
 
 <h3>4. Functional Testing</h3>
 
@@ -1909,9 +2335,18 @@ curl http://localhost:3001/health</code></pre></div>
 // Test script
 const ixfi = await ethers.getContractAt(&quot;IXFI&quot;, ixfiAddress);
 
-<p>// Deposit XFI for IXFI<br>await ixfi.deposit({ value: ethers.parseEther(&quot;1.0&quot;) });</p>
+<p>// Deposit XFI for IXFI
+<br>await ixfi.deposit({ value: ethers.parseEther(&quot;1.0&quot;) });</p>
 
-<p>// Send cross-chain<br>await ixfi.callContractWithToken(<br>  &quot;ethereum&quot;,<br>  targetContract,<br>  payload,<br>  &quot;IXFI&quot;,<br>  ethers.parseEther(&quot;0.5&quot;)<br>);</code></pre></div></p>
+<p>// Send cross-chain
+<br>await ixfi.callContractWithToken(
+<br>  &quot;ethereum&quot;,
+<br>  targetContract,
+<br>  payload,
+<br>  &quot;IXFI&quot;,
+<br>  ethers.parseEther(&quot;0.5&quot;)
+<br>);
+</code></pre></div></p>
 
 <h4>Test Meta-Transaction</h4>
 
@@ -1932,25 +2367,42 @@ const response = await fetch(&#039;http://localhost:3001/api/meta-tx&#039;, {
     signature: userSignature,
     targetChain: &quot;ethereum&quot;
   })
-});</code></pre></div>
+});
+</code></pre></div>
 
 <h2>Production Checklist</h2>
 
 <h3>Pre-Launch Security</h3>
 
-<p>- [ ] <strong>Contract Audits</strong>: Complete security audit by reputable firm<br>- [ ] <strong>Relayer Security</strong>: Secure key management (HSM/hardware wallets)<br>- [ ] <strong>Rate Limiting</strong>: Implement API rate limiting for relayers<br>- [ ] <strong>Monitoring</strong>: Set up comprehensive monitoring and alerts<br>- [ ] <strong>Emergency Controls</strong>: Test pause mechanisms and emergency procedures</p>
+<p>- [ ] <strong>Contract Audits</strong>: Complete security audit by reputable firm
+<br>- [ ] <strong>Relayer Security</strong>: Secure key management (HSM/hardware wallets)
+<br>- [ ] <strong>Rate Limiting</strong>: Implement API rate limiting for relayers
+<br>- [ ] <strong>Monitoring</strong>: Set up comprehensive monitoring and alerts
+<br>- [ ] <strong>Emergency Controls</strong>: Test pause mechanisms and emergency procedures</p>
 
 <h3>Operational Readiness</h3>
 
-<p>- [ ] <strong>Backup Systems</strong>: Redundant relayer infrastructure<br>- [ ] <strong>Load Testing</strong>: Stress test under high transaction volume<br>- [ ] <strong>Documentation</strong>: Complete operational runbooks<br>- [ ] <strong>Support Team</strong>: Train support team on troubleshooting<br>- [ ] <strong>Incident Response</strong>: Establish incident response procedures</p>
+<p>- [ ] <strong>Backup Systems</strong>: Redundant relayer infrastructure
+<br>- [ ] <strong>Load Testing</strong>: Stress test under high transaction volume
+<br>- [ ] <strong>Documentation</strong>: Complete operational runbooks
+<br>- [ ] <strong>Support Team</strong>: Train support team on troubleshooting
+<br>- [ ] <strong>Incident Response</strong>: Establish incident response procedures</p>
 
 <h3>Performance Optimization</h3>
 
-<p>- [ ] <strong>Gas Optimization</strong>: Optimize contract gas usage<br>- [ ] <strong>RPC Reliability</strong>: Use reliable RPC providers with failover<br>- [ ] <strong>Database Scaling</strong>: Ensure relayer database can handle load<br>- [ ] <strong>CDN Setup</strong>: Use CDN for relayer API endpoints<br>- [ ] <strong>Caching</strong>: Implement appropriate caching strategies</p>
+<p>- [ ] <strong>Gas Optimization</strong>: Optimize contract gas usage
+<br>- [ ] <strong>RPC Reliability</strong>: Use reliable RPC providers with failover
+<br>- [ ] <strong>Database Scaling</strong>: Ensure relayer database can handle load
+<br>- [ ] <strong>CDN Setup</strong>: Use CDN for relayer API endpoints
+<br>- [ ] <strong>Caching</strong>: Implement appropriate caching strategies</p>
 
 <h3>Compliance and Legal</h3>
 
-<p>- [ ] <strong>Regulatory Review</strong>: Ensure compliance with applicable regulations<br>- [ ] <strong>Terms of Service</strong>: Publish clear terms and conditions<br>- [ ] <strong>Privacy Policy</strong>: Comply with data protection requirements<br>- [ ] <strong>KYC/AML</strong>: Implement if required by jurisdiction<br>- [ ] <strong>Insurance</strong>: Consider smart contract insurance coverage</p>
+<p>- [ ] <strong>Regulatory Review</strong>: Ensure compliance with applicable regulations
+<br>- [ ] <strong>Terms of Service</strong>: Publish clear terms and conditions
+<br>- [ ] <strong>Privacy Policy</strong>: Comply with data protection requirements
+<br>- [ ] <strong>KYC/AML</strong>: Implement if required by jurisdiction
+<br>- [ ] <strong>Insurance</strong>: Consider smart contract insurance coverage</p>
 
 <h3>Launch Configuration</h3>
 
@@ -1972,7 +2424,8 @@ CONFIRMATION_BLOCKS=12
 <h1>Monitoring</h1>
 ENABLE_METRICS=true
 PROMETHEUS_PORT=9090
-LOG_LEVEL=warn</code></pre></div>
+LOG_LEVEL=warn
+</code></pre></div>
 
 <h4>Mainnet Deployment Commands</h4>
 
@@ -1990,27 +2443,42 @@ npx hardhat run scripts/deploy-meta-tx.js --network bsc
 npx hardhat run scripts/deploy-meta-tx.js --network polygon
 
 <h1>Configure production settings</h1>
-npx hardhat run scripts/production-setup.js --network crossfiMainnet</code></pre></div>
+npx hardhat run scripts/production-setup.js --network crossfiMainnet
+</code></pre></div>
 
 <h3>Post-Launch Monitoring</h3>
 
 <h4>Key Metrics to Monitor</h4>
 
-<p>1. <strong>Cross-Chain Success Rate</strong>: % of successful cross-chain transactions<br>2. <strong>Relayer Uptime</strong>: Availability of relayer services<br>3. <strong>Gas Credit Usage</strong>: User adoption of gasless transactions<br>4. <strong>Oracle Price Accuracy</strong>: DIA oracle price feed reliability<br>5. <strong>Contract Security</strong>: No unauthorized access or exploits</p>
+<p>1. <strong>Cross-Chain Success Rate</strong>: % of successful cross-chain transactions
+<br>2. <strong>Relayer Uptime</strong>: Availability of relayer services
+<br>3. <strong>Gas Credit Usage</strong>: User adoption of gasless transactions
+<br>4. <strong>Oracle Price Accuracy</strong>: DIA oracle price feed reliability
+<br>5. <strong>Contract Security</strong>: No unauthorized access or exploits</p>
 
 <h4>Alerting Thresholds</h4>
 
-<p>- Relayer down for > 5 minutes<br>- Cross-chain failure rate > 5%<br>- Gas price spike > 200% of average<br>- Oracle price deviation > 10%<br>- Contract balance changes unexpectedly</p>
+<p>- Relayer down for > 5 minutes
+<br>- Cross-chain failure rate > 5%
+<br>- Gas price spike > 200% of average
+<br>- Oracle price deviation > 10%
+<br>- Contract balance changes unexpectedly</p>
 
 <h3>Maintenance Procedures</h3>
 
 <h4>Regular Maintenance</h4>
 
-<p>- Weekly relayer log analysis<br>- Monthly security parameter review<br>- Quarterly disaster recovery testing<br>- Annual security audit updates</p>
+<p>- Weekly relayer log analysis
+<br>- Monthly security parameter review
+<br>- Quarterly disaster recovery testing
+<br>- Annual security audit updates</p>
 
 <h4>Emergency Procedures</h4>
 
-<p>1. <strong>Contract Pause</strong>: How to pause contracts in emergency<br>2. <strong>Relayer Shutdown</strong>: Safe relayer shutdown procedures<br>3. <strong>Fund Recovery</strong>: Emergency fund recovery mechanisms<br>4. <strong>Communication</strong>: User communication during incidents</p>
+<p>1. <strong>Contract Pause</strong>: How to pause contracts in emergency
+<br>2. <strong>Relayer Shutdown</strong>: Safe relayer shutdown procedures
+<br>3. <strong>Fund Recovery</strong>: Emergency fund recovery mechanisms
+<br>4. <strong>Communication</strong>: User communication during incidents</p>
 
 <p>This deployment guide provides a comprehensive path from development to production for the IXFI system. Follow each step carefully and maintain thorough documentation throughout the process.</p></div><div class="section"><h1 id="integration-examples">4. Integration Examples</h1><h2>Table of Contents</h2>
 1. <a href="#frontend-integration">Frontend Integration</a>
@@ -2030,13 +2498,26 @@ npx hardhat run scripts/production-setup.js --network crossfiMainnet</code></pr
 import { ethers } from &#039;ethers&#039;;
 import { IXFIProvider } from &#039;@ixfi/sdk&#039;; // Hypothetical SDK
 
-<p>// Initialize providers<br>const provider = new ethers.providers.Web3Provider(window.ethereum);<br>const signer = provider.getSigner();</p>
+<p>// Initialize providers
+<br>const provider = new ethers.providers.Web3Provider(window.ethereum);
+<br>const signer = provider.getSigner();</p>
 
-<p>// IXFI contract instances<br>const ixfiAddresses = {<br>  4157: &#039;0x...&#039;, // CrossFi<br>  1: &#039;0x...&#039;,    // Ethereum<br>  56: &#039;0x...&#039;,   // BSC<br>  137: &#039;0x...&#039;   // Polygon<br>};</p>
+<p>// IXFI contract instances
+<br>const ixfiAddresses = {
+<br>  4157: &#039;0x...&#039;, // CrossFi
+<br>  1: &#039;0x...&#039;,    // Ethereum
+<br>  56: &#039;0x...&#039;,   // BSC
+<br>  137: &#039;0x...&#039;   // Polygon
+<br>};</p>
 
-<p>const ixfiABI = [<br>  // Contract ABI here<br>];</p>
+<p>const ixfiABI = [
+<br>  // Contract ABI here
+<br>];</p>
 
-<p>// Initialize IXFI instance<br>const chainId = await provider.getNetwork().then(n =&gt; n.chainId);<br>const ixfi = new ethers.Contract(ixfiAddresses[chainId], ixfiABI, signer);</code></pre></div></p>
+<p>// Initialize IXFI instance
+<br>const chainId = await provider.getNetwork().then(n =&gt; n.chainId);
+<br>const ixfi = new ethers.Contract(ixfiAddresses[chainId], ixfiABI, signer);
+</code></pre></div></p>
 
 <h3>Cross-Chain Token Transfer</h3>
 
@@ -2047,15 +2528,33 @@ async function sendCrossChainTokens() {
     const destinationAddress = &#039;0x742d35Cc6634C0532925a3b8D4048b05fb2fE98c&#039;;
     const amount = ethers.utils.parseEther(&#039;10&#039;); // 10 IXFI
 
-<p>// Check user balance<br>    const balance = await ixfi.balanceOf(await signer.getAddress());<br>    if (balance.lt(amount)) {<br>      throw new Error(&#039;Insufficient IXFI balance&#039;);<br>    }</p>
+<p>// Check user balance
+<br>    const balance = await ixfi.balanceOf(await signer.getAddress());
+<br>    if (balance.lt(amount)) {
+<br>      throw new Error(&#039;Insufficient IXFI balance&#039;);
+<br>    }</p>
 
-<p>// Send tokens<br>    const tx = await ixfi.sendToken(<br>      destinationChain,<br>      destinationAddress,<br>      &#039;IXFI&#039;,<br>      amount<br>    );</p>
+<p>// Send tokens
+<br>    const tx = await ixfi.sendToken(
+<br>      destinationChain,
+<br>      destinationAddress,
+<br>      &#039;IXFI&#039;,
+<br>      amount
+<br>    );</p>
 
 <p>console.log(&#039;Transaction sent:&#039;, tx.hash);</p>
 
-<p>// Wait for confirmation<br>    const receipt = await tx.wait();<br>    console.log(&#039;Transaction confirmed:&#039;, receipt.transactionHash);</p>
+<p>// Wait for confirmation
+<br>    const receipt = await tx.wait();
+<br>    console.log(&#039;Transaction confirmed:&#039;, receipt.transactionHash);</p>
 
-<p>return receipt;<br>  } catch (error) {<br>    console.error(&#039;Cross-chain transfer failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>return receipt;
+<br>  } catch (error) {
+<br>    console.error(&#039;Cross-chain transfer failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Cross-Chain Contract Call</h3>
 
@@ -2065,13 +2564,33 @@ async function callCrossChainContract() {
     const destinationChain = &#039;bsc&#039;;
     const contractAddress = &#039;0x...&#039;;
 
-<p>// Encode function call<br>    const iface = new ethers.utils.Interface([<br>      &#039;function updateValue(uint256 value, string memory message)&#039;<br>    ]);<br>    const payload = iface.encodeFunctionData(&#039;updateValue&#039;, [<br>      123,<br>      &#039;Hello from CrossFi!&#039;<br>    ]);</p>
+<p>// Encode function call
+<br>    const iface = new ethers.utils.Interface([
+<br>      &#039;function updateValue(uint256 value, string memory message)&#039;
+<br>    ]);
+<br>    const payload = iface.encodeFunctionData(&#039;updateValue&#039;, [
+<br>      123,
+<br>      &#039;Hello from CrossFi!&#039;
+<br>    ]);</p>
 
-<p>// Execute cross-chain call<br>    const tx = await ixfi.callContract(<br>      destinationChain,<br>      contractAddress,<br>      payload<br>    );</p>
+<p>// Execute cross-chain call
+<br>    const tx = await ixfi.callContract(
+<br>      destinationChain,
+<br>      contractAddress,
+<br>      payload
+<br>    );</p>
 
 <p>console.log(&#039;Cross-chain call initiated:&#039;, tx.hash);</p>
 
-<p>// Monitor for execution on destination chain<br>    // This requires relayer monitoring or event listening<br>    return tx;<br>  } catch (error) {<br>    console.error(&#039;Cross-chain call failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>// Monitor for execution on destination chain
+<br>    // This requires relayer monitoring or event listening
+<br>    return tx;
+<br>  } catch (error) {
+<br>    console.error(&#039;Cross-chain call failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h2>DEX Aggregation Examples</h2>
 
@@ -2083,25 +2602,68 @@ const aggregatorABI = [
   // CrossChainAggregator ABI
 ];
 
-<p>const aggregatorAddresses = {<br>  1: &#039;0x...&#039;, // Ethereum<br>  56: &#039;0x...&#039;, // BSC<br>  137: &#039;0x...&#039;, // Polygon<br>  43114: &#039;0x...&#039;, // Avalanche<br>  42161: &#039;0x...&#039;, // Arbitrum<br>  10: &#039;0x...&#039;, // Optimism<br>  8453: &#039;0x...&#039; // Base<br>};</p>
+<p>const aggregatorAddresses = {
+<br>  1: &#039;0x...&#039;, // Ethereum
+<br>  56: &#039;0x...&#039;, // BSC
+<br>  137: &#039;0x...&#039;, // Polygon
+<br>  43114: &#039;0x...&#039;, // Avalanche
+<br>  42161: &#039;0x...&#039;, // Arbitrum
+<br>  10: &#039;0x...&#039;, // Optimism
+<br>  8453: &#039;0x...&#039; // Base
+<br>};</p>
 
-<p>const aggregator = new ethers.Contract(<br>  aggregatorAddresses[chainId],<br>  aggregatorABI,<br>  signer<br>);</p>
+<p>const aggregator = new ethers.Contract(
+<br>  aggregatorAddresses[chainId],
+<br>  aggregatorABI,
+<br>  signer
+<br>);</p>
 
-<p>async function performOptimalSwap() {<br>  try {<br>    const tokenIn = &#039;0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632&#039;; // USDC<br>    const tokenOut = &#039;0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&#039;; // WETH<br>    const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6); // 1000 USDC</p>
+<p>async function performOptimalSwap() {
+<br>  try {
+<br>    const tokenIn = &#039;0xA0b86a33E6441e1a02c4e4670dd96EA0f25A632&#039;; // USDC
+<br>    const tokenOut = &#039;0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&#039;; // WETH
+<br>    const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6); // 1000 USDC</p>
 
-<p>// Get all available router types (0-36)<br>    const allRouterTypes = Array.from({length: 37}, (_, i) =&gt; i);</p>
+<p>// Get all available router types (0-36)
+<br>    const allRouterTypes = Array.from({length: 37}, (_, i) =&gt; i);</p>
 
-<p>// Get optimal quote<br>    const [bestAmount, bestRouter] = await aggregator.getOptimalQuote(<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      allRouterTypes<br>    );</p>
+<p>// Get optimal quote
+<br>    const [bestAmount, bestRouter] = await aggregator.getOptimalQuote(
+<br>      tokenIn,
+<br>      tokenOut,
+<br>      amountIn,
+<br>      allRouterTypes
+<br>    );</p>
 
-<p>console.log(<code>Best quote: ${ethers.utils.formatEther(bestAmount)} WETH</code>);<br>    console.log(<code>Best DEX: Router ${bestRouter}</code>);</p>
+<p>console.log(<code>Best quote: ${ethers.utils.formatEther(bestAmount)} WETH</code>);
+<br>    console.log(<code>Best DEX: Router ${bestRouter}</code>);</p>
 
-<p>// Calculate minimum output with 0.5% slippage<br>    const minAmountOut = bestAmount.mul(995).div(1000);</p>
+<p>// Calculate minimum output with 0.5% slippage
+<br>    const minAmountOut = bestAmount.mul(995).div(1000);</p>
 
-<p>// Approve token spend<br>    const tokenContract = new ethers.Contract(tokenIn, erc20ABI, signer);<br>    const approveTx = await tokenContract.approve(aggregator.address, amountIn);<br>    await approveTx.wait();</p>
+<p>// Approve token spend
+<br>    const tokenContract = new ethers.Contract(tokenIn, erc20ABI, signer);
+<br>    const approveTx = await tokenContract.approve(aggregator.address, amountIn);
+<br>    await approveTx.wait();</p>
 
-<p>// Execute swap<br>    const swapTx = await aggregator.executeSwap(<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      minAmountOut,<br>      bestRouter,<br>      &#039;0x&#039; // Empty swap data for basic swap<br>    );</p>
+<p>// Execute swap
+<br>    const swapTx = await aggregator.executeSwap(
+<br>      tokenIn,
+<br>      tokenOut,
+<br>      amountIn,
+<br>      minAmountOut,
+<br>      bestRouter,
+<br>      &#039;0x&#039; // Empty swap data for basic swap
+<br>    );</p>
 
-<p>console.log(&#039;Swap executed:&#039;, swapTx.hash);<br>    return swapTx;<br>  } catch (error) {<br>    console.error(&#039;Swap failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>console.log(&#039;Swap executed:&#039;, swapTx.hash);
+<br>    return swapTx;
+<br>  } catch (error) {
+<br>    console.error(&#039;Swap failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Compare Quotes Across All DEXes</h3>
 
@@ -2112,15 +2674,51 @@ async function compareAllDEXQuotes() {
     const tokenOut = &#039;0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&#039;; // WETH
     const amountIn = ethers.utils.parseUnits(&#039;1000&#039;, 6);
 
-<p>// Get quotes from all 37 DEX protocols<br>    const allQuotes = await aggregator.getAllQuotes(<br>      tokenIn,<br>      tokenOut,<br>      amountIn<br>    );</p>
+<p>// Get quotes from all 37 DEX protocols
+<br>    const allQuotes = await aggregator.getAllQuotes(
+<br>      tokenIn,
+<br>      tokenOut,
+<br>      amountIn
+<br>    );</p>
 
-<p>// Process and display results<br>    const sortedQuotes = allQuotes<br>      .filter(quote =&gt; quote.amountOut.gt(0)) // Filter failed quotes<br>      .sort((a, b) =&gt; b.amountOut.sub(a.amountOut)) // Sort by amount desc<br>      .map(quote =&gt; ({<br>        router: quote.routerType,<br>        dexName: getDEXName(quote.routerType),<br>        amountOut: ethers.utils.formatEther(quote.amountOut),<br>        price: parseFloat(ethers.utils.formatEther(quote.amountOut)) / 1000 // WETH per USDC<br>      }));</p>
+<p>// Process and display results
+<br>    const sortedQuotes = allQuotes
+<br>      .filter(quote =&gt; quote.amountOut.gt(0)) // Filter failed quotes
+<br>      .sort((a, b) =&gt; b.amountOut.sub(a.amountOut)) // Sort by amount desc
+<br>      .map(quote =&gt; ({
+<br>        router: quote.routerType,
+<br>        dexName: getDEXName(quote.routerType),
+<br>        amountOut: ethers.utils.formatEther(quote.amountOut),
+<br>        price: parseFloat(ethers.utils.formatEther(quote.amountOut)) / 1000 // WETH per USDC
+<br>      }));</p>
 
 <p>console.table(sortedQuotes);</p>
 
-<p>return sortedQuotes;<br>  } catch (error) {<br>    console.error(&#039;Quote comparison failed:&#039;, error);<br>  }<br>}</p>
+<p>return sortedQuotes;
+<br>  } catch (error) {
+<br>    console.error(&#039;Quote comparison failed:&#039;, error);
+<br>  }
+<br>}</p>
 
-<p>function getDEXName(routerType) {<br>  const dexNames = {<br>    0: &#039;Uniswap V2&#039;,<br>    1: &#039;SushiSwap V2&#039;,<br>    2: &#039;PancakeSwap V2&#039;,<br>    3: &#039;QuickSwap&#039;,<br>    4: &#039;TraderJoe V1&#039;,<br>    10: &#039;Uniswap V3&#039;,<br>    11: &#039;SushiSwap V3&#039;,<br>    12: &#039;PancakeSwap V3&#039;,<br>    20: &#039;Velodrome&#039;,<br>    21: &#039;Aerodrome&#039;,<br>    30: &#039;Curve&#039;,<br>    35: &#039;Balancer V2&#039;,<br>    36: &#039;1inch&#039;<br>  };<br>  return dexNames[routerType] || <code>Router ${routerType}</code>;<br>}</code></pre></div></p>
+<p>function getDEXName(routerType) {
+<br>  const dexNames = {
+<br>    0: &#039;Uniswap V2&#039;,
+<br>    1: &#039;SushiSwap V2&#039;,
+<br>    2: &#039;PancakeSwap V2&#039;,
+<br>    3: &#039;QuickSwap&#039;,
+<br>    4: &#039;TraderJoe V1&#039;,
+<br>    10: &#039;Uniswap V3&#039;,
+<br>    11: &#039;SushiSwap V3&#039;,
+<br>    12: &#039;PancakeSwap V3&#039;,
+<br>    20: &#039;Velodrome&#039;,
+<br>    21: &#039;Aerodrome&#039;,
+<br>    30: &#039;Curve&#039;,
+<br>    35: &#039;Balancer V2&#039;,
+<br>    36: &#039;1inch&#039;
+<br>  };
+<br>  return dexNames[routerType] || <code>Router ${routerType}</code>;
+<br>}
+</code></pre></div></p>
 
 <h2>Cross-Chain Swap Examples</h2>
 
@@ -2137,38 +2735,105 @@ async function crossChainSwap() {
     const minAmountOut = ethers.utils.parseEther(&#039;0.28&#039;); // Minimum WETH expected
     const routerType = 2; // PancakeSwap V2 on BSC
 
-<p>// Execute cross-chain swap<br>    const crossChainTx = await aggregator.crossChainSwap(<br>      sourceChain,<br>      destinationChain,<br>      tokenIn,<br>      tokenOut,<br>      amountIn,<br>      minAmountOut,<br>      routerType<br>    );</p>
+<p>// Execute cross-chain swap
+<br>    const crossChainTx = await aggregator.crossChainSwap(
+<br>      sourceChain,
+<br>      destinationChain,
+<br>      tokenIn,
+<br>      tokenOut,
+<br>      amountIn,
+<br>      minAmountOut,
+<br>      routerType
+<br>    );</p>
 
-<p>console.log(&#039;Cross-chain swap initiated:&#039;, crossChainTx.hash);<br>    return crossChainTx;<br>  } catch (error) {<br>    console.error(&#039;Cross-chain swap failed:&#039;, error);<br>  }<br>}</code></pre></div></p>
+<p>console.log(&#039;Cross-chain swap initiated:&#039;, crossChainTx.hash);
+<br>    return crossChainTx;
+<br>  } catch (error) {
+<br>    console.error(&#039;Cross-chain swap failed:&#039;, error);
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Gasless Transaction (Meta-Transaction)</h3>
 
 <div class="code-section"><pre><code>
 import { TypedDataUtils } from &#039;ethers-eip712&#039;;
 
-<p>async function executeGaslessTransaction() {<br>  try {<br>    const relayerUrl = &#039;http://localhost:3001&#039;;<br>    const userAddress = await signer.getAddress();</p>
+<p>async function executeGaslessTransaction() {
+<br>  try {
+<br>    const relayerUrl = &#039;http://localhost:3001&#039;;
+<br>    const userAddress = await signer.getAddress();</p>
 
-<p>// Check gas credits<br>    const creditsResponse = await fetch(<code>${relayerUrl}/api/credits/${userAddress}</code>);<br>    const { balance } = await creditsResponse.json();</p>
+<p>// Check gas credits
+<br>    const creditsResponse = await fetch(<code>${relayerUrl}/api/credits/${userAddress}</code>);
+<br>    const { balance } = await creditsResponse.json();</p>
 
-<p>if (balance &lt; 50) { // 50 cents minimum<br>      throw new Error(&#039;Insufficient gas credits&#039;);<br>    }</p>
+<p>if (balance &lt; 50) { // 50 cents minimum
+<br>      throw new Error(&#039;Insufficient gas credits&#039;);
+<br>    }</p>
 
-<p>// Prepare meta-transaction<br>    const targetContract = &#039;0x...&#039;;<br>    const functionCall = &#039;0x...&#039;; // Encoded function call<br>    const nonce = await getNonce(userAddress);<br>    const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour</p>
+<p>// Prepare meta-transaction
+<br>    const targetContract = &#039;0x...&#039;;
+<br>    const functionCall = &#039;0x...&#039;; // Encoded function call
+<br>    const nonce = await getNonce(userAddress);
+<br>    const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour</p>
 
-<p>const metaTx = {<br>      from: userAddress,<br>      to: targetContract,<br>      value: &#039;0&#039;,<br>      data: functionCall,<br>      nonce: nonce,<br>      deadline: deadline<br>    };</p>
+<p>const metaTx = {
+<br>      from: userAddress,
+<br>      to: targetContract,
+<br>      value: &#039;0&#039;,
+<br>      data: functionCall,
+<br>      nonce: nonce,
+<br>      deadline: deadline
+<br>    };</p>
 
-<p>// Sign EIP-712 meta-transaction<br>    const domain = {<br>      name: &#039;MetaTxGateway&#039;,<br>      version: &#039;1&#039;,<br>      chainId: chainId,<br>      verifyingContract: gatewayAddress<br>    };</p>
+<p>// Sign EIP-712 meta-transaction
+<br>    const domain = {
+<br>      name: &#039;MetaTxGateway&#039;,
+<br>      version: &#039;1&#039;,
+<br>      chainId: chainId,
+<br>      verifyingContract: gatewayAddress
+<br>    };</p>
 
-<p>const types = {<br>      MetaTransaction: [<br>        { name: &#039;from&#039;, type: &#039;address&#039; },<br>        { name: &#039;to&#039;, type: &#039;address&#039; },<br>        { name: &#039;value&#039;, type: &#039;uint256&#039; },<br>        { name: &#039;data&#039;, type: &#039;bytes&#039; },<br>        { name: &#039;nonce&#039;, type: &#039;uint256&#039; },<br>        { name: &#039;deadline&#039;, type: &#039;uint256&#039; }<br>      ]<br>    };</p>
+<p>const types = {
+<br>      MetaTransaction: [
+<br>        { name: &#039;from&#039;, type: &#039;address&#039; },
+<br>        { name: &#039;to&#039;, type: &#039;address&#039; },
+<br>        { name: &#039;value&#039;, type: &#039;uint256&#039; },
+<br>        { name: &#039;data&#039;, type: &#039;bytes&#039; },
+<br>        { name: &#039;nonce&#039;, type: &#039;uint256&#039; },
+<br>        { name: &#039;deadline&#039;, type: &#039;uint256&#039; }
+<br>      ]
+<br>    };</p>
 
 <p>const signature = await signer._signTypedData(domain, types, metaTx);</p>
 
-<p>// Submit to relayer<br>    const response = await fetch(<code>${relayerUrl}/api/meta-tx</code>, {<br>      method: &#039;POST&#039;,<br>      headers: { &#039;Content-Type&#039;: &#039;application/json&#039; },<br>      body: JSON.stringify({<br>        metaTx: metaTx,<br>        signature: signature,<br>        targetChain: &#039;ethereum&#039;<br>      })<br>    });</p>
+<p>// Submit to relayer
+<br>    const response = await fetch(<code>${relayerUrl}/api/meta-tx</code>, {
+<br>      method: &#039;POST&#039;,
+<br>      headers: { &#039;Content-Type&#039;: &#039;application/json&#039; },
+<br>      body: JSON.stringify({
+<br>        metaTx: metaTx,
+<br>        signature: signature,
+<br>        targetChain: &#039;ethereum&#039;
+<br>      })
+<br>    });</p>
 
-<p>const result = await response.json();<br>    console.log(&#039;Gasless transaction executed:&#039;, result.txHash);</p>
+<p>const result = await response.json();
+<br>    console.log(&#039;Gasless transaction executed:&#039;, result.txHash);</p>
 
-<p>return result;<br>  } catch (error) {<br>    console.error(&#039;Gasless transaction failed:&#039;, error);<br>    throw error;<br>  }<br>}</p>
+<p>return result;
+<br>  } catch (error) {
+<br>    console.error(&#039;Gasless transaction failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}</p>
 
-<p>async function getNonce(userAddress) {<br>  const gateway = new ethers.Contract(gatewayAddress, gatewayABI, provider);<br>  return await gateway.getNonce(userAddress);<br>}</code></pre></div></p>
+<p>async function getNonce(userAddress) {
+<br>  const gateway = new ethers.Contract(gatewayAddress, gatewayABI, provider);
+<br>  return await gateway.getNonce(userAddress);
+<br>}
+</code></pre></div></p>
 
 <h3>React Component Example</h3>
 
@@ -2176,37 +2841,137 @@ import { TypedDataUtils } from &#039;ethers-eip712&#039;;
 import React, { useState, useEffect } from &#039;react&#039;;
 import { ethers } from &#039;ethers&#039;;
 
-<p>function IXFIWallet() {<br>  const [balance, setBalance] = useState(&#039;0&#039;);<br>  const [credits, setCredits] = useState(&#039;0&#039;);<br>  const [loading, setLoading] = useState(false);</p>
+<p>function IXFIWallet() {
+<br>  const [balance, setBalance] = useState(&#039;0&#039;);
+<br>  const [credits, setCredits] = useState(&#039;0&#039;);
+<br>  const [loading, setLoading] = useState(false);</p>
 
-<p>// Initialize on component mount<br>  useEffect(() =&gt; {<br>    initializeWallet();<br>  }, []);</p>
+<p>// Initialize on component mount
+<br>  useEffect(() =&gt; {
+<br>    initializeWallet();
+<br>  }, []);</p>
 
-<p>async function initializeWallet() {<br>    try {<br>      if (window.ethereum) {<br>        const provider = new ethers.providers.Web3Provider(window.ethereum);<br>        const signer = provider.getSigner();<br>        const address = await signer.getAddress();</p>
+<p>async function initializeWallet() {
+<br>    try {
+<br>      if (window.ethereum) {
+<br>        const provider = new ethers.providers.Web3Provider(window.ethereum);
+<br>        const signer = provider.getSigner();
+<br>        const address = await signer.getAddress();</p>
 
-<p>// Get IXFI balance<br>        const ixfiBalance = await ixfi.balanceOf(address);<br>        setBalance(ethers.utils.formatEther(ixfiBalance));</p>
+<p>// Get IXFI balance
+<br>        const ixfiBalance = await ixfi.balanceOf(address);
+<br>        setBalance(ethers.utils.formatEther(ixfiBalance));</p>
 
-<p>// Get gas credits<br>        const creditsResponse = await fetch(<code>${relayerUrl}/api/credits/${address}</code>);<br>        const { balance: creditBalance } = await creditsResponse.json();<br>        setCredits(creditBalance);<br>      }<br>    } catch (error) {<br>      console.error(&#039;Wallet initialization failed:&#039;, error);<br>    }<br>  }</p>
+<p>// Get gas credits
+<br>        const creditsResponse = await fetch(<code>${relayerUrl}/api/credits/${address}</code>);
+<br>        const { balance: creditBalance } = await creditsResponse.json();
+<br>        setCredits(creditBalance);
+<br>      }
+<br>    } catch (error) {
+<br>      console.error(&#039;Wallet initialization failed:&#039;, error);
+<br>    }
+<br>  }</p>
 
-<p>async function depositXFI() {<br>    setLoading(true);<br>    try {<br>      const amount = ethers.utils.parseEther(&#039;1&#039;); // 1 XFI<br>      const tx = await ixfi.deposit({ value: amount });<br>      await tx.wait();</p>
+<p>async function depositXFI() {
+<br>    setLoading(true);
+<br>    try {
+<br>      const amount = ethers.utils.parseEther(&#039;1&#039;); // 1 XFI
+<br>      const tx = await ixfi.deposit({ value: amount });
+<br>      await tx.wait();</p>
 
-<p>await initializeWallet(); // Refresh balances<br>      alert(&#039;XFI deposited successfully!&#039;);<br>    } catch (error) {<br>      alert(&#039;Deposit failed: &#039; + error.message);<br>    }<br>    setLoading(false);<br>  }</p>
+<p>await initializeWallet(); // Refresh balances
+<br>      alert(&#039;XFI deposited successfully!&#039;);
+<br>    } catch (error) {
+<br>      alert(&#039;Deposit failed: &#039; + error.message);
+<br>    }
+<br>    setLoading(false);
+<br>  }</p>
 
-<p>async function depositCredits() {<br>    setLoading(true);<br>    try {<br>      const amount = ethers.utils.parseEther(&#039;10&#039;); // 10 IXFI<br>      const vault = new ethers.Contract(vaultAddress, vaultABI, signer);<br>      const tx = await vault.deposit(amount);<br>      await tx.wait();</p>
+<p>async function depositCredits() {
+<br>    setLoading(true);
+<br>    try {
+<br>      const amount = ethers.utils.parseEther(&#039;10&#039;); // 10 IXFI
+<br>      const vault = new ethers.Contract(vaultAddress, vaultABI, signer);
+<br>      const tx = await vault.deposit(amount);
+<br>      await tx.wait();</p>
 
-<p>await initializeWallet(); // Refresh balances<br>      alert(&#039;Gas credits added!&#039;);<br>    } catch (error) {<br>      alert(&#039;Credit deposit failed: &#039; + error.message);<br>    }<br>    setLoading(false);<br>  }</p>
+<p>await initializeWallet(); // Refresh balances
+<br>      alert(&#039;Gas credits added!&#039;);
+<br>    } catch (error) {
+<br>      alert(&#039;Credit deposit failed: &#039; + error.message);
+<br>    }
+<br>    setLoading(false);
+<br>  }</p>
 
-<p>return (<br>    &lt;div className=&quot;ixfi-wallet&quot;&gt;<br>      &lt;h2&gt;IXFI Wallet&lt;/h2&gt;</p>
+<p>return (
+<br>    &lt;div className=&quot;ixfi-wallet&quot;&gt;
+<br>      &lt;h2&gt;IXFI Wallet&lt;/h2&gt;</p>
 
-<p>&lt;div className=&quot;balances&quot;&gt;<br>        &lt;div&gt;IXFI Balance: {balance} IXFI&lt;/div&gt;<br>        &lt;div&gt;Gas Credits: ${(credits / 100).toFixed(2)} USD&lt;/div&gt;<br>      &lt;/div&gt;</p>
+<p>&lt;div className=&quot;balances&quot;&gt;
+<br>        &lt;div&gt;IXFI Balance: {balance} IXFI&lt;/div&gt;
+<br>        &lt;div&gt;Gas Credits: ${(credits / 100).toFixed(2)} USD&lt;/div&gt;
+<br>      &lt;/div&gt;</p>
 
-<p>&lt;div className=&quot;actions&quot;&gt;<br>        &lt;button onClick={depositXFI} disabled={loading}&gt;<br>          Deposit XFI → IXFI<br>        &lt;/button&gt;<br>        &lt;button onClick={depositCredits} disabled={loading}&gt;<br>          Add Gas Credits<br>        &lt;/button&gt;<br>      &lt;/div&gt;</p>
+<p>&lt;div className=&quot;actions&quot;&gt;
+<br>        &lt;button onClick={depositXFI} disabled={loading}&gt;
+<br>          Deposit XFI → IXFI
+<br>        &lt;/button&gt;
+<br>        &lt;button onClick={depositCredits} disabled={loading}&gt;
+<br>          Add Gas Credits
+<br>        &lt;/button&gt;
+<br>      &lt;/div&gt;</p>
 
-<p>&lt;CrossChainTransfer /&gt;<br>      &lt;GaslessTransaction /&gt;<br>    &lt;/div&gt;<br>  );<br>}</p>
+<p>&lt;CrossChainTransfer /&gt;
+<br>      &lt;GaslessTransaction /&gt;
+<br>    &lt;/div&gt;
+<br>  );
+<br>}</p>
 
-<p>function CrossChainTransfer() {<br>  const [recipient, setRecipient] = useState(&#039;&#039;);<br>  const [amount, setAmount] = useState(&#039;&#039;);<br>  const [targetChain, setTargetChain] = useState(&#039;ethereum&#039;);</p>
+<p>function CrossChainTransfer() {
+<br>  const [recipient, setRecipient] = useState(&#039;&#039;);
+<br>  const [amount, setAmount] = useState(&#039;&#039;);
+<br>  const [targetChain, setTargetChain] = useState(&#039;ethereum&#039;);</p>
 
-<p>async function sendTokens() {<br>    try {<br>      const tx = await ixfi.sendToken(<br>        targetChain,<br>        recipient,<br>        &#039;IXFI&#039;,<br>        ethers.utils.parseEther(amount)<br>      );<br>      alert(<code>Cross-chain transfer initiated: ${tx.hash}</code>);<br>    } catch (error) {<br>      alert(&#039;Transfer failed: &#039; + error.message);<br>    }<br>  }</p>
+<p>async function sendTokens() {
+<br>    try {
+<br>      const tx = await ixfi.sendToken(
+<br>        targetChain,
+<br>        recipient,
+<br>        &#039;IXFI&#039;,
+<br>        ethers.utils.parseEther(amount)
+<br>      );
+<br>      alert(<code>Cross-chain transfer initiated: ${tx.hash}</code>);
+<br>    } catch (error) {
+<br>      alert(&#039;Transfer failed: &#039; + error.message);
+<br>    }
+<br>  }</p>
 
-<p>return (<br>    &lt;div className=&quot;cross-chain-transfer&quot;&gt;<br>      &lt;h3&gt;Cross-Chain Transfer&lt;/h3&gt;<br>      &lt;select <br>        value={targetChain} <br>        onChange={(e) =&gt; setTargetChain(e.target.value)}<br>      &gt;<br>        &lt;option value=&quot;ethereum&quot;&gt;Ethereum&lt;/option&gt;<br>        &lt;option value=&quot;bsc&quot;&gt;BSC&lt;/option&gt;<br>        &lt;option value=&quot;polygon&quot;&gt;Polygon&lt;/option&gt;<br>      &lt;/select&gt;<br>      &lt;input <br>        placeholder=&quot;Recipient address&quot;<br>        value={recipient}<br>        onChange={(e) =&gt; setRecipient(e.target.value)}<br>      /&gt;<br>      &lt;input <br>        placeholder=&quot;Amount&quot;<br>        value={amount}<br>        onChange={(e) =&gt; setAmount(e.target.value)}<br>      /&gt;<br>      &lt;button onClick={sendTokens}&gt;Send&lt;/button&gt;<br>    &lt;/div&gt;<br>  );<br>}</code></pre></div></p>
+<p>return (
+<br>    &lt;div className=&quot;cross-chain-transfer&quot;&gt;
+<br>      &lt;h3&gt;Cross-Chain Transfer&lt;/h3&gt;
+<br>      &lt;select 
+<br>        value={targetChain} 
+<br>        onChange={(e) =&gt; setTargetChain(e.target.value)}
+<br>      &gt;
+<br>        &lt;option value=&quot;ethereum&quot;&gt;Ethereum&lt;/option&gt;
+<br>        &lt;option value=&quot;bsc&quot;&gt;BSC&lt;/option&gt;
+<br>        &lt;option value=&quot;polygon&quot;&gt;Polygon&lt;/option&gt;
+<br>      &lt;/select&gt;
+<br>      &lt;input 
+<br>        placeholder=&quot;Recipient address&quot;
+<br>        value={recipient}
+<br>        onChange={(e) =&gt; setRecipient(e.target.value)}
+<br>      /&gt;
+<br>      &lt;input 
+<br>        placeholder=&quot;Amount&quot;
+<br>        value={amount}
+<br>        onChange={(e) =&gt; setAmount(e.target.value)}
+<br>      /&gt;
+<br>      &lt;button onClick={sendTokens}&gt;Send&lt;/button&gt;
+<br>    &lt;/div&gt;
+<br>  );
+<br>}
+</code></pre></div></p>
 
 <h2>Smart Contract Integration</h2>
 
@@ -2215,45 +2980,115 @@ import { ethers } from &#039;ethers&#039;;
 <div class="code-section"><pre><code>
 pragma solidity ^0.8.20;
 
-<p>import &quot;./IXFIExecutable.sol&quot;;<br>import &quot;@openzeppelin/contracts/token/ERC20/IERC20.sol&quot;;</p>
+<p>import &quot;./IXFIExecutable.sol&quot;;
+<br>import &quot;@openzeppelin/contracts/token/ERC20/IERC20.sol&quot;;</p>
 
-<p>contract CrossChainDApp is IXFIExecutable {<br>    struct Message {<br>        string content;<br>        address sender;<br>        string sourceChain;<br>        uint256 timestamp;<br>    }</p>
+<p>contract CrossChainDApp is IXFIExecutable {
+<br>    struct Message {
+<br>        string content;
+<br>        address sender;
+<br>        string sourceChain;
+<br>        uint256 timestamp;
+<br>    }</p>
 
-<p>Message[] public messages;<br>    mapping(address =&gt; uint256) public userBalances;</p>
+<p>Message[] public messages;
+<br>    mapping(address =&gt; uint256) public userBalances;</p>
 
-<p>event MessageReceived(<br>        string indexed sourceChain,<br>        address indexed sender,<br>        string content<br>    );</p>
+<p>event MessageReceived(
+<br>        string indexed sourceChain,
+<br>        address indexed sender,
+<br>        string content
+<br>    );</p>
 
-<p>event TokensReceived(<br>        string indexed sourceChain,<br>        address indexed sender,<br>        uint256 amount<br>    );</p>
+<p>event TokensReceived(
+<br>        string indexed sourceChain,
+<br>        address indexed sender,
+<br>        uint256 amount
+<br>    );</p>
 
 <p>constructor(address gateway_) IXFIExecutable(gateway_) {}</p>
 
-<p>function _execute(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload<br>    ) internal override {<br>        // Decode the payload<br>        (string memory messageContent) = abi.decode(payload, (string));</p>
+<p>function _execute(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload
+<br>    ) internal override {
+<br>        // Decode the payload
+<br>        (string memory messageContent) = abi.decode(payload, (string));</p>
 
-<p>// Store the message<br>        messages.push(Message({<br>            content: messageContent,<br>            sender: _stringToAddress(sourceAddress),<br>            sourceChain: sourceChain,<br>            timestamp: block.timestamp<br>        }));</p>
+<p>// Store the message
+<br>        messages.push(Message({
+<br>            content: messageContent,
+<br>            sender: _stringToAddress(sourceAddress),
+<br>            sourceChain: sourceChain,
+<br>            timestamp: block.timestamp
+<br>        }));</p>
 
-<p>emit MessageReceived(sourceChain, _stringToAddress(sourceAddress), messageContent);<br>    }</p>
+<p>emit MessageReceived(sourceChain, _stringToAddress(sourceAddress), messageContent);
+<br>    }</p>
 
-<p>function _executeWithToken(<br>        string calldata sourceChain,<br>        string calldata sourceAddress,<br>        bytes calldata payload,<br>        string calldata symbol,<br>        uint256 amount<br>    ) internal override {<br>        require(<br>            keccak256(bytes(symbol)) == keccak256(bytes(&quot;IXFI&quot;)),<br>            &quot;Unsupported token&quot;<br>        );</p>
+<p>function _executeWithToken(
+<br>        string calldata sourceChain,
+<br>        string calldata sourceAddress,
+<br>        bytes calldata payload,
+<br>        string calldata symbol,
+<br>        uint256 amount
+<br>    ) internal override {
+<br>        require(
+<br>            keccak256(bytes(symbol)) == keccak256(bytes(&quot;IXFI&quot;)),
+<br>            &quot;Unsupported token&quot;
+<br>        );</p>
 
 <p>address sender = _stringToAddress(sourceAddress);</p>
 
-<p>// Update user balance<br>        userBalances[sender] += amount;</p>
+<p>// Update user balance
+<br>        userBalances[sender] += amount;</p>
 
-<p>// Process the payload if needed<br>        if (payload.length &gt; 0) {<br>            _execute(sourceChain, sourceAddress, payload);<br>        }</p>
+<p>// Process the payload if needed
+<br>        if (payload.length &gt; 0) {
+<br>            _execute(sourceChain, sourceAddress, payload);
+<br>        }</p>
 
-<p>emit TokensReceived(sourceChain, sender, amount);<br>    }</p>
+<p>emit TokensReceived(sourceChain, sender, amount);
+<br>    }</p>
 
-<p>function withdrawTokens(uint256 amount) external {<br>        require(userBalances[msg.sender] &gt;= amount, &quot;Insufficient balance&quot;);</p>
+<p>function withdrawTokens(uint256 amount) external {
+<br>        require(userBalances[msg.sender] &gt;= amount, &quot;Insufficient balance&quot;);</p>
 
 <p>userBalances[msg.sender] -= amount;</p>
 
-<p>// Transfer IXFI tokens<br>        IERC20 ixfi = IERC20(gateway.tokenAddresses(&quot;IXFI&quot;));<br>        require(ixfi.transfer(msg.sender, amount), &quot;Transfer failed&quot;);<br>    }</p>
+<p>// Transfer IXFI tokens
+<br>        IERC20 ixfi = IERC20(gateway.tokenAddresses(&quot;IXFI&quot;));
+<br>        require(ixfi.transfer(msg.sender, amount), &quot;Transfer failed&quot;);
+<br>    }</p>
 
-<p>function _stringToAddress(string memory str) internal pure returns (address) {<br>        bytes memory strBytes = bytes(str);<br>        require(strBytes.length == 42, &quot;Invalid address format&quot;);</p>
+<p>function _stringToAddress(string memory str) internal pure returns (address) {
+<br>        bytes memory strBytes = bytes(str);
+<br>        require(strBytes.length == 42, &quot;Invalid address format&quot;);</p>
 
-<p>bytes memory addrBytes = new bytes(20);<br>        for (uint i = 0; i &lt; 20; i++) {<br>            addrBytes[i] = bytes1(<br>                _hexCharToByte(strBytes[2 + i <em> 2]) </em> 16 +<br>                _hexCharToByte(strBytes[3 + i * 2])<br>            );<br>        }<br>        return address(uint160(bytes20(addrBytes)));<br>    }</p>
+<p>bytes memory addrBytes = new bytes(20);
+<br>        for (uint i = 0; i &lt; 20; i++) {
+<br>            addrBytes[i] = bytes1(
+<br>                _hexCharToByte(strBytes[2 + i <em> 2]) </em> 16 +
+<br>                _hexCharToByte(strBytes[3 + i * 2])
+<br>            );
+<br>        }
+<br>        return address(uint160(bytes20(addrBytes)));
+<br>    }</p>
 
-<p>function _hexCharToByte(bytes1 char) internal pure returns (uint8) {<br>        uint8 byteValue = uint8(char);<br>        if (byteValue &gt;= uint8(bytes1(&#039;0&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;9&#039;))) {<br>            return byteValue - uint8(bytes1(&#039;0&#039;));<br>        } else if (byteValue &gt;= uint8(bytes1(&#039;a&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;f&#039;))) {<br>            return 10 + byteValue - uint8(bytes1(&#039;a&#039;));<br>        } else if (byteValue &gt;= uint8(bytes1(&#039;A&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;F&#039;))) {<br>            return 10 + byteValue - uint8(bytes1(&#039;A&#039;));<br>        }<br>        revert(&quot;Invalid hex character&quot;);<br>    }<br>}</code></pre></div></p>
+<p>function _hexCharToByte(bytes1 char) internal pure returns (uint8) {
+<br>        uint8 byteValue = uint8(char);
+<br>        if (byteValue &gt;= uint8(bytes1(&#039;0&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;9&#039;))) {
+<br>            return byteValue - uint8(bytes1(&#039;0&#039;));
+<br>        } else if (byteValue &gt;= uint8(bytes1(&#039;a&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;f&#039;))) {
+<br>            return 10 + byteValue - uint8(bytes1(&#039;a&#039;));
+<br>        } else if (byteValue &gt;= uint8(bytes1(&#039;A&#039;)) &amp;&amp; byteValue &lt;= uint8(bytes1(&#039;F&#039;))) {
+<br>            return 10 + byteValue - uint8(bytes1(&#039;A&#039;));
+<br>        }
+<br>        revert(&quot;Invalid hex character&quot;);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h3>Initiating Cross-Chain Calls</h3>
 
@@ -2262,29 +3097,89 @@ pragma solidity ^0.8.20;
 
 <p>import &quot;@openzeppelin/contracts/token/ERC20/IERC20.sol&quot;;</p>
 
-<p>interface IIXFIGateway {<br>    function callContract(<br>        string memory destinationChain,<br>        string memory destinationContractAddress,<br>        bytes memory payload<br>    ) external;</p>
+<p>interface IIXFIGateway {
+<br>    function callContract(
+<br>        string memory destinationChain,
+<br>        string memory destinationContractAddress,
+<br>        bytes memory payload
+<br>    ) external;</p>
 
-<p>function callContractWithToken(<br>        string memory destinationChain,<br>        string memory destinationContractAddress,<br>        bytes memory payload,<br>        string memory symbol,<br>        uint256 amount<br>    ) external;<br>}</p>
+<p>function callContractWithToken(
+<br>        string memory destinationChain,
+<br>        string memory destinationContractAddress,
+<br>        bytes memory payload,
+<br>        string memory symbol,
+<br>        uint256 amount
+<br>    ) external;
+<br>}</p>
 
-<p>contract CrossChainSender {<br>    IIXFIGateway public immutable ixfiGateway;<br>    IERC20 public immutable ixfiToken;</p>
+<p>contract CrossChainSender {
+<br>    IIXFIGateway public immutable ixfiGateway;
+<br>    IERC20 public immutable ixfiToken;</p>
 
-<p>constructor(address gateway_, address ixfiToken_) {<br>        ixfiGateway = IIXFIGateway(gateway_);<br>        ixfiToken = IERC20(ixfiToken_);<br>    }</p>
+<p>constructor(address gateway_, address ixfiToken_) {
+<br>        ixfiGateway = IIXFIGateway(gateway_);
+<br>        ixfiToken = IERC20(ixfiToken_);
+<br>    }</p>
 
-<p>function sendMessage(<br>        string memory destinationChain,<br>        address destinationContract,<br>        string memory message<br>    ) external {<br>        bytes memory payload = abi.encode(message);</p>
+<p>function sendMessage(
+<br>        string memory destinationChain,
+<br>        address destinationContract,
+<br>        string memory message
+<br>    ) external {
+<br>        bytes memory payload = abi.encode(message);</p>
 
-<p>ixfiGateway.callContract(<br>            destinationChain,<br>            _addressToString(destinationContract),<br>            payload<br>        );<br>    }</p>
+<p>ixfiGateway.callContract(
+<br>            destinationChain,
+<br>            _addressToString(destinationContract),
+<br>            payload
+<br>        );
+<br>    }</p>
 
-<p>function sendMessageWithTokens(<br>        string memory destinationChain,<br>        address destinationContract,<br>        string memory message,<br>        uint256 tokenAmount<br>    ) external {<br>        // Transfer tokens from user<br>        require(<br>            ixfiToken.transferFrom(msg.sender, address(this), tokenAmount),<br>            &quot;Token transfer failed&quot;<br>        );</p>
+<p>function sendMessageWithTokens(
+<br>        string memory destinationChain,
+<br>        address destinationContract,
+<br>        string memory message,
+<br>        uint256 tokenAmount
+<br>    ) external {
+<br>        // Transfer tokens from user
+<br>        require(
+<br>            ixfiToken.transferFrom(msg.sender, address(this), tokenAmount),
+<br>            &quot;Token transfer failed&quot;
+<br>        );</p>
 
-<p>// Approve gateway to spend tokens<br>        require(<br>            ixfiToken.approve(address(ixfiGateway), tokenAmount),<br>            &quot;Approval failed&quot;<br>        );</p>
+<p>// Approve gateway to spend tokens
+<br>        require(
+<br>            ixfiToken.approve(address(ixfiGateway), tokenAmount),
+<br>            &quot;Approval failed&quot;
+<br>        );</p>
 
 <p>bytes memory payload = abi.encode(message);</p>
 
-<p>ixfiGateway.callContractWithToken(<br>            destinationChain,<br>            _addressToString(destinationContract),<br>            payload,<br>            &quot;IXFI&quot;,<br>            tokenAmount<br>        );<br>    }</p>
+<p>ixfiGateway.callContractWithToken(
+<br>            destinationChain,
+<br>            _addressToString(destinationContract),
+<br>            payload,
+<br>            &quot;IXFI&quot;,
+<br>            tokenAmount
+<br>        );
+<br>    }</p>
 
-<p>function _addressToString(address addr) internal pure returns (string memory) {<br>        bytes memory data = abi.encodePacked(addr);<br>        bytes memory alphabet = &quot;0123456789abcdef&quot;;</p>
+<p>function _addressToString(address addr) internal pure returns (string memory) {
+<br>        bytes memory data = abi.encodePacked(addr);
+<br>        bytes memory alphabet = &quot;0123456789abcdef&quot;;</p>
 
-<p>bytes memory str = new bytes(2 + data.length * 2);<br>        str[0] = &quot;0&quot;;<br>        str[1] = &quot;x&quot;;<br>        for (uint i = 0; i &lt; data.length; i++) {<br>            str[2+i*2] = alphabet[uint(uint8(data[i] &gt;&gt; 4))];<br>            str[3+i*2] = alphabet[uint(uint8(data[i] &amp; 0x0f))];<br>        }<br>        return string(str);<br>    }<br>}</code></pre></div></p>
+<p>bytes memory str = new bytes(2 + data.length * 2);
+<br>        str[0] = &quot;0&quot;;
+<br>        str[1] = &quot;x&quot;;
+<br>        for (uint i = 0; i &lt; data.length; i++) {
+<br>            str[2+i*2] = alphabet[uint(uint8(data[i] &gt;&gt; 4))];
+<br>            str[3+i*2] = alphabet[uint(uint8(data[i] &amp; 0x0f))];
+<br>        }
+<br>        return string(str);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h2>Relayer API Usage</h2>
 
@@ -2296,9 +3191,17 @@ async function checkRelayerHealth() {
     const response = await fetch(&#039;http://localhost:3001/health&#039;);
     const health = await response.json();
 
-<p>console.log(&#039;Relayer Status:&#039;, health.status);<br>    console.log(&#039;Connected Chains:&#039;, health.chains);<br>    console.log(&#039;Processed Events:&#039;, health.processedEvents);</p>
+<p>console.log(&#039;Relayer Status:&#039;, health.status);
+<br>    console.log(&#039;Connected Chains:&#039;, health.chains);
+<br>    console.log(&#039;Processed Events:&#039;, health.processedEvents);</p>
 
-<p>return health.status === &#039;healthy&#039;;<br>  } catch (error) {<br>    console.error(&#039;Health check failed:&#039;, error);<br>    return false;<br>  }<br>}</code></pre></div></p>
+<p>return health.status === &#039;healthy&#039;;
+<br>  } catch (error) {
+<br>    console.error(&#039;Health check failed:&#039;, error);
+<br>    return false;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Submit Meta-Transaction</h3>
 
@@ -2317,11 +3220,21 @@ async function submitMetaTransaction(metaTx, signature, targetChain) {
       })
     });
 
-<p>if (!response.ok) {<br>      const error = await response.json();<br>      throw new Error(error.message || &#039;Transaction submission failed&#039;);<br>    }</p>
+<p>if (!response.ok) {
+<br>      const error = await response.json();
+<br>      throw new Error(error.message || &#039;Transaction submission failed&#039;);
+<br>    }</p>
 
-<p>const result = await response.json();<br>    console.log(&#039;Transaction submitted:&#039;, result.txHash);</p>
+<p>const result = await response.json();
+<br>    console.log(&#039;Transaction submitted:&#039;, result.txHash);</p>
 
-<p>return result;<br>  } catch (error) {<br>    console.error(&#039;Meta-transaction submission failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>return result;
+<br>  } catch (error) {
+<br>    console.error(&#039;Meta-transaction submission failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Check Gas Credits</h3>
 
@@ -2331,7 +3244,16 @@ async function getGasCredits(userAddress) {
     const response = await fetch(<code>http://localhost:3001/api/credits/${userAddress}</code>);
     const data = await response.json();
 
-<p>return {<br>      balance: data.balance, // Credits in cents<br>      balanceUsd: data.balanceUsd // Formatted USD string<br>    };<br>  } catch (error) {<br>    console.error(&#039;Credit check failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>return {
+<br>      balance: data.balance, // Credits in cents
+<br>      balanceUsd: data.balanceUsd // Formatted USD string
+<br>    };
+<br>  } catch (error) {
+<br>    console.error(&#039;Credit check failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Estimate Gas Cost</h3>
 
@@ -2351,7 +3273,17 @@ async function estimateGasCost(targetChain, gasLimit) {
 
 <p>const estimate = await response.json();</p>
 
-<p>return {<br>      gasPrice: estimate.gasPrice,<br>      estimatedCost: estimate.estimatedCost, // In USD cents<br>      nativeTokenPrice: estimate.nativeTokenPrice<br>    };<br>  } catch (error) {<br>    console.error(&#039;Gas estimation failed:&#039;, error);<br>    throw error;<br>  }<br>}</code></pre></div></p>
+<p>return {
+<br>      gasPrice: estimate.gasPrice,
+<br>      estimatedCost: estimate.estimatedCost, // In USD cents
+<br>      nativeTokenPrice: estimate.nativeTokenPrice
+<br>    };
+<br>  } catch (error) {
+<br>    console.error(&#039;Gas estimation failed:&#039;, error);
+<br>    throw error;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h2>SDK Examples</h2>
 
@@ -2366,45 +3298,161 @@ class IXFIProvider {
     this.contracts = {};
     this.relayerUrl = config.relayerUrl;
 
-<p>// Initialize providers for each chain<br>    for (const [chain, rpc] of Object.entries(config.rpcs)) {<br>      this.providers[chain] = new ethers.providers.JsonRpcProvider(rpc);<br>    }<br>  }</p>
+<p>// Initialize providers for each chain
+<br>    for (const [chain, rpc] of Object.entries(config.rpcs)) {
+<br>      this.providers[chain] = new ethers.providers.JsonRpcProvider(rpc);
+<br>    }
+<br>  }</p>
 
-<p>async connect(privateKey) {<br>    this.signer = new ethers.Wallet(privateKey);</p>
+<p>async connect(privateKey) {
+<br>    this.signer = new ethers.Wallet(privateKey);</p>
 
-<p>// Connect signer to each provider<br>    for (const [chain, provider] of Object.entries(this.providers)) {<br>      this.providers[chain] = provider.connect(this.signer);<br>    }<br>  }</p>
+<p>// Connect signer to each provider
+<br>    for (const [chain, provider] of Object.entries(this.providers)) {
+<br>      this.providers[chain] = provider.connect(this.signer);
+<br>    }
+<br>  }</p>
 
-<p>async deposit(amount, chain = &#039;crossfi&#039;) {<br>    const ixfi = await this.getContract(chain);<br>    const tx = await ixfi.deposit({<br>      value: ethers.utils.parseEther(amount)<br>    });<br>    return await tx.wait();<br>  }</p>
+<p>async deposit(amount, chain = &#039;crossfi&#039;) {
+<br>    const ixfi = await this.getContract(chain);
+<br>    const tx = await ixfi.deposit({
+<br>      value: ethers.utils.parseEther(amount)
+<br>    });
+<br>    return await tx.wait();
+<br>  }</p>
 
-<p>async withdraw(amount, chain = &#039;crossfi&#039;) {<br>    const ixfi = await this.getContract(chain);<br>    const tx = await ixfi.withdraw(ethers.utils.parseEther(amount));<br>    return await tx.wait();<br>  }</p>
+<p>async withdraw(amount, chain = &#039;crossfi&#039;) {
+<br>    const ixfi = await this.getContract(chain);
+<br>    const tx = await ixfi.withdraw(ethers.utils.parseEther(amount));
+<br>    return await tx.wait();
+<br>  }</p>
 
-<p>async sendCrossChain(destinationChain, recipient, amount) {<br>    const ixfi = await this.getContract(&#039;crossfi&#039;); // Always send from CrossFi<br>    const tx = await ixfi.sendToken(<br>      destinationChain,<br>      recipient,<br>      &#039;IXFI&#039;,<br>      ethers.utils.parseEther(amount)<br>    );<br>    return await tx.wait();<br>  }</p>
+<p>async sendCrossChain(destinationChain, recipient, amount) {
+<br>    const ixfi = await this.getContract(&#039;crossfi&#039;); // Always send from CrossFi
+<br>    const tx = await ixfi.sendToken(
+<br>      destinationChain,
+<br>      recipient,
+<br>      &#039;IXFI&#039;,
+<br>      ethers.utils.parseEther(amount)
+<br>    );
+<br>    return await tx.wait();
+<br>  }</p>
 
-<p>async callCrossChain(destinationChain, contractAddress, payload, tokenAmount = null) {<br>    const ixfi = await this.getContract(); // Current chain</p>
+<p>async callCrossChain(destinationChain, contractAddress, payload, tokenAmount = null) {
+<br>    const ixfi = await this.getContract(); // Current chain</p>
 
-<p>if (tokenAmount) {<br>      const tx = await ixfi.callContractWithToken(<br>        destinationChain,<br>        contractAddress,<br>        payload,<br>        &#039;IXFI&#039;,<br>        ethers.utils.parseEther(tokenAmount)<br>      );<br>      return await tx.wait();<br>    } else {<br>      const tx = await ixfi.callContract(<br>        destinationChain,<br>        contractAddress,<br>        payload<br>      );<br>      return await tx.wait();<br>    }<br>  }</p>
+<p>if (tokenAmount) {
+<br>      const tx = await ixfi.callContractWithToken(
+<br>        destinationChain,
+<br>        contractAddress,
+<br>        payload,
+<br>        &#039;IXFI&#039;,
+<br>        ethers.utils.parseEther(tokenAmount)
+<br>      );
+<br>      return await tx.wait();
+<br>    } else {
+<br>      const tx = await ixfi.callContract(
+<br>        destinationChain,
+<br>        contractAddress,
+<br>        payload
+<br>      );
+<br>      return await tx.wait();
+<br>    }
+<br>  }</p>
 
-<p>async executeGasless(targetChain, to, data, value = &#039;0&#039;) {<br>    const userAddress = await this.signer.getAddress();<br>    const nonce = await this.getNonce(userAddress, targetChain);<br>    const deadline = Math.floor(Date.now() / 1000) + 3600;</p>
+<p>async executeGasless(targetChain, to, data, value = &#039;0&#039;) {
+<br>    const userAddress = await this.signer.getAddress();
+<br>    const nonce = await this.getNonce(userAddress, targetChain);
+<br>    const deadline = Math.floor(Date.now() / 1000) + 3600;</p>
 
-<p>const metaTx = {<br>      from: userAddress,<br>      to: to,<br>      value: value,<br>      data: data,<br>      nonce: nonce,<br>      deadline: deadline<br>    };</p>
+<p>const metaTx = {
+<br>      from: userAddress,
+<br>      to: to,
+<br>      value: value,
+<br>      data: data,
+<br>      nonce: nonce,
+<br>      deadline: deadline
+<br>    };</p>
 
 <p>const signature = await this.signMetaTransaction(metaTx, targetChain);</p>
 
-<p>return await this.submitMetaTransaction(metaTx, signature, targetChain);<br>  }</p>
+<p>return await this.submitMetaTransaction(metaTx, signature, targetChain);
+<br>  }</p>
 
-<p>async getContract(chain) {<br>    if (!this.contracts[chain]) {<br>      const address = this.config.contracts[chain];<br>      const provider = this.providers[chain];<br>      this.contracts[chain] = new ethers.Contract(address, IXFI_ABI, provider);<br>    }<br>    return this.contracts[chain];<br>  }</p>
+<p>async getContract(chain) {
+<br>    if (!this.contracts[chain]) {
+<br>      const address = this.config.contracts[chain];
+<br>      const provider = this.providers[chain];
+<br>      this.contracts[chain] = new ethers.Contract(address, IXFI_ABI, provider);
+<br>    }
+<br>    return this.contracts[chain];
+<br>  }</p>
 
-<p>async signMetaTransaction(metaTx, targetChain) {<br>    const domain = {<br>      name: &#039;MetaTxGateway&#039;,<br>      version: &#039;1&#039;,<br>      chainId: this.config.chainIds[targetChain],<br>      verifyingContract: this.config.gateways[targetChain]<br>    };</p>
+<p>async signMetaTransaction(metaTx, targetChain) {
+<br>    const domain = {
+<br>      name: &#039;MetaTxGateway&#039;,
+<br>      version: &#039;1&#039;,
+<br>      chainId: this.config.chainIds[targetChain],
+<br>      verifyingContract: this.config.gateways[targetChain]
+<br>    };</p>
 
-<p>const types = {<br>      MetaTransaction: [<br>        { name: &#039;from&#039;, type: &#039;address&#039; },<br>        { name: &#039;to&#039;, type: &#039;address&#039; },<br>        { name: &#039;value&#039;, type: &#039;uint256&#039; },<br>        { name: &#039;data&#039;, type: &#039;bytes&#039; },<br>        { name: &#039;nonce&#039;, type: &#039;uint256&#039; },<br>        { name: &#039;deadline&#039;, type: &#039;uint256&#039; }<br>      ]<br>    };</p>
+<p>const types = {
+<br>      MetaTransaction: [
+<br>        { name: &#039;from&#039;, type: &#039;address&#039; },
+<br>        { name: &#039;to&#039;, type: &#039;address&#039; },
+<br>        { name: &#039;value&#039;, type: &#039;uint256&#039; },
+<br>        { name: &#039;data&#039;, type: &#039;bytes&#039; },
+<br>        { name: &#039;nonce&#039;, type: &#039;uint256&#039; },
+<br>        { name: &#039;deadline&#039;, type: &#039;uint256&#039; }
+<br>      ]
+<br>    };</p>
 
-<p>return await this.signer._signTypedData(domain, types, metaTx);<br>  }</p>
+<p>return await this.signer._signTypedData(domain, types, metaTx);
+<br>  }</p>
 
-<p>async submitMetaTransaction(metaTx, signature, targetChain) {<br>    const response = await fetch(<code>${this.relayerUrl}/api/meta-tx</code>, {<br>      method: &#039;POST&#039;,<br>      headers: { &#039;Content-Type&#039;: &#039;application/json&#039; },<br>      body: JSON.stringify({<br>        metaTx: metaTx,<br>        signature: signature,<br>        targetChain: targetChain<br>      })<br>    });</p>
+<p>async submitMetaTransaction(metaTx, signature, targetChain) {
+<br>    const response = await fetch(<code>${this.relayerUrl}/api/meta-tx</code>, {
+<br>      method: &#039;POST&#039;,
+<br>      headers: { &#039;Content-Type&#039;: &#039;application/json&#039; },
+<br>      body: JSON.stringify({
+<br>        metaTx: metaTx,
+<br>        signature: signature,
+<br>        targetChain: targetChain
+<br>      })
+<br>    });</p>
 
-<p>return await response.json();<br>  }<br>}</p>
+<p>return await response.json();
+<br>  }
+<br>}</p>
 
-<p>// Usage example<br>const ixfi = new IXFIProvider({<br>  rpcs: {<br>    crossfi: &#039;https://rpc.testnet.ms&#039;,<br>    ethereum: &#039;https://mainnet.infura.io/v3/KEY&#039;,<br>    bsc: &#039;https://bsc-dataseed1.binance.org&#039;<br>  },<br>  contracts: {<br>    crossfi: &#039;0x...&#039;,<br>    ethereum: &#039;0x...&#039;,<br>    bsc: &#039;0x...&#039;<br>  },<br>  gateways: {<br>    ethereum: &#039;0x...&#039;,<br>    bsc: &#039;0x...&#039;<br>  },<br>  chainIds: {<br>    crossfi: 4157,<br>    ethereum: 1,<br>    bsc: 56<br>  },<br>  relayerUrl: &#039;http://localhost:3001&#039;<br>});</p>
+<p>// Usage example
+<br>const ixfi = new IXFIProvider({
+<br>  rpcs: {
+<br>    crossfi: &#039;https://rpc.testnet.ms&#039;,
+<br>    ethereum: &#039;https://mainnet.infura.io/v3/KEY&#039;,
+<br>    bsc: &#039;https://bsc-dataseed1.binance.org&#039;
+<br>  },
+<br>  contracts: {
+<br>    crossfi: &#039;0x...&#039;,
+<br>    ethereum: &#039;0x...&#039;,
+<br>    bsc: &#039;0x...&#039;
+<br>  },
+<br>  gateways: {
+<br>    ethereum: &#039;0x...&#039;,
+<br>    bsc: &#039;0x...&#039;
+<br>  },
+<br>  chainIds: {
+<br>    crossfi: 4157,
+<br>    ethereum: 1,
+<br>    bsc: 56
+<br>  },
+<br>  relayerUrl: &#039;http://localhost:3001&#039;
+<br>});</p>
 
-<p>await ixfi.connect(privateKey);<br>await ixfi.deposit(&#039;10&#039;); // Deposit 10 XFI<br>await ixfi.sendCrossChain(&#039;ethereum&#039;, &#039;0x...&#039;, &#039;5&#039;); // Send 5 IXFI to Ethereum</code></pre></div></p>
+<p>await ixfi.connect(privateKey);
+<br>await ixfi.deposit(&#039;10&#039;); // Deposit 10 XFI
+<br>await ixfi.sendCrossChain(&#039;ethereum&#039;, &#039;0x...&#039;, &#039;5&#039;); // Send 5 IXFI to Ethereum
+</code></pre></div></p>
 
 <h2>Common Use Cases</h2>
 
@@ -2418,7 +3466,15 @@ async function crossChainLend() {
     [ethers.utils.parseEther(&#039;100&#039;), userAddress] // Lend 100 IXFI
   );
 
-<p>await ixfi.callContractWithToken(<br>    &#039;ethereum&#039;,<br>    lendingProtocolAddress,<br>    lendingPayload,<br>    &#039;IXFI&#039;,<br>    ethers.utils.parseEther(&#039;100&#039;)<br>  );<br>}</code></pre></div></p>
+<p>await ixfi.callContractWithToken(
+<br>    &#039;ethereum&#039;,
+<br>    lendingProtocolAddress,
+<br>    lendingPayload,
+<br>    &#039;IXFI&#039;,
+<br>    ethers.utils.parseEther(&#039;100&#039;)
+<br>  );
+<br>}
+</code></pre></div></p>
 
 <h3>2. Cross-Chain Gaming</h3>
 
@@ -2430,7 +3486,13 @@ async function transferGameAsset() {
     [tokenId, playerId]
   );
 
-<p>await ixfi.callContract(<br>    &#039;polygon&#039;,<br>    gameContractAddress,<br>    gamePayload<br>  );<br>}</code></pre></div></p>
+<p>await ixfi.callContract(
+<br>    &#039;polygon&#039;,
+<br>    gameContractAddress,
+<br>    gamePayload
+<br>  );
+<br>}
+</code></pre></div></p>
 
 <h3>3. Cross-Chain Governance</h3>
 
@@ -2442,7 +3504,15 @@ async function crossChainVote() {
     [proposalId, true] // Vote yes
   );
 
-<p>await ixfi.callContractWithToken(<br>    &#039;ethereum&#039;,<br>    governanceContract,<br>    votePayload,<br>    &#039;IXFI&#039;,<br>    votingPower<br>  );<br>}</code></pre></div></p>
+<p>await ixfi.callContractWithToken(
+<br>    &#039;ethereum&#039;,
+<br>    governanceContract,
+<br>    votePayload,
+<br>    &#039;IXFI&#039;,
+<br>    votingPower
+<br>  );
+<br>}
+</code></pre></div></p>
 
 <h2>Error Handling</h2>
 
@@ -2458,19 +3528,78 @@ class IXFIError extends Error {
   }
 }
 
-<p>async function handleIXFITransaction(transactionFn) {<br>  try {<br>    return await transactionFn();<br>  } catch (error) {<br>    // Handle specific errors<br>    if (error.message.includes(&#039;insufficient funds&#039;)) {<br>      throw new IXFIError(<br>        &#039;Insufficient balance for transaction&#039;,<br>        &#039;INSUFFICIENT_BALANCE&#039;,<br>        { required: error.required, available: error.available }<br>      );<br>    }</p>
+<p>async function handleIXFITransaction(transactionFn) {
+<br>  try {
+<br>    return await transactionFn();
+<br>  } catch (error) {
+<br>    // Handle specific errors
+<br>    if (error.message.includes(&#039;insufficient funds&#039;)) {
+<br>      throw new IXFIError(
+<br>        &#039;Insufficient balance for transaction&#039;,
+<br>        &#039;INSUFFICIENT_BALANCE&#039;,
+<br>        { required: error.required, available: error.available }
+<br>      );
+<br>    }</p>
 
-<p>if (error.message.includes(&#039;Unsupported destination chain&#039;)) {<br>      throw new IXFIError(<br>        &#039;Chain not supported&#039;,<br>        &#039;UNSUPPORTED_CHAIN&#039;,<br>        { chain: error.chain }<br>      );<br>    }</p>
+<p>if (error.message.includes(&#039;Unsupported destination chain&#039;)) {
+<br>      throw new IXFIError(
+<br>        &#039;Chain not supported&#039;,
+<br>        &#039;UNSUPPORTED_CHAIN&#039;,
+<br>        { chain: error.chain }
+<br>      );
+<br>    }</p>
 
-<p>if (error.message.includes(&#039;Transaction expired&#039;)) {<br>      throw new IXFIError(<br>        &#039;Meta-transaction expired&#039;,<br>        &#039;TRANSACTION_EXPIRED&#039;,<br>        { deadline: error.deadline, currentTime: Date.now() }<br>      );<br>    }</p>
+<p>if (error.message.includes(&#039;Transaction expired&#039;)) {
+<br>      throw new IXFIError(
+<br>        &#039;Meta-transaction expired&#039;,
+<br>        &#039;TRANSACTION_EXPIRED&#039;,
+<br>        { deadline: error.deadline, currentTime: Date.now() }
+<br>      );
+<br>    }</p>
 
-<p>// Generic error<br>    throw new IXFIError(<br>      &#039;Transaction failed&#039;,<br>      &#039;TRANSACTION_FAILED&#039;,<br>      { originalError: error.message }<br>    );<br>  }<br>}</p>
+<p>// Generic error
+<br>    throw new IXFIError(
+<br>      &#039;Transaction failed&#039;,
+<br>      &#039;TRANSACTION_FAILED&#039;,
+<br>      { originalError: error.message }
+<br>    );
+<br>  }
+<br>}</p>
 
-<p>// Usage with error handling<br>async function safeTransfer() {<br>  try {<br>    const result = await handleIXFITransaction(async () =&gt; {<br>      return await ixfi.sendCrossChain(&#039;ethereum&#039;, recipient, amount);<br>    });</p>
+<p>// Usage with error handling
+<br>async function safeTransfer() {
+<br>  try {
+<br>    const result = await handleIXFITransaction(async () =&gt; {
+<br>      return await ixfi.sendCrossChain(&#039;ethereum&#039;, recipient, amount);
+<br>    });</p>
 
-<p>console.log(&#039;Transfer successful:&#039;, result.transactionHash);<br>  } catch (error) {<br>    if (error instanceof IXFIError) {<br>      console.error(<code>IXFI Error [${error.code}]:</code>, error.message);<br>      console.error(&#039;Details:&#039;, error.details);</p>
+<p>console.log(&#039;Transfer successful:&#039;, result.transactionHash);
+<br>  } catch (error) {
+<br>    if (error instanceof IXFIError) {
+<br>      console.error(<code>IXFI Error [${error.code}]:</code>, error.message);
+<br>      console.error(&#039;Details:&#039;, error.details);</p>
 
-<p>// Handle specific error codes<br>      switch (error.code) {<br>        case &#039;INSUFFICIENT_BALANCE&#039;:<br>          alert(&#039;Please deposit more IXFI tokens before transferring&#039;);<br>          break;<br>        case &#039;UNSUPPORTED_CHAIN&#039;:<br>          alert(&#039;Selected chain is not supported&#039;);<br>          break;<br>        case &#039;TRANSACTION_EXPIRED&#039;:<br>          alert(&#039;Transaction took too long, please try again&#039;);<br>          break;<br>        default:<br>          alert(&#039;Transaction failed: &#039; + error.message);<br>      }<br>    } else {<br>      console.error(&#039;Unexpected error:&#039;, error);<br>      alert(&#039;An unexpected error occurred&#039;);<br>    }<br>  }<br>}</code></pre></div></p>
+<p>// Handle specific error codes
+<br>      switch (error.code) {
+<br>        case &#039;INSUFFICIENT_BALANCE&#039;:
+<br>          alert(&#039;Please deposit more IXFI tokens before transferring&#039;);
+<br>          break;
+<br>        case &#039;UNSUPPORTED_CHAIN&#039;:
+<br>          alert(&#039;Selected chain is not supported&#039;);
+<br>          break;
+<br>        case &#039;TRANSACTION_EXPIRED&#039;:
+<br>          alert(&#039;Transaction took too long, please try again&#039;);
+<br>          break;
+<br>        default:
+<br>          alert(&#039;Transaction failed: &#039; + error.message);
+<br>      }
+<br>    } else {
+<br>      console.error(&#039;Unexpected error:&#039;, error);
+<br>      alert(&#039;An unexpected error occurred&#039;);
+<br>    }
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Retry Logic</h3>
 
@@ -2482,9 +3611,18 @@ async function withRetry(fn, maxRetries = 3, delay = 1000) {
     } catch (error) {
       if (i === maxRetries - 1) throw error;
 
-<p>console.log(<code>Attempt ${i + 1} failed, retrying in ${delay}ms...</code>);<br>      await new Promise(resolve =&gt; setTimeout(resolve, delay));<br>      delay *= 2; // Exponential backoff<br>    }<br>  }<br>}</p>
+<p>console.log(<code>Attempt ${i + 1} failed, retrying in ${delay}ms...</code>);
+<br>      await new Promise(resolve =&gt; setTimeout(resolve, delay));
+<br>      delay *= 2; // Exponential backoff
+<br>    }
+<br>  }
+<br>}</p>
 
-<p>// Usage<br>const result = await withRetry(async () =&gt; {<br>  return await ixfi.sendCrossChain(&#039;ethereum&#039;, recipient, amount);<br>});</code></pre></div></p>
+<p>// Usage
+<br>const result = await withRetry(async () =&gt; {
+<br>  return await ixfi.sendCrossChain(&#039;ethereum&#039;, recipient, amount);
+<br>});
+</code></pre></div></p>
 
 <p>This integration guide provides comprehensive examples for developers to integrate IXFI into their applications, covering frontend integration, smart contract development, API usage, and error handling patterns.</p></div><div class="section"><h1 id="security-analysis">5. Security Analysis</h1><h2>Table of Contents</h2>
 1. <a href="#security-model-overview">Security Model Overview</a>
@@ -2578,9 +3716,16 @@ Attacker attempts to replay valid cross-chain transactions to drain funds or exe
 // Command ID prevents replay
 mapping(bytes32 =&gt; bool) public commandExecuted;
 
-<p>modifier notExecuted(bytes32 commandId) {<br>    require(!commandExecuted[commandId], &quot;Command already executed&quot;);<br>    _;<br>}</p>
+<p>modifier notExecuted(bytes32 commandId) {
+<br>    require(!commandExecuted[commandId], &quot;Command already executed&quot;);
+<br>    _;
+<br>}</p>
 
-<p>function execute(bytes32 commandId, ...) external notExecuted(commandId) {<br>    commandExecuted[commandId] = true;<br>    // Execute commands<br>}</code></pre></div></p>
+<p>function execute(bytes32 commandId, ...) external notExecuted(commandId) {
+<br>    commandExecuted[commandId] = true;
+<br>    // Execute commands
+<br>}
+</code></pre></div></p>
 
 <h4>Additional Protections</h4>
 - Unique command IDs per transaction
@@ -2599,11 +3744,24 @@ Malicious relayers coordinate to execute unauthorized cross-chain operations or 
 uint256 public constant REQUIRED_SIGNATURES = 3;
 mapping(bytes32 =&gt; mapping(address =&gt; bool)) public signatures;
 
-<p>function executeWithMultiSig(<br>    bytes32 commandId,<br>    Command[] memory commands,<br>    bytes[] memory signatures<br>) external {<br>    require(signatures.length &gt;= REQUIRED_SIGNATURES, &quot;Insufficient signatures&quot;);</p>
+<p>function executeWithMultiSig(
+<br>    bytes32 commandId,
+<br>    Command[] memory commands,
+<br>    bytes[] memory signatures
+<br>) external {
+<br>    require(signatures.length &gt;= REQUIRED_SIGNATURES, &quot;Insufficient signatures&quot;);</p>
 
-<p>// Verify each signature<br>    for (uint i = 0; i &lt; signatures.length; i++) {<br>        address signer = recoverSigner(commandId, signatures[i]);<br>        require(whitelisted[signer], &quot;Invalid signer&quot;);<br>        require(!signatures[commandId][signer], &quot;Duplicate signature&quot;);<br>        signatures[commandId][signer] = true;<br>    }</p>
+<p>// Verify each signature
+<br>    for (uint i = 0; i &lt; signatures.length; i++) {
+<br>        address signer = recoverSigner(commandId, signatures[i]);
+<br>        require(whitelisted[signer], &quot;Invalid signer&quot;);
+<br>        require(!signatures[commandId][signer], &quot;Duplicate signature&quot;);
+<br>        signatures[commandId][signer] = true;
+<br>    }</p>
 
-<p>// Execute commands<br>}</code></pre></div></p>
+<p>// Execute commands
+<br>}
+</code></pre></div></p>
 
 <h4>Operational Mitigations</h4>
 - Regular relayer key rotation
@@ -2623,13 +3781,20 @@ Attacker manipulates DIA Oracle prices to exploit gas credit calculations or arb
 uint256 public maxPriceAge = 3600; // 1 hour maximum age
 uint256 public maxPriceDeviation = 1000; // 10% maximum deviation
 
-<p>function getIXFIPrice() public view returns (uint128 price, uint128 timestamp) {<br>    (price, timestamp) = diaOracle.getValue(ixfiPriceKey);</p>
+<p>function getIXFIPrice() public view returns (uint128 price, uint128 timestamp) {
+<br>    (price, timestamp) = diaOracle.getValue(ixfiPriceKey);</p>
 
-<p>// Check price freshness<br>    require(block.timestamp - timestamp &lt;= maxPriceAge, &quot;Price data stale&quot;);</p>
+<p>// Check price freshness
+<br>    require(block.timestamp - timestamp &lt;= maxPriceAge, &quot;Price data stale&quot;);</p>
 
-<p>// Optional: Check price deviation from moving average<br>    uint128 avgPrice = getMovingAverage();<br>    uint128 deviation = price &gt; avgPrice ? price - avgPrice : avgPrice - price;<br>    require(deviation * 10000 / avgPrice &lt;= maxPriceDeviation, &quot;Price deviation too high&quot;);</p>
+<p>// Optional: Check price deviation from moving average
+<br>    uint128 avgPrice = getMovingAverage();
+<br>    uint128 deviation = price &gt; avgPrice ? price - avgPrice : avgPrice - price;
+<br>    require(deviation * 10000 / avgPrice &lt;= maxPriceDeviation, &quot;Price deviation too high&quot;);</p>
 
-<p>return (price, timestamp);<br>}</code></pre></div></p>
+<p>return (price, timestamp);
+<br>}
+</code></pre></div></p>
 
 <h4>Additional Protections</h4>
 - Multiple oracle sources with price aggregation
@@ -2648,11 +3813,22 @@ Relayers or miners front-run meta-transactions to extract MEV or cause transacti
 // Commit-reveal scheme for sensitive meta-transactions
 mapping(bytes32 =&gt; uint256) public commitments;
 
-<p>function commitMetaTransaction(bytes32 commitment) external {<br>    commitments[commitment] = block.timestamp;<br>}</p>
+<p>function commitMetaTransaction(bytes32 commitment) external {
+<br>    commitments[commitment] = block.timestamp;
+<br>}</p>
 
-<p>function revealAndExecute(<br>    MetaTransaction memory metaTx,<br>    bytes memory signature,<br>    uint256 nonce<br>) external {<br>    bytes32 commitment = keccak256(abi.encode(metaTx, signature, nonce));<br>    require(commitments[commitment] &gt; 0, &quot;Invalid commitment&quot;);<br>    require(block.timestamp &gt;= commitments[commitment] + REVEAL_DELAY, &quot;Too early&quot;);</p>
+<p>function revealAndExecute(
+<br>    MetaTransaction memory metaTx,
+<br>    bytes memory signature,
+<br>    uint256 nonce
+<br>) external {
+<br>    bytes32 commitment = keccak256(abi.encode(metaTx, signature, nonce));
+<br>    require(commitments[commitment] &gt; 0, &quot;Invalid commitment&quot;);
+<br>    require(block.timestamp &gt;= commitments[commitment] + REVEAL_DELAY, &quot;Too early&quot;);</p>
 
-<p>// Execute meta-transaction<br>}</code></pre></div></p>
+<p>// Execute meta-transaction
+<br>}
+</code></pre></div></p>
 
 <h4>Operational Mitigations</h4>
 - Private mempool for relayers
@@ -2670,13 +3846,23 @@ Malicious contracts exploit reentrancy vulnerabilities in cross-chain execution 
 <div class="code-section"><pre><code>
 import &quot;@openzeppelin/contracts/utils/ReentrancyGuard.sol&quot;;
 
-<p>contract IXFI is ReentrancyGuard {<br>    function withdraw(uint256 amount_) public onlyCrossfiChain nonReentrant {<br>        address account = msg.sender;<br>        require(amount_ &gt; 0, &quot;Zero amount&quot;);<br>        require(balanceOf(account) &gt;= amount_, &quot;Not enough IXFI&quot;);</p>
+<p>contract IXFI is ReentrancyGuard {
+<br>    function withdraw(uint256 amount_) public onlyCrossfiChain nonReentrant {
+<br>        address account = msg.sender;
+<br>        require(amount_ &gt; 0, &quot;Zero amount&quot;);
+<br>        require(balanceOf(account) &gt;= amount_, &quot;Not enough IXFI&quot;);</p>
 
-<p>// Effects before interactions<br>        _burn(account, amount_);</p>
+<p>// Effects before interactions
+<br>        _burn(account, amount_);</p>
 
-<p>// Interaction (external call)<br>        (bool success, ) = payable(account).call{value: amount_}(&quot;&quot;);<br>        require(success, &quot;Withdraw failed&quot;);</p>
+<p>// Interaction (external call)
+<br>        (bool success, ) = payable(account).call{value: amount_}(&quot;&quot;);
+<br>        require(success, &quot;Withdraw failed&quot;);</p>
 
-<p>emit Withdrawn(account, amount_);<br>    }<br>}</code></pre></div></p>
+<p>emit Withdrawn(account, amount_);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h3>6. Flash Loan Attacks</h3>
 
@@ -2690,9 +3876,19 @@ Attackers use flash loans to manipulate contract state or exploit economic incen
 mapping(address =&gt; uint256) public lastLargeOperation;
 uint256 public constant LARGE_OPERATION_COOLDOWN = 1; // 1 block
 
-<p>function deposit() public payable onlyCrossfiChain {<br>    if (msg.value &gt; 100 ether) { // Large deposit<br>        require(<br>            block.number &gt; lastLargeOperation[msg.sender] + LARGE_OPERATION_COOLDOWN,<br>            &quot;Cooldown period active&quot;<br>        );<br>        lastLargeOperation[msg.sender] = block.number;<br>    }</p>
+<p>function deposit() public payable onlyCrossfiChain {
+<br>    if (msg.value &gt; 100 ether) { // Large deposit
+<br>        require(
+<br>            block.number &gt; lastLargeOperation[msg.sender] + LARGE_OPERATION_COOLDOWN,
+<br>            &quot;Cooldown period active&quot;
+<br>        );
+<br>        lastLargeOperation[msg.sender] = block.number;
+<br>    }</p>
 
-<p>_mint(msg.sender, msg.value);<br>    emit Deposited(msg.sender, msg.value);<br>}</code></pre></div></p>
+<p>_mint(msg.sender, msg.value);
+<br>    emit Deposited(msg.sender, msg.value);
+<br>}
+</code></pre></div></p>
 
 <h2>Smart Contract Security</h2>
 
@@ -2705,7 +3901,8 @@ function addWhitelistedRelayer(address relayer) public onlyOwner
 function removeWhitelistedRelayer(address relayer) public onlyOwner
 function addChain(string memory chainName, uint256 chainId) external onlyOwner
 function setDIAOracle(address newOracle) external onlyOwner
-function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner</code></pre></div>
+function setGatewayAuthorization(address gateway, bool authorized) external onlyOwner
+</code></pre></div>
 
 <p><strong>Recommendation</strong>: Implement multi-signature wallet or DAO governance for owner functions.</p>
 
@@ -2713,9 +3910,13 @@ function setGatewayAuthorization(address gateway, bool authorized) external only
 <div class="code-section"><pre><code>
 // Relayer functions - protected by whitelist
 function execute(bytes32 commandId, Command[] memory commands, bytes memory signature) external onlyRelayer
-function executeMetaTransaction(MetaTransaction calldata metaTx, bytes calldata signature) external</code></pre></div>
+function executeMetaTransaction(MetaTransaction calldata metaTx, bytes calldata signature) external
+</code></pre></div>
 
-<p><strong>Security Measures</strong>:<br>- Whitelisting mechanism<br>- Signature verification<br>- Command replay protection</p>
+<p><strong>Security Measures</strong>:
+<br>- Whitelisting mechanism
+<br>- Signature verification
+<br>- Command replay protection</p>
 
 <h3>Code Quality Assessment</h3>
 
@@ -2740,13 +3941,24 @@ function executeMetaTransaction(MetaTransaction calldata metaTx, bytes calldata 
 <div class="code-section"><pre><code>
 import &quot;@openzeppelin/contracts/utils/Pausable.sol&quot;;
 
-<p>contract IXFI is ERC20, Ownable, Pausable {<br>    function pause() external onlyOwner {<br>        _pause();<br>    }</p>
+<p>contract IXFI is ERC20, Ownable, Pausable {
+<br>    function pause() external onlyOwner {
+<br>        _pause();
+<br>    }</p>
 
-<p>function unpause() external onlyOwner {<br>        _unpause();<br>    }</p>
+<p>function unpause() external onlyOwner {
+<br>        _unpause();
+<br>    }</p>
 
-<p>function deposit() public payable onlyCrossfiChain whenNotPaused {<br>        // Function implementation<br>    }</p>
+<p>function deposit() public payable onlyCrossfiChain whenNotPaused {
+<br>        // Function implementation
+<br>    }</p>
 
-<p>function withdraw(uint256 amount_) public onlyCrossfiChain whenNotPaused {<br>        // Function implementation<br>    }<br>}</code></pre></div></p>
+<p>function withdraw(uint256 amount_) public onlyCrossfiChain whenNotPaused {
+<br>        // Function implementation
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h4>2. Rate Limiting</h4>
 
@@ -2757,9 +3969,18 @@ contract RateLimited {
     uint256 public constant RATE_LIMIT_WINDOW = 1 hours;
     uint256 public constant MAX_ACTIONS_PER_WINDOW = 10;
 
-<p>modifier rateLimited() {<br>        if (block.timestamp &gt; lastActionTime[msg.sender] + RATE_LIMIT_WINDOW) {<br>            actionCount[msg.sender] = 0;<br>            lastActionTime[msg.sender] = block.timestamp;<br>        }</p>
+<p>modifier rateLimited() {
+<br>        if (block.timestamp &gt; lastActionTime[msg.sender] + RATE_LIMIT_WINDOW) {
+<br>            actionCount[msg.sender] = 0;
+<br>            lastActionTime[msg.sender] = block.timestamp;
+<br>        }</p>
 
-<p>require(actionCount[msg.sender] &lt; MAX_ACTIONS_PER_WINDOW, &quot;Rate limit exceeded&quot;);<br>        actionCount[msg.sender]++;<br>        _;<br>    }<br>}</code></pre></div></p>
+<p>require(actionCount[msg.sender] &lt; MAX_ACTIONS_PER_WINDOW, &quot;Rate limit exceeded&quot;);
+<br>        actionCount[msg.sender]++;
+<br>        _;
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h4>3. Circuit Breakers</h4>
 
@@ -2769,9 +3990,18 @@ contract CircuitBreaker {
     uint256 public dailyVolume;
     uint256 public lastResetTime;
 
-<p>modifier circuitBreaker(uint256 amount) {<br>        if (block.timestamp &gt; lastResetTime + 1 days) {<br>            dailyVolume = 0;<br>            lastResetTime = block.timestamp;<br>        }</p>
+<p>modifier circuitBreaker(uint256 amount) {
+<br>        if (block.timestamp &gt; lastResetTime + 1 days) {
+<br>            dailyVolume = 0;
+<br>            lastResetTime = block.timestamp;
+<br>        }</p>
 
-<p>require(dailyVolume + amount &lt;= maxDailyVolume, &quot;Daily volume limit exceeded&quot;);<br>        dailyVolume += amount;<br>        _;<br>    }<br>}</code></pre></div></p>
+<p>require(dailyVolume + amount &lt;= maxDailyVolume, &quot;Daily volume limit exceeded&quot;);
+<br>        dailyVolume += amount;
+<br>        _;
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h2>Relayer Security</h2>
 
@@ -2791,13 +4021,29 @@ contract CircuitBreaker {
 const AWS = require(&#039;aws-sdk&#039;);
 const kms = new AWS.KMS({ region: &#039;us-east-1&#039; });
 
-<p>class SecureRelayer {<br>  constructor(kmsKeyId) {<br>    this.kmsKeyId = kmsKeyId;<br>  }</p>
+<p>class SecureRelayer {
+<br>  constructor(kmsKeyId) {
+<br>    this.kmsKeyId = kmsKeyId;
+<br>  }</p>
 
-<p>async signTransaction(transactionHash) {<br>    const params = {<br>      KeyId: this.kmsKeyId,<br>      Message: Buffer.from(transactionHash.slice(2), &#039;hex&#039;),<br>      MessageType: &#039;RAW&#039;,<br>      SigningAlgorithm: &#039;ECDSA_SHA_256&#039;<br>    };</p>
+<p>async signTransaction(transactionHash) {
+<br>    const params = {
+<br>      KeyId: this.kmsKeyId,
+<br>      Message: Buffer.from(transactionHash.slice(2), &#039;hex&#039;),
+<br>      MessageType: &#039;RAW&#039;,
+<br>      SigningAlgorithm: &#039;ECDSA_SHA_256&#039;
+<br>    };</p>
 
-<p>const result = await kms.sign(params).promise();<br>    return this.parseSignature(result.Signature);<br>  }</p>
+<p>const result = await kms.sign(params).promise();
+<br>    return this.parseSignature(result.Signature);
+<br>  }</p>
 
-<p>parseSignature(signature) {<br>    // Parse DER-encoded signature to r, s, v format<br>    // Implementation details...<br>  }<br>}</code></pre></div></p>
+<p>parseSignature(signature) {
+<br>    // Parse DER-encoded signature to r, s, v format
+<br>    // Implementation details...
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h3>Monitoring and Alerting</h3>
 
@@ -2810,17 +4056,38 @@ const monitoringMetrics = {
   metaTxExecutionTime: 30, // seconds
   dailyTransactionVolume: 0,
 
-<p>// Security metrics<br>  failedSignatureAttempts: 0,<br>  unauthorizedAccessAttempts: 0,<br>  priceDeviationAlerts: 0,</p>
+<p>// Security metrics
+<br>  failedSignatureAttempts: 0,
+<br>  unauthorizedAccessAttempts: 0,
+<br>  priceDeviationAlerts: 0,</p>
 
-<p>// Infrastructure metrics<br>  rpcLatency: 100, // milliseconds<br>  relayerUptime: 0.999,<br>  gasFeesConsumed: 0<br>};</p>
+<p>// Infrastructure metrics
+<br>  rpcLatency: 100, // milliseconds
+<br>  relayerUptime: 0.999,
+<br>  gasFeesConsumed: 0
+<br>};</p>
 
-<p>// Alert thresholds<br>const alertThresholds = {<br>  maxFailedSignatures: 5,<br>  maxUnauthorizedAccess: 3,<br>  maxPriceDeviation: 0.1, // 10%<br>  maxRpcLatency: 5000, // 5 seconds<br>  minUptime: 0.995 // 99.5%<br>};</p>
+<p>// Alert thresholds
+<br>const alertThresholds = {
+<br>  maxFailedSignatures: 5,
+<br>  maxUnauthorizedAccess: 3,
+<br>  maxPriceDeviation: 0.1, // 10%
+<br>  maxRpcLatency: 5000, // 5 seconds
+<br>  minUptime: 0.995 // 99.5%
+<br>};</p>
 
-<p>function checkAlerts() {<br>  if (monitoringMetrics.failedSignatureAttempts &gt; alertThresholds.maxFailedSignatures) {<br>    sendAlert(&#039;CRITICAL: Multiple signature failures detected&#039;);<br>  }</p>
+<p>function checkAlerts() {
+<br>  if (monitoringMetrics.failedSignatureAttempts &gt; alertThresholds.maxFailedSignatures) {
+<br>    sendAlert(&#039;CRITICAL: Multiple signature failures detected&#039;);
+<br>  }</p>
 
-<p>if (monitoringMetrics.crossChainSuccessRate &lt; 0.95) {<br>    sendAlert(&#039;WARNING: Cross-chain success rate below threshold&#039;);<br>  }</p>
+<p>if (monitoringMetrics.crossChainSuccessRate &lt; 0.95) {
+<br>    sendAlert(&#039;WARNING: Cross-chain success rate below threshold&#039;);
+<br>  }</p>
 
-<p>// Additional checks...<br>}</code></pre></div></p>
+<p>// Additional checks...
+<br>}
+</code></pre></div></p>
 
 <h3>Network Security</h3>
 
@@ -2841,15 +4108,32 @@ class SecureRPCProvider {
     this.currentProvider = 0;
   }
 
-<p>async makeRequest(method, params) {<br>    const maxRetries = this.backupRpcs.length + 1;</p>
+<p>async makeRequest(method, params) {
+<br>    const maxRetries = this.backupRpcs.length + 1;</p>
 
-<p>for (let i = 0; i &lt; maxRetries; i++) {<br>      try {<br>        const rpc = i === 0 ? this.primaryRpc : this.backupRpcs[i - 1];<br>        const response = await this.sendRequest(rpc, method, params);</p>
+<p>for (let i = 0; i &lt; maxRetries; i++) {
+<br>      try {
+<br>        const rpc = i === 0 ? this.primaryRpc : this.backupRpcs[i - 1];
+<br>        const response = await this.sendRequest(rpc, method, params);</p>
 
-<p>// Verify response integrity<br>        if (this.validateResponse(response)) {<br>          return response;<br>        }<br>      } catch (error) {<br>        console.warn(<code>RPC request failed, trying backup: ${error.message}</code>);<br>      }<br>    }</p>
+<p>// Verify response integrity
+<br>        if (this.validateResponse(response)) {
+<br>          return response;
+<br>        }
+<br>      } catch (error) {
+<br>        console.warn(<code>RPC request failed, trying backup: ${error.message}</code>);
+<br>      }
+<br>    }</p>
 
-<p>throw new Error(&#039;All RPC providers failed&#039;);<br>  }</p>
+<p>throw new Error(&#039;All RPC providers failed&#039;);
+<br>  }</p>
 
-<p>validateResponse(response) {<br>    // Implement response validation logic<br>    return response &amp;&amp; response.result !== undefined;<br>  }<br>}</code></pre></div></p>
+<p>validateResponse(response) {
+<br>    // Implement response validation logic
+<br>    return response &amp;&amp; response.result !== undefined;
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <h2>Oracle Security</h2>
 
@@ -2862,21 +4146,45 @@ interface IPriceOracle {
     function getPrice(string memory symbol) external view returns (uint256 price, uint256 timestamp);
 }
 
-<p>contract MultiOracleManager {<br>    IPriceOracle[] public oracles;<br>    uint256 public minOracles = 3;<br>    uint256 public maxDeviation = 500; // 5%</p>
+<p>contract MultiOracleManager {
+<br>    IPriceOracle[] public oracles;
+<br>    uint256 public minOracles = 3;
+<br>    uint256 public maxDeviation = 500; // 5%</p>
 
-<p>function getAggregatedPrice(string memory symbol) external view returns (uint256) {<br>        require(oracles.length &gt;= minOracles, &quot;Insufficient oracles&quot;);</p>
+<p>function getAggregatedPrice(string memory symbol) external view returns (uint256) {
+<br>        require(oracles.length &gt;= minOracles, &quot;Insufficient oracles&quot;);</p>
 
-<p>uint256[] memory prices = new uint256[](oracles.length);<br>        uint256 validPrices = 0;</p>
+<p>uint256[] memory prices = new uint256[](oracles.length);
+<br>        uint256 validPrices = 0;</p>
 
-<p>// Collect prices from all oracles<br>        for (uint i = 0; i &lt; oracles.length; i++) {<br>            try oracles[i].getPrice(symbol) returns (uint256 price, uint256 timestamp) {<br>                if (block.timestamp - timestamp &lt;= 3600) { // 1 hour freshness<br>                    prices[validPrices] = price;<br>                    validPrices++;<br>                }<br>            } catch {<br>                // Oracle failed, skip<br>            }<br>        }</p>
+<p>// Collect prices from all oracles
+<br>        for (uint i = 0; i &lt; oracles.length; i++) {
+<br>            try oracles[i].getPrice(symbol) returns (uint256 price, uint256 timestamp) {
+<br>                if (block.timestamp - timestamp &lt;= 3600) { // 1 hour freshness
+<br>                    prices[validPrices] = price;
+<br>                    validPrices++;
+<br>                }
+<br>            } catch {
+<br>                // Oracle failed, skip
+<br>            }
+<br>        }</p>
 
 <p>require(validPrices &gt;= minOracles, &quot;Insufficient valid prices&quot;);</p>
 
-<p>// Calculate median price<br>        uint256 medianPrice = calculateMedian(prices, validPrices);</p>
+<p>// Calculate median price
+<br>        uint256 medianPrice = calculateMedian(prices, validPrices);</p>
 
-<p>// Validate price consistency<br>        for (uint i = 0; i &lt; validPrices; i++) {<br>            uint256 deviation = prices[i] &gt; medianPrice ? <br>                prices[i] - medianPrice : medianPrice - prices[i];<br>            require(deviation * 10000 / medianPrice &lt;= maxDeviation, &quot;Price deviation too high&quot;);<br>        }</p>
+<p>// Validate price consistency
+<br>        for (uint i = 0; i &lt; validPrices; i++) {
+<br>            uint256 deviation = prices[i] &gt; medianPrice ? 
+<br>                prices[i] - medianPrice : medianPrice - prices[i];
+<br>            require(deviation * 10000 / medianPrice &lt;= maxDeviation, &quot;Price deviation too high&quot;);
+<br>        }</p>
 
-<p>return medianPrice;<br>    }<br>}</code></pre></div></p>
+<p>return medianPrice;
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h3>Oracle Failure Handling</h3>
 
@@ -2887,9 +4195,24 @@ contract OracleFailsafe {
     uint256 public gracePeriod = 6 hours;
     bool public emergencyMode = false;
 
-<p>function getPrice() external view returns (uint256) {<br>        try diaOracle.getValue(ixfiPriceKey) returns (uint128 price, uint128 timestamp) {<br>            require(block.timestamp - timestamp &lt;= maxPriceAge, &quot;Price stale&quot;);<br>            return uint256(price);<br>        } catch {<br>            // Oracle failed, check if we can use cached price<br>            require(!emergencyMode, &quot;Oracle system in emergency mode&quot;);<br>            require(block.timestamp - lastPriceUpdate &lt;= gracePeriod, &quot;Cached price too old&quot;);<br>            return lastValidPrice;<br>        }<br>    }</p>
+<p>function getPrice() external view returns (uint256) {
+<br>        try diaOracle.getValue(ixfiPriceKey) returns (uint128 price, uint128 timestamp) {
+<br>            require(block.timestamp - timestamp &lt;= maxPriceAge, &quot;Price stale&quot;);
+<br>            return uint256(price);
+<br>        } catch {
+<br>            // Oracle failed, check if we can use cached price
+<br>            require(!emergencyMode, &quot;Oracle system in emergency mode&quot;);
+<br>            require(block.timestamp - lastPriceUpdate &lt;= gracePeriod, &quot;Cached price too old&quot;);
+<br>            return lastValidPrice;
+<br>        }
+<br>    }</p>
 
-<p>function enterEmergencyMode() external onlyOwner {<br>        emergencyMode = true;<br>        emit EmergencyModeActivated();<br>    }<br>}</code></pre></div></p>
+<p>function enterEmergencyMode() external onlyOwner {
+<br>        emergencyMode = true;
+<br>        emit EmergencyModeActivated();
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h2>Operational Security</h2>
 
@@ -2930,17 +4253,33 @@ contract EmergencyControls is Ownable, Pausable {
 
 <p>mapping(bytes32 =&gt; uint256) public emergencyActions;</p>
 
-<p>modifier onlyEmergency() {<br>        require(msg.sender == emergencyMultisig || msg.sender == owner(), &quot;Unauthorized&quot;);<br>        _;<br>    }</p>
+<p>modifier onlyEmergency() {
+<br>        require(msg.sender == emergencyMultisig || msg.sender == owner(), &quot;Unauthorized&quot;);
+<br>        _;
+<br>    }</p>
 
-<p>function emergencyPause() external onlyEmergency {<br>        _pause();<br>        emit EmergencyPauseActivated(msg.sender);<br>    }</p>
+<p>function emergencyPause() external onlyEmergency {
+<br>        _pause();
+<br>        emit EmergencyPauseActivated(msg.sender);
+<br>    }</p>
 
-<p>function scheduleEmergencyAction(bytes32 actionHash) external onlyEmergency {<br>        emergencyActions[actionHash] = block.timestamp + emergencyDelay;<br>        emit EmergencyActionScheduled(actionHash);<br>    }</p>
+<p>function scheduleEmergencyAction(bytes32 actionHash) external onlyEmergency {
+<br>        emergencyActions[actionHash] = block.timestamp + emergencyDelay;
+<br>        emit EmergencyActionScheduled(actionHash);
+<br>    }</p>
 
-<p>function executeEmergencyAction(bytes calldata action) external onlyEmergency {<br>        bytes32 actionHash = keccak256(action);<br>        require(emergencyActions[actionHash] &gt; 0, &quot;Action not scheduled&quot;);<br>        require(block.timestamp &gt;= emergencyActions[actionHash], &quot;Delay not met&quot;);</p>
+<p>function executeEmergencyAction(bytes calldata action) external onlyEmergency {
+<br>        bytes32 actionHash = keccak256(action);
+<br>        require(emergencyActions[actionHash] &gt; 0, &quot;Action not scheduled&quot;);
+<br>        require(block.timestamp &gt;= emergencyActions[actionHash], &quot;Delay not met&quot;);</p>
 
 <p>delete emergencyActions[actionHash];</p>
 
-<p>(bool success, ) = address(this).call(action);<br>        require(success, &quot;Emergency action failed&quot;);<br>    }<br>}</code></pre></div></p>
+<p>(bool success, ) = address(this).call(action);
+<br>        require(success, &quot;Emergency action failed&quot;);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h4>Fund Recovery Mechanisms</h4>
 
@@ -2949,17 +4288,34 @@ contract FundRecovery is Ownable {
     uint256 public recoveryDelay = 7 days;
     mapping(bytes32 =&gt; uint256) public recoveryRequests;
 
-<p>function requestFundRecovery(<br>        address token,<br>        address to,<br>        uint256 amount,<br>        string memory reason<br>    ) external onlyOwner {<br>        bytes32 requestId = keccak256(abi.encode(token, to, amount, reason, block.timestamp));<br>        recoveryRequests[requestId] = block.timestamp + recoveryDelay;</p>
+<p>function requestFundRecovery(
+<br>        address token,
+<br>        address to,
+<br>        uint256 amount,
+<br>        string memory reason
+<br>    ) external onlyOwner {
+<br>        bytes32 requestId = keccak256(abi.encode(token, to, amount, reason, block.timestamp));
+<br>        recoveryRequests[requestId] = block.timestamp + recoveryDelay;</p>
 
-<p>emit FundRecoveryRequested(requestId, token, to, amount, reason);<br>    }</p>
+<p>emit FundRecoveryRequested(requestId, token, to, amount, reason);
+<br>    }</p>
 
-<p>function executeFundRecovery(bytes32 requestId, address token, address to, uint256 amount) external onlyOwner {<br>        require(recoveryRequests[requestId] &gt; 0, &quot;Invalid request&quot;);<br>        require(block.timestamp &gt;= recoveryRequests[requestId], &quot;Recovery delay not met&quot;);</p>
+<p>function executeFundRecovery(bytes32 requestId, address token, address to, uint256 amount) external onlyOwner {
+<br>        require(recoveryRequests[requestId] &gt; 0, &quot;Invalid request&quot;);
+<br>        require(block.timestamp &gt;= recoveryRequests[requestId], &quot;Recovery delay not met&quot;);</p>
 
 <p>delete recoveryRequests[requestId];</p>
 
-<p>if (token == address(0)) {<br>            payable(to).transfer(amount);<br>        } else {<br>            IERC20(token).transfer(to, amount);<br>        }</p>
+<p>if (token == address(0)) {
+<br>            payable(to).transfer(amount);
+<br>        } else {
+<br>            IERC20(token).transfer(to, amount);
+<br>        }</p>
 
-<p>emit FundRecoveryExecuted(requestId, token, to, amount);<br>    }<br>}</code></pre></div></p>
+<p>emit FundRecoveryExecuted(requestId, token, to, amount);
+<br>    }
+<br>}
+</code></pre></div></p>
 
 <h3>Security Monitoring</h3>
 
@@ -2977,21 +4333,49 @@ class SecurityMonitor {
     };
   }
 
-<p>async monitorContinuously() {<br>    while (true) {<br>      await this.checkSystemHealth();<br>      await this.checkTransactionMetrics();<br>      await this.checkPriceFeeds();<br>      await this.checkRelayerStatus();</p>
+<p>async monitorContinuously() {
+<br>    while (true) {
+<br>      await this.checkSystemHealth();
+<br>      await this.checkTransactionMetrics();
+<br>      await this.checkPriceFeeds();
+<br>      await this.checkRelayerStatus();</p>
 
 <p>this.processAlerts();</p>
 
-<p>await this.sleep(30000); // Check every 30 seconds<br>    }<br>  }</p>
+<p>await this.sleep(30000); // Check every 30 seconds
+<br>    }
+<br>  }</p>
 
-<p>async checkSystemHealth() {<br>    const healthChecks = await Promise.all([<br>      this.checkContractBalance(),<br>      this.checkOracleStatus(),<br>      this.checkRelayerConnectivity()<br>    ]);</p>
+<p>async checkSystemHealth() {
+<br>    const healthChecks = await Promise.all([
+<br>      this.checkContractBalance(),
+<br>      this.checkOracleStatus(),
+<br>      this.checkRelayerConnectivity()
+<br>    ]);</p>
 
-<p>healthChecks.forEach((check, index) =&gt; {<br>      if (!check.healthy) {<br>        this.raiseAlert(&#039;HIGH&#039;, <code>System health check ${index} failed: ${check.reason}</code>);<br>      }<br>    });<br>  }</p>
+<p>healthChecks.forEach((check, index) =&gt; {
+<br>      if (!check.healthy) {
+<br>        this.raiseAlert(&#039;HIGH&#039;, <code>System health check ${index} failed: ${check.reason}</code>);
+<br>      }
+<br>    });
+<br>  }</p>
 
-<p>raiseAlert(severity, message) {<br>    const alert = {<br>      timestamp: new Date(),<br>      severity: severity,<br>      message: message,<br>      id: this.generateAlertId()<br>    };</p>
+<p>raiseAlert(severity, message) {
+<br>    const alert = {
+<br>      timestamp: new Date(),
+<br>      severity: severity,
+<br>      message: message,
+<br>      id: this.generateAlertId()
+<br>    };</p>
 
 <p>this.alerts.push(alert);</p>
 
-<p>if (severity === &#039;HIGH&#039; || severity === &#039;CRITICAL&#039;) {<br>      this.sendImmediateNotification(alert);<br>    }<br>  }<br>}</code></pre></div></p>
+<p>if (severity === &#039;HIGH&#039; || severity === &#039;CRITICAL&#039;) {
+<br>      this.sendImmediateNotification(alert);
+<br>    }
+<br>  }
+<br>}
+</code></pre></div></p>
 
 <p>This security analysis provides a comprehensive overview of the IXFI system's security considerations, from smart contract vulnerabilities to operational security procedures. Regular security audits and updates to these measures are essential for maintaining system security.</p></div>
 </body>

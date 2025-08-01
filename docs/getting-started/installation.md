@@ -111,7 +111,7 @@ require('dotenv').config();
 
 module.exports = {
   solidity: {
-    version: "0.8.20",
+    version: "0.8.24",
     settings: {
       optimizer: {
         enabled: true,
@@ -195,7 +195,7 @@ Add to your `settings.json`:
 ```json
 {
   "solidity.defaultCompiler": "localNodeModule",
-  "solidity.compileUsingRemoteVersion": "v0.8.20+commit.a1b79de6",
+  "solidity.compileUsingRemoteVersion": "v0.8.24+commit.a1b79de6",
   "solidity.packageDefaultDependenciesContractsDirectory": "contracts",
   "solidity.packageDefaultDependenciesDirectory": "node_modules"
 }

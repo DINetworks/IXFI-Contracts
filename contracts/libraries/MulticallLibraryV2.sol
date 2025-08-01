@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "./QuoteLibrary.sol";
 
@@ -31,44 +31,70 @@ library MulticallLibrary {
         mapping(uint256 => address) storage curveRegistries,
         mapping(uint256 => address) storage balancerVaults,
         mapping(uint256 => mapping(bytes32 => QuoteLibrary.PoolConfig)) storage poolConfigs
-    ) internal returns (address routerAddress, QuoteLibrary.RouterType routerType, uint256 expectedOutput) {
+    ) internal returns (address, QuoteLibrary.RouterType, uint256) {
         require(supportedChains[chainId], "Chain not supported");
         require(amount > 0, "Amount must be greater than 0");
-        
+
         uint256 bestOutput = 0;
         address bestRouter = address(0);
         QuoteLibrary.RouterType bestType;
         bool routerFound = false;
-        
-        // Loop through all 37 router types (0-36)
+
         for (uint256 i = 0; i < 37; i++) {
-            QuoteLibrary.RouterType rt = QuoteLibrary.RouterType(i);
-            QuoteLibrary.RouterConfig memory config = routers[chainId][rt];
-            
-            if (config.isActive && config.routerAddress != address(0)) {
-                uint256 output = QuoteLibrary.getExpectedOutput(
-                    chainId,
-                    rt,
-                    tokenIn,
-                    tokenOut,
-                    amount,
-                    routers,
-                    curveRegistries,
-                    balancerVaults,
-                    poolConfigs
-                );
-                
-                if (output > bestOutput) {
-                    bestOutput = output;
-                    bestRouter = config.routerAddress;
-                    bestType = rt;
-                    routerFound = true;
-                }
+            (bool valid, uint256 output, address routerAddr) = _evaluateRouter(
+                chainId,
+                QuoteLibrary.RouterType(i),
+                tokenIn,
+                tokenOut,
+                amount,
+                routers,
+                curveRegistries,
+                balancerVaults,
+                poolConfigs
+            );
+
+            if (valid && output > bestOutput) {
+                bestOutput = output;
+                bestRouter = routerAddr;
+                bestType = QuoteLibrary.RouterType(i);
+                routerFound = true;
             }
         }
-        
+
         require(routerFound, "No successful quotes found");
         return (bestRouter, bestType, bestOutput);
+    }
+
+    function _evaluateRouter(
+        uint256 chainId,
+        QuoteLibrary.RouterType rt,
+        address tokenIn,
+        address tokenOut,
+        uint256 amount,
+        mapping(uint256 => mapping(QuoteLibrary.RouterType => QuoteLibrary.RouterConfig)) storage routers,
+        mapping(uint256 => address) storage curveRegistries,
+        mapping(uint256 => address) storage balancerVaults,
+        mapping(uint256 => mapping(bytes32 => QuoteLibrary.PoolConfig)) storage poolConfigs
+    ) private returns (bool, uint256, address) {
+        QuoteLibrary.RouterConfig memory config = routers[chainId][rt];
+
+        if (!config.isActive || config.routerAddress == address(0)) {
+            return (false, 0, address(0));
+        }
+
+        uint256 output = QuoteLibrary.getExpectedOutput(
+            chainId,
+            rt,
+            tokenIn,
+            tokenOut,
+            amount,
+            routers,
+            curveRegistries,
+            balancerVaults,
+            poolConfigs
+        );
+
+        return (true, output, config.routerAddress);
     }
 
     /**

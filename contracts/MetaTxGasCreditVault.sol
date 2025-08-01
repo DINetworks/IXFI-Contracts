@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
  * @title IDIAOracleV2
@@ -61,11 +61,12 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     event PriceKeyUpdated(string newKey);
     event MaxPriceAgeUpdated(uint256 newMaxAge);
 
-    constructor(address initialOwner, address _ixfiToken, address _diaOracle) Ownable(initialOwner) {
+    constructor(address initialOwner, address _ixfiToken, address _diaOracle) Ownable() {
         require(_ixfiToken != address(0), "Invalid IXFI token address");
         require(_diaOracle != address(0), "Invalid DIA Oracle address");
         ixfiToken = IIXFI(_ixfiToken);
         diaOracle = IDIAOracleV2(_diaOracle);
+        _transferOwnership(initialOwner);
     }
 
     // Modifiers ==================================================

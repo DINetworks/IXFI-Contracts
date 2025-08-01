@@ -1,16 +1,14 @@
+require('dotenv').config();
 const hre = require("hardhat");
-const { Wallet, JsonRpcProvider } = require('ethers');
-
-const ethers = hre.ethers
-const provider = new JsonRpcProvider(process.env.RPC_URL); 
-const deployer = new Wallet(process.env.PRIVATE_KEY, provider);
 
 async function main() {
-    console.log("Deploying IXFI GMP Protocol...", ethers);
+    console.log("Deploying IXFI GMP Protocol...");
 
-    // Get the deployer account
+    // Get the deployer account from hardhat signers (uses PRIVATE_KEY from .env)
+    const { ethers } = hre;
+    const [deployer] = await ethers.getSigners();
     console.log("Deploying contracts with account:", deployer.address);
-    console.log("Account balance:", (await provider.getBalance(deployer.address)).toString());
+    console.log("Account balance:", (await ethers.provider.getBalance(deployer.address)).toString());
 
     // Deploy IXFI contract with GMP functionality
     console.log("\n1. Deploying IXFI Gateway...");
@@ -53,10 +51,7 @@ async function main() {
 
     // Add additional chains (beyond the defaults)
     const additionalChains = [
-        { name: "avalanche", id: 43114 },
         { name: "fantom", id: 250 },
-        { name: "arbitrum", id: 42161 },
-        { name: "optimism", id: 10 }
     ];
 
     for (const chain of additionalChains) {
@@ -73,12 +68,12 @@ async function main() {
     console.log("========================");
     console.log(`IXFI Gateway: ${ixfiAddress}`);
     console.log(`Deployer: ${deployer.address}`);
-    console.log(`Network: ${(await provider.getNetwork()).name}`);
-    console.log(`Chain ID: ${(await provider.getNetwork()).chainId}`);
+    console.log(`Network: ${(await ethers.provider.getNetwork()).name}`);
+    console.log(`Chain ID: ${(await ethers.provider.getNetwork()).chainId}`);
 
     console.log("\n5. Verification Commands:");
     console.log("========================");
-    console.log(`npx hardhat verify --network <network> ${ixfiAddress} "${deployer.address}"`);
+    console.log(`npx hardhat verify --network crossfi ${ixfiAddress} "${deployer.address}"`);
 
     console.log("\n6. Next Steps:");
     console.log("========================");
@@ -92,8 +87,8 @@ async function main() {
     console.log("\n7. Testing basic functionality...");
     
     // Check if we're on CrossFi chain for deposit testing
-    const currentChainId = (await provider.getNetwork()).chainId;
-    const crossfiChainId = await ixfi.crossfi_chainid();
+    const currentChainId = (await ethers.provider.getNetwork()).chainId;
+    const crossfiChainId = process.env.CROSSFI_CHAINID;
     
     if (currentChainId === crossfiChainId) {
         try {
@@ -159,8 +154,8 @@ async function main() {
     console.log("================================");
     console.log(`IXFI Gateway: ${ixfiAddress}`);
     console.log(`Owner: ${deployer.address}`);
-    console.log(`Network: ${(await provider.getNetwork()).name}`);
-    console.log(`Chain ID: ${(await provider.getNetwork()).chainId}`);
+    console.log(`Network: ${(await ethers.provider.getNetwork()).name}`);
+    console.log(`Chain ID: ${(await ethers.provider.getNetwork()).chainId}`);
 }
 
 main()

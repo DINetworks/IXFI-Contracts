@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./libraries/QuoteLibrary.sol";
@@ -45,7 +45,9 @@ contract SwapCalldataGenerator is Ownable {
     event BalancerVaultConfigured(uint256 indexed chainId, address vault);
     event PoolConfigured(uint256 indexed chainId, address tokenA, address tokenB, address pool, bytes32 poolId);
 
-    constructor(address initialOwner) Ownable(initialOwner) {}
+    constructor(address initialOwner) Ownable() {
+        _transferOwnership(initialOwner);
+    }
 
     /**
      * @notice Generate Uniswap V2 style swap calldata
@@ -353,7 +355,8 @@ contract SwapCalldataGenerator is Ownable {
 
         for (uint256 i = 0; i < chainIds.length; i++) {
             bytes32 pairHash = keccak256(abi.encodePacked(tokenAs[i], tokenBs[i]));
-            poolConfigs[chainIds[i]][pairHash] = QuoteLibrary.PoolConfig({
+            uint256 chainId = chainIds[i];
+            poolConfigs[chainId][pairHash] = QuoteLibrary.PoolConfig({
                 poolAddress: poolAddresses[i],
                 poolId: poolIds[i],
                 isActive: activeStates[i]

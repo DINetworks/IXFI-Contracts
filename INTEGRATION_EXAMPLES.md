@@ -498,7 +498,7 @@ function CrossChainTransfer() {
 ### Receiving Cross-Chain Calls
 
 ```solidity
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "./IXFIExecutable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -613,7 +613,7 @@ contract CrossChainDApp is IXFIExecutable {
 ### Initiating Cross-Chain Calls
 
 ```solidity
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 

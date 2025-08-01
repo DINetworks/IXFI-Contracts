@@ -480,7 +480,7 @@ describe("CrossChainAggregator", function () {
 // Mock contract implementations for testing
 const MockERC20 = `
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -503,7 +503,7 @@ contract MockERC20 is ERC20 {
 
 const MockAxelarGateway = `
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 contract MockAxelarGateway {
     function callContract(
@@ -548,7 +548,7 @@ contract MockAxelarGateway {
 
 const MockAxelarGasService = `
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 contract MockAxelarGasService {
     function payNativeGasForContractCall(

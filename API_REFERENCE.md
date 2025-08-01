@@ -506,7 +506,7 @@ function setRelayerAuthorization(address relayer, bool authorized) external only
 ### Abstract Contract for dApp Integration
 
 ```solidity
-abstract contract IXFIExecutable is IAxelarExecutable
+abstract contract IXFIExecutable is IExecutable
 ```
 
 ### Core Functions

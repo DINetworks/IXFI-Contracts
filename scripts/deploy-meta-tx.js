@@ -1,15 +1,17 @@
+require('dotenv').config();
 const hre = require("hardhat");
-const { ethers } = hre;
 
 async function main() {
     console.log("🚀 Deploying IXFI Meta-Transaction System...\n");
 
+    const { ethers } = hre;
     const [deployer] = await ethers.getSigners();
-    const network = await ethers.provider.getNetwork();
+    const {provider, formatEther, getContractFactory, getContractAt, parseUnits } = ethers;
+    const network = await provider.getNetwork();
     const isMainChain = network.name === "crossfi" || network.chainId === 4158n;
     
     console.log("Deploying contracts with account:", deployer.address);
-    console.log("Account balance:", ethers.formatEther(await ethers.provider.getBalance(deployer.address)));
+    console.log("Account balance:", formatEther(await provider.getBalance(deployer.address)));
     console.log("Network:", network.name, "- Chain ID:", network.chainId);
     console.log("Is CrossFi (main chain):", isMainChain, "\n");
 
@@ -25,43 +27,30 @@ async function main() {
             const IXFI_ADDRESS = process.env.IXFI_ADDRESS || "0xFC4C231D2293180a30eCd10Ce9A84bDBF27B3967";
             console.log("Using IXFI token at:", IXFI_ADDRESS);
 
+            const DIA_ORACLE = process.env.DIA_ORACLE || "0x859e221ada7cebdf5d4040bf6a2b8959c05a4233";
+            console.log("Using DIA Oracle V2 at:", DIA_ORACLE);
+
             // 1. Deploy MetaTxGasCreditVault
             console.log("\n📦 Deploying MetaTxGasCreditVault...");
-            const MetaTxGasCreditVault = await ethers.getContractFactory("MetaTxGasCreditVault");
-            const vault = await MetaTxGasCreditVault.deploy(deployer.address, IXFI_ADDRESS);
+            const MetaTxGasCreditVault = await getContractFactory("MetaTxGasCreditVault");
+            const vault = await MetaTxGasCreditVault.deploy(deployer.address, IXFI_ADDRESS, DIA_ORACLE);
             await vault.waitForDeployment();
             vaultAddress = await vault.getAddress();
             console.log("✅ MetaTxGasCreditVault deployed to:", vaultAddress);
 
             // 2. Deploy MetaTxGateway
             console.log("\n📦 Deploying MetaTxGateway...");
-            const MetaTxGateway = await ethers.getContractFactory("MetaTxGateway");
+            const MetaTxGateway = await getContractFactory("MetaTxGateway");
             const gateway = await MetaTxGateway.deploy(deployer.address);
             await gateway.waitForDeployment();
             gatewayAddress = await gateway.getAddress();
             console.log("✅ MetaTxGateway deployed to:", gatewayAddress);
 
-            // 3. Configure vault to authorize gateway (for local testing)
-            console.log("\n⚙️ Configuring system...");
-            console.log("Authorizing gateway in vault...");
-            const authTx = await vault.setGatewayAuthorization(gatewayAddress, true);
-            await authTx.wait();
-            console.log("✅ Gateway authorized in vault");
-
-            // 4. Set initial gas settings
-            console.log("Setting initial gas parameters...");
-            const gasPriceTx = await vault.setGasPrice(ethers.parseUnits("20", "gwei"));
-            await gasPriceTx.wait();
-            
-            const rateTx = await vault.setIXFIToGasRate(ethers.parseUnits("1", "12"));
-            await rateTx.wait();
-            console.log("✅ Gas parameters configured");
-
         } else {
             // Deploy on other chains: Only MetaTxGateway
             console.log("📦 Deploying on External Chain - MetaTxGateway Only");
             
-            const MetaTxGateway = await ethers.getContractFactory("MetaTxGateway");
+            const MetaTxGateway = await getContractFactory("MetaTxGateway");
             const gateway = await MetaTxGateway.deploy(deployer.address);
             await gateway.waitForDeployment();
             gatewayAddress = await gateway.getAddress();
@@ -70,7 +59,7 @@ async function main() {
 
         // 5. Authorize deployer as relayer for testing
         if (gatewayAddress) {
-            const gateway = await ethers.getContractAt("MetaTxGateway", gatewayAddress);
+            const gateway = await getContractAt("MetaTxGateway", gatewayAddress);
             console.log("\n🔑 Authorizing deployer as relayer...");
             const relayerTx = await gateway.setRelayerAuthorization(deployer.address, true);
             await relayerTx.wait();
@@ -98,7 +87,7 @@ async function main() {
         if (isMainChain) {
             console.log(`Add to meta-tx-config.json for CrossFi:`);
             console.log(`"crossfi": {`);
-            console.log(`  "rpc": "https://rpc.crossfi.io",`);
+            console.log(`  "rpc": "https://rpc.mainnet.ms",`);
             console.log(`  "gasCreditVault": "${vaultAddress}",`);
             console.log(`  "metaTxGateway": "${gatewayAddress}"`);
             console.log(`}`);
@@ -123,7 +112,7 @@ async function main() {
         console.log("\n📚 Next Steps:");
         if (isMainChain) {
             console.log("1. Users can deposit IXFI for gas credits:");
-            console.log(`   vault.deposit(ethers.parseEther("100"))`);
+            console.log(`   vault.deposit(parseEther("100"))`);
             console.log("2. Configure relayer with both contracts");
             console.log("3. Start relayer: node meta-tx-relayer.js");
         } else {
@@ -149,18 +138,18 @@ async function main() {
 async function testMetaTxSystem(contracts) {
     console.log("\n🧪 Testing Meta-Transaction System...");
     
-    const [deployer, user] = await ethers.getSigners();
+    const [deployer, user] = await getSigners();
     
     try {
         // Get contract instances
-        const vault = await ethers.getContractAt("MetaTxGasCreditVault", contracts.vault);
-        const gateway = await ethers.getContractAt("MetaTxGateway", contracts.gateway);
-        const ixfi = await ethers.getContractAt("IXFI", contracts.ixfi);
+        const vault = await getContractAt("MetaTxGasCreditVault", contracts.vault);
+        const gateway = await getContractAt("MetaTxGateway", contracts.gateway);
+        const ixfi = await getContractAt("IXFI", contracts.ixfi);
 
         // Test 1: Check initial state
         console.log("📊 Initial state:");
         const settings = await vault.getSettings();
-        console.log(`   Gas Price: ${ethers.formatUnits(settings[0], "gwei")} gwei`);
+        console.log(`   Gas Price: ${formatUnits(settings[0], "gwei")} gwei`);
         console.log(`   IXFI Rate: ${settings[1].toString()}`);
         console.log(`   User credits: ${await vault.getCreditBalance(user.address)}`);
 
@@ -168,7 +157,7 @@ async function testMetaTxSystem(contracts) {
         const userIXFIBalance = await ixfi.balanceOf(user.address);
         if (userIXFIBalance > 0) {
             console.log("\n💰 Testing deposit...");
-            const depositAmount = ethers.parseEther("10");
+            const depositAmount = parseEther("10");
             
             // Approve vault to spend IXFI
             await ixfi.connect(user).approve(contracts.vault, depositAmount);

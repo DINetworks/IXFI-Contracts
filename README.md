@@ -76,7 +76,7 @@ By addressing the limitations of CrossFi’s existing bridge, IXFI transforms Cr
 
 ## Tech Stack
 
-- **Solidity** (v0.8.20) - Smart contract development
+- **Solidity** (v0.8.24) - Smart contract development
 - **Hardhat** (v2.22.19) - Development framework and testing
 - **OpenZeppelin Contracts** (v5.2.0) - Security-audited contract libraries
 - **Chainlink Oracles** - Real-time price feeds for gas credit calculation

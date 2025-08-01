@@ -1,19 +1,10 @@
 require('dotenv').config();
+require("@nomicfoundation/hardhat-ethers");
 require("hardhat-contract-sizer");
 
 module.exports = {
   solidity: {
     compilers: [
-      {
-        version: "0.8.20",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200
-          },
-          evmVersion: "cancun"
-        }
-      },
       {
         version: "0.8.24",
         settings: {
@@ -21,8 +12,8 @@ module.exports = {
             enabled: true,
             runs: 200
           },
-          viaIR: true,
-          evmVersion: "cancun"
+          viaIR: false,
+          evmVersion: "london"
         }
       }
     ]
