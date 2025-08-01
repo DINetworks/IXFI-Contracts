@@ -1,5 +1,5 @@
 <a href="https://ixfi.fi">
-    <img alt="logo" src="https://github.com/IXFILabs/IXFILabs/blob/main/IXFI-banner.png" style="width: 100%;">
+    <img alt="logo" src="https://github.com/DINetworks/IXFI-Contracts/blob/main/docs/IXFI-banner.png" style="width: 100%;">
 </a>
 
 ## IXFI Cross-Chain Protocol
@@ -414,21 +414,21 @@ REPORT_GAS=true npx hardhat test
 ### CrossFi Testnet
 | Contract | Address | Description |
 |----------|---------|-------------|
-| IXFI Gateway | `0xFC4C231D2293180a30eCd10Ce9A84bDBF27B3967` | Main GMP gateway contract |
-| MetaTxGasCreditVault | `TBD` | Gas credit management system |
-| MetaTxGateway | `TBD` | Gasless transaction execution |
+| IXFI Gateway | `0xcf60D335E3aAd5a58c924d43Ce9F65e5557c7716` | Main GMP gateway contract |
+| MetaTxGasCreditVault | `0xa4c3df3e4Fe52ab2598604F0b5fC360FccFb1944` | Gas credit management system |
+| MetaTxGateway | `0x5d450252FD77D6A52513E08f7e604625AD84496f` | Gasless transaction execution |
 
 ### Deployment Status
-- ✅ CrossFi Testnet - Active (GMP Protocol)
-- 🔄 CrossFi Testnet - Pending (Meta Transaction System)
+- ✅ CrossFi Mainnet - Active (GMP Protocol)
+- ✅ CrossFi Mainnet - Active (Meta Transaction System)
 - 🔄 Ethereum Sepolia - Pending  
 - 🔄 Polygon Mumbai - Pending
 - 🔄 BSC Testnet - Pending
 
 ## Community & Support
 
-- **GitHub**: [IXFILabs/IXFI-Contracts](https://github.com/IXFILabs/IXFI-Contracts)
-- **Website**: [ixfi.network.com](https://ixfi.network.com)
+- **GitHub**: [DINetworks/IXFI-Contracts](https://github.com/DINetworks/IXFI-Contracts)
+- **Website**: [ixfi.fi](https://ixfi.fi)
 - **Documentation**: Comprehensive guides in `/docs`
 - **Issues**: Report bugs and feature requests on GitHub
 
