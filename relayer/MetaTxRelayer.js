@@ -636,47 +636,4 @@ class MetaTxRelayer {
     }
 }
 
-// Start the MetaTxRelayer if this file is run directly
-if (require.main === module) {
-    async function main() {
-        try {
-            console.log('🚀 Starting MetaTx Relayer Service...');
-            
-            // Load configuration
-            let config;
-            try {
-                config = require('./meta-tx-config.json');
-            } catch (error) {
-                console.error('❌ Failed to load meta-tx-config.json');
-                console.log('💡 Please copy meta-tx-config.example.json to meta-tx-config.json and configure it');
-                process.exit(1);
-            }
-            
-            // Create and start the relayer
-            const relayer = new MetaTxRelayer(config);
-            
-            console.log('✅ MetaTx Relayer Service started successfully!');
-            console.log(`🏥 Health check: http://localhost:${config.healthPort || 3001}/health`);
-            console.log(`📡 Execute endpoint: http://localhost:${config.healthPort || 3001}/execute`);
-            
-        } catch (error) {
-            console.error('❌ Failed to start MetaTx Relayer:', error);
-            process.exit(1);
-        }
-    }
-
-    // Handle graceful shutdown
-    process.on('SIGINT', async () => {
-        console.log('\n🛑 Received SIGINT, shutting down MetaTx Relayer gracefully...');
-        process.exit(0);
-    });
-
-    process.on('SIGTERM', async () => {
-        console.log('\n🛑 Received SIGTERM, shutting down MetaTx Relayer gracefully...');
-        process.exit(0);
-    });
-
-    main().catch(console.error);
-}
-
 module.exports = MetaTxRelayer;
