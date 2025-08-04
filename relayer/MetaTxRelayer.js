@@ -84,67 +84,80 @@ class MetaTxRelayer {
     }
 
     /**
-     * Execute a meta-transaction with gas credit management
-     * @param {Object} request - Meta-transaction request
+     * Execute batch meta-transactions with gas credit management
+     * @param {Object} request - Batch meta-transaction request
      * @param {string} request.targetChain - Target chain for execution
-     * @param {Object} request.metaTx - Meta-transaction data
-     * @param {string} request.signature - User's signature
+     * @param {Array} request.metaTxs - Array of meta-transaction data
+     * @param {string} request.signature - User's signature for the batch
+     * @param {string} request.from - User's address
+     * @param {number} request.nonce - User's nonce
+     * @param {number} request.deadline - Transaction deadline
      * @returns {Object} Execution result
      */
-    async executeMetaTransaction(request) {
-        const { targetChain, metaTx, signature } = request;
+    async executeBatchMetaTransactions(request) {
+        const { targetChain, metaTxs, signature, from, nonce, deadline } = request;
         const startTime = Date.now();
         
-        console.log(`\n🚀 Processing meta-transaction for user: ${metaTx.from}`);
+        console.log(`\n🚀 Processing batch meta-transaction for user: ${from}`);
         console.log(`📍 Target chain: ${targetChain}`);
-        console.log(`🎯 Target contract: ${metaTx.to}`);
+        console.log(`📦 Batch size: ${metaTxs.length} transactions`);
         
         try {
             this.metrics.totalTransactions++;
             
-            // Step 1: Estimate gas required for the transaction
-            const gasEstimate = await this.estimateGas(targetChain, metaTx);
-            console.log(`⛽ Estimated gas: ${gasEstimate}`);
+            // Encode meta-transaction data for the batch
+            const metaTxData = ethers.AbiCoder.defaultAbiCoder().encode(
+                ["tuple(address to,uint256 value,bytes data)[]"],
+                [metaTxs]
+            );
+            
+            // Step 1: Estimate total gas required for the batch
+            const gasEstimate = await this.estimateBatchGas(targetChain, from, metaTxData, signature, nonce, deadline);
+            console.log(`⛽ Estimated batch gas: ${gasEstimate}`);
             
             // Step 2: Check if user has enough credits on CrossFi
-            const hasEnoughCredits = await this.checkGasCredits(metaTx.from, gasEstimate);
+            const hasEnoughCredits = await this.checkGasCreditsForBatch(from, targetChain, gasEstimate);
             if (!hasEnoughCredits) {
-                console.log('❌ Insufficient gas credits');
+                console.log('❌ Insufficient gas credits for batch');
                 this.metrics.failedTransactions++;
                 return {
                     success: false,
                     error: 'Insufficient gas credits',
                     gasEstimate,
-                    userAddress: metaTx.from
+                    userAddress: from
                 };
             }
             
-            console.log('✅ User has sufficient gas credits');
+            console.log('✅ User has sufficient gas credits for batch');
             
-            // Step 3: Execute the meta-transaction on target chain
-            const executionResult = await this.executeOnTargetChain(targetChain, metaTx, signature);
+            // Step 3: Execute the batch meta-transaction on target chain
+            const executionResult = await this.executeBatchOnTargetChain(
+                targetChain, from, metaTxData, signature, nonce, deadline
+            );
             
             if (!executionResult.success) {
-                console.log('❌ Meta-transaction execution failed');
+                console.log('❌ Batch meta-transaction execution failed');
                 this.metrics.failedTransactions++;
                 return {
                     success: false,
-                    error: 'Transaction execution failed',
+                    error: 'Batch transaction execution failed',
                     details: executionResult.error,
                     gasEstimate
                 };
             }
             
-            console.log('✅ Meta-transaction executed successfully');
+            console.log('✅ Batch meta-transaction executed successfully');
             console.log(`⛽ Actual gas used: ${executionResult.gasUsed}`);
+            console.log(`📊 Batch ID: ${executionResult.batchId}`);
             
             // Step 4: Deduct gas credits from user's balance on CrossFi
-            const creditDeductionResult = await this.deductGasCredits(metaTx.from, executionResult.gasUsed);
+            const creditDeductionResult = await this.deductGasCreditsForBatch(
+                from, targetChain, executionResult.gasUsed
+            );
             
             if (!creditDeductionResult.success) {
-                console.log('⚠️  Warning: Failed to deduct gas credits');
+                console.log('⚠️  Warning: Failed to deduct gas credits for batch');
                 // Note: Transaction succeeded but credit deduction failed
-                // This should be handled by monitoring/alerting systems
             }
             
             // Update metrics
@@ -153,26 +166,253 @@ class MetaTxRelayer {
             this.metrics.creditsConsumed += Number(executionResult.gasUsed);
             
             const processingTime = Date.now() - startTime;
-            console.log(`✅ Meta-transaction completed in ${processingTime}ms`);
+            console.log(`✅ Batch meta-transaction completed in ${processingTime}ms`);
             
             return {
                 success: true,
                 transactionHash: executionResult.transactionHash,
+                batchId: executionResult.batchId,
                 gasUsed: executionResult.gasUsed,
+                successes: executionResult.successes,
                 processingTime,
                 chainId: (await this.providers.get(targetChain).getNetwork()).chainId
             };
             
         } catch (error) {
-            console.error('❌ Meta-transaction processing failed:', error);
+            console.error('❌ Batch meta-transaction processing failed:', error);
             this.metrics.failedTransactions++;
             this.metrics.errors++;
             
             return {
                 success: false,
                 error: error.message,
-                userAddress: metaTx.from,
+                userAddress: from,
                 targetChain
+            };
+        }
+    }
+
+    /**
+     * Execute a meta-transaction with gas credit management
+     * @param {Object} request - Meta-transaction request
+     * @param {string} request.targetChain - Target chain for execution
+     * @param {Object} request.metaTx - Meta-transaction data
+     * @param {string} request.signature - User's signature
+     * @returns {Object} Execution result
+     */
+    async executeMetaTransaction(request) {
+        // Convert single transaction to batch format
+        const batchRequest = {
+            targetChain: request.targetChain,
+            metaTxs: [request.metaTx],
+            signature: request.signature,
+            from: request.metaTx.from,
+            nonce: request.metaTx.nonce,
+            deadline: request.metaTx.deadline
+        };
+        
+        const result = await this.executeBatchMetaTransactions(batchRequest);
+        
+        // Convert batch result back to single transaction format
+        if (result.success) {
+            return {
+                success: true,
+                transactionHash: result.transactionHash,
+                gasUsed: result.gasUsed,
+                processingTime: result.processingTime,
+                chainId: result.chainId
+            };
+        }
+        
+        return result;
+    }
+
+    /**
+     * Check if user has enough gas credits for batch transaction
+     * @param {string} userAddress - User's address
+     * @param {string} targetChain - Target chain name
+     * @param {number} gasRequired - Gas required for batch transaction
+     * @returns {boolean} True if user has enough credits
+     */
+    async checkGasCreditsForBatch(userAddress, targetChain, gasRequired) {
+        try {
+            // Get current gas price on target chain
+            const provider = this.providers.get(targetChain);
+            const feeData = await provider.getFeeData();
+            const gasPrice = feeData.gasPrice;
+            
+            // Get native token price (simplified - in production, use actual price feeds)
+            const nativeTokenPrice = await this.getNativeTokenPrice(targetChain);
+            
+            // Calculate required credits using the vault's function
+            const creditsRequired = await this.vaultContract.calculateCreditsForGas(
+                gasRequired,
+                gasPrice,
+                ethers.parseUnits(nativeTokenPrice.toString(), 8) // Convert to 8 decimals
+            );
+            
+            const hasEnough = await this.vaultContract.hasEnoughCredits(userAddress, creditsRequired);
+            const userCredits = await this.vaultContract.getCreditBalance(userAddress);
+            
+            console.log(`💳 User credits: ${userCredits}`);
+            console.log(`💰 Credits needed: ${creditsRequired}`);
+            console.log(`⛽ Gas price: ${ethers.formatUnits(gasPrice, 'gwei')} Gwei`);
+            console.log(`💵 ${targetChain} token price: $${nativeTokenPrice}`);
+            
+            return hasEnough;
+        } catch (error) {
+            console.error('❌ Failed to check gas credits for batch:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Get native token price in USD (simplified implementation)
+     * @param {string} chainName - Chain name
+     * @returns {number} Price in USD
+     */
+    async getNativeTokenPrice(chainName) {
+        // Simplified price mapping - in production, use real price feeds
+        const prices = {
+            'ethereum': 3000,
+            'polygon': 1.2,
+            'bsc': 600,
+            'avalanche': 40,
+            'arbitrum': 3000,
+            'optimism': 3000,
+            'crossfi': 0.2 // XFI price
+        };
+        
+        return prices[chainName] || 1;
+    }
+
+    /**
+     * Estimate gas for batch meta-transaction
+     * @param {string} targetChain - Target chain name
+     * @param {string} from - User address
+     * @param {string} metaTxData - Encoded batch data
+     * @param {string} signature - User signature
+     * @param {number} nonce - User nonce
+     * @param {number} deadline - Transaction deadline
+     * @returns {number} Estimated gas
+     */
+    async estimateBatchGas(targetChain, from, metaTxData, signature, nonce, deadline) {
+        try {
+            const gateway = this.gatewayContracts.get(targetChain);
+            if (!gateway) {
+                throw new Error(`No gateway found for chain: ${targetChain}`);
+            }
+            
+            const gasEstimate = await gateway.executeMetaTransactions.estimateGas(
+                from, metaTxData, signature, nonce, deadline
+            );
+            
+            return Number(gasEstimate);
+        } catch (error) {
+            console.error(`❌ Failed to estimate batch gas on ${targetChain}:`, error);
+            // Return conservative estimate
+            return 500000;
+        }
+    }
+
+    /**
+     * Execute batch meta-transaction on target chain
+     * @param {string} targetChain - Target chain name
+     * @param {string} from - User address
+     * @param {string} metaTxData - Encoded batch data
+     * @param {string} signature - User signature
+     * @param {number} nonce - User nonce
+     * @param {number} deadline - Transaction deadline
+     * @returns {Object} Execution result
+     */
+    async executeBatchOnTargetChain(targetChain, from, metaTxData, signature, nonce, deadline) {
+        try {
+            const gateway = this.gatewayContracts.get(targetChain);
+            if (!gateway) {
+                throw new Error(`No gateway found for chain: ${targetChain}`);
+            }
+            
+            const tx = await gateway.executeMetaTransactions(
+                from, metaTxData, signature, nonce, deadline
+            );
+            
+            const receipt = await tx.wait();
+            
+            // Extract batch ID from BatchTransactionExecuted event
+            const batchEvent = receipt.logs.find(log => {
+                try {
+                    const parsed = gateway.interface.parseLog(log);
+                    return parsed.name === 'BatchTransactionExecuted';
+                } catch (e) {
+                    return false;
+                }
+            });
+            
+            let batchId = null;
+            if (batchEvent) {
+                const parsed = gateway.interface.parseLog(batchEvent);
+                batchId = Number(parsed.args.batchId);
+            }
+            
+            // Get successes from transaction result
+            const successes = await gateway.getBatchSuccesses(batchId);
+            
+            return {
+                success: true,
+                transactionHash: receipt.hash,
+                gasUsed: Number(receipt.gasUsed),
+                batchId,
+                successes
+            };
+            
+        } catch (error) {
+            console.error(`❌ Failed to execute batch on ${targetChain}:`, error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    /**
+     * Deduct gas credits for batch transaction
+     * @param {string} userAddress - User's address
+     * @param {string} targetChain - Target chain name
+     * @param {number} gasUsed - Actual gas used
+     * @returns {Object} Deduction result
+     */
+    async deductGasCreditsForBatch(userAddress, targetChain, gasUsed) {
+        try {
+            // Get actual gas price used
+            const provider = this.providers.get(targetChain);
+            const feeData = await provider.getFeeData();
+            const gasPrice = feeData.gasPrice;
+            
+            // Get native token price
+            const nativeTokenPrice = await this.getNativeTokenPrice(targetChain);
+            
+            // Calculate credits to deduct
+            const creditsToDeduct = await this.vaultContract.calculateCreditsForGas(
+                gasUsed,
+                gasPrice,
+                ethers.parseUnits(nativeTokenPrice.toString(), 8)
+            );
+            
+            const result = await this.vaultContract.consumeCredits(userAddress, creditsToDeduct);
+            await result.wait();
+            
+            console.log(`✅ Deducted ${creditsToDeduct} credits from user ${userAddress}`);
+            
+            return {
+                success: true,
+                creditsDeducted: creditsToDeduct
+            };
+            
+        } catch (error) {
+            console.error('❌ Failed to deduct gas credits for batch:', error);
+            return {
+                success: false,
+                error: error.message
             };
         }
     }
@@ -189,7 +429,7 @@ class MetaTxRelayer {
             const userCredits = await this.vaultContract.getCreditBalance(userAddress);
             
             console.log(`💳 User credits: ${userCredits}`);
-            console.log(`💰 Credits needed: ${await this.vaultContract.calculateCreditsForGas(gasRequired)}`);
+            console.log(`💰 Credits needed: ${gasRequired}`);
             
             return hasEnough;
         } catch (error) {
@@ -362,21 +602,81 @@ class MetaTxRelayer {
      */
     getVaultABI() {
         return [
-            "function hasEnoughCredits(address user, uint256 estimatedGas) external view returns (bool)",
+            "function hasEnoughCredits(address user, uint256 gasUsd) external view returns (bool)",
             "function getCreditBalance(address user) external view returns (uint256)",
-            "function calculateCreditsForGas(uint256 gasAmount) external view returns (uint256)",
-            "function consumeCredits(address user, uint256 gasUsed) external returns (bool)",
-            "event CreditsUsed(address indexed user, address indexed gateway, uint256 creditsUsed, uint256 gasUsed)"
+            "function calculateCreditsForGas(uint256 gasUsed, uint256 gasPrice, uint256 nativeTokenPriceUsd) external pure returns (uint256)",
+            "function calculateCreditsFromIXFI(uint256 ixfiAmount) external view returns (uint256)",
+            "function consumeCredits(address user, uint256 gasUsd) external returns (bool)",
+            "function deposit(uint256 amount) external",
+            "function deposit() external payable",
+            "function withdraw(uint256 amount) external",
+            "function setGatewayAuthorization(address gateway, bool authorized) external",
+            "function getDepositBalance(address user) external view returns (uint256)",
+            "function getIXFIPrice() external view returns (uint128 price, uint128 timestamp)",
+            "event CreditsUsed(address indexed user, address indexed gateway, uint256 creditsUsed, uint256 gasUsd)",
+            "event Deposited(address indexed user, uint256 ixfiAmount, uint256 creditsAdded)",
+            "event Withdrawn(address indexed user, uint256 ixfiAmount, uint256 creditsDeducted)"
         ];
     }
 
     getGatewayABI() {
         return [
-            "function executeMetaTransaction(tuple(address from, address to, uint256 value, bytes data, uint256 nonce, uint256 deadline) metaTx, bytes signature) external returns (bool)",
+            "function executeMetaTransactions(address from, bytes metaTxData, bytes signature, uint256 nonce, uint256 deadline) external returns (bool[] memory successes)",
+            "function _executeMetaTransaction(address from, tuple(address to, uint256 value, bytes data) metaTx) external returns (bool success)",
             "function getNonce(address user) external view returns (uint256)",
-            "event MetaTransactionExecuted(address indexed user, address indexed relayer, address indexed target, uint256 gasUsed, bool success)"
+            "function setRelayerAuthorization(address relayer, bool authorized) external",
+            "function isRelayerAuthorized(address relayer) external view returns (bool)",
+            "function getBatchTransactionLog(uint256 batchId) external view returns (tuple(address user, address relayer, bytes metaTxData, uint256 gasUsed, uint256 timestamp, bool[] successes))",
+            "function getBatchSuccesses(uint256 batchId) external view returns (bool[] memory)",
+            "function getBatchTransactions(uint256 batchId) external view returns (tuple(address to, uint256 value, bytes data)[] memory)",
+            "function getTotalBatchCount() external view returns (uint256)",
+            "event MetaTransactionExecuted(address indexed user, address indexed relayer, address indexed target, bool success)",
+            "event BatchTransactionExecuted(uint256 indexed batchId, address indexed user, address indexed relayer, uint256 gasUsed, uint256 transactionCount)"
         ];
     }
+}
+
+// Start the MetaTxRelayer if this file is run directly
+if (require.main === module) {
+    async function main() {
+        try {
+            console.log('🚀 Starting MetaTx Relayer Service...');
+            
+            // Load configuration
+            let config;
+            try {
+                config = require('./meta-tx-config.json');
+            } catch (error) {
+                console.error('❌ Failed to load meta-tx-config.json');
+                console.log('💡 Please copy meta-tx-config.example.json to meta-tx-config.json and configure it');
+                process.exit(1);
+            }
+            
+            // Create and start the relayer
+            const relayer = new MetaTxRelayer(config);
+            
+            console.log('✅ MetaTx Relayer Service started successfully!');
+            console.log(`🏥 Health check: http://localhost:${config.healthPort || 3001}/health`);
+            console.log(`📡 Execute endpoint: http://localhost:${config.healthPort || 3001}/execute`);
+            
+        } catch (error) {
+            console.error('❌ Failed to start MetaTx Relayer:', error);
+            process.exit(1);
+        }
+    }
+
+    // Handle graceful shutdown
+    process.on('SIGINT', async () => {
+        console.log('\n🛑 Received SIGINT, shutting down MetaTx Relayer gracefully...');
+        process.exit(0);
+    });
+
+    process.on('SIGTERM', async () => {
+        console.log('\n🛑 Received SIGTERM, shutting down MetaTx Relayer gracefully...');
+        process.exit(0);
+    });
+
+    main().catch(console.error);
 }
 
 module.exports = MetaTxRelayer;

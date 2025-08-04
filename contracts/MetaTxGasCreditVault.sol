@@ -222,6 +222,23 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     }
 
     /**
+     * @notice Calculate required credits for gas usage (for relayer compatibility)
+     * @param gasUsed Gas units consumed in the transaction
+     * @param gasPrice Gas price in wei (native token)
+     * @param nativeTokenPriceUsd Native token price in USD (8 decimals)
+     * @return creditsRequired Credits needed in USD cents
+     */
+    function calculateCreditsForGas(
+        uint256 gasUsed,
+        uint256 gasPrice,
+        uint256 nativeTokenPriceUsd
+    ) public pure returns (uint256 creditsRequired) {
+        // Calculate total cost: gasUsed * gasPrice * nativeTokenPrice / 1e18 * 100 (for cents)
+        // gasPrice is in wei (18 decimals), nativeTokenPriceUsd has 8 decimals
+        return (gasUsed * gasPrice * nativeTokenPriceUsd * 100) / 1e26;
+    }
+
+    /**
      * @notice Calculate IXFI amount needed for specific USD amount
      * @param usdCents USD amount in cents
      * @return ixfiNeeded IXFI tokens needed (18 decimals)

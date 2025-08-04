@@ -6,6 +6,7 @@
   "scripts": {
     "start:gmp": "node relayer-api.js",
     "start:meta-tx": "node MetaTxRelayer.js",
+    "start:meta-tx-api": "node meta-tx-api.js",
     "test": "jest",
     "lint": "eslint .",
     "setup": "cp config.example.json config.json && cp meta-tx-config.example.json meta-tx-config.json"

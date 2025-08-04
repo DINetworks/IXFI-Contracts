@@ -1,0 +1,103 @@
+{
+  "relayerPrivateKey": "YOUR_RELAYER_PRIVATE_KEY",
+  "healthPort": 3001,
+  "chains": {
+    "crossfi": {
+      "name": "CrossFi Mainnet",
+      "chainId": 4158,
+      "rpc": "https://rpc.crossfi.org",
+      "gasCreditVault": "0x...", 
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "XFI",
+      "blockExplorer": "https://xfiscan.com"
+    },
+    "ethereum": {
+      "name": "Ethereum Mainnet",
+      "chainId": 1,
+      "rpc": "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "ETH",
+      "blockExplorer": "https://etherscan.io"
+    },
+    "polygon": {
+      "name": "Polygon Mainnet", 
+      "chainId": 137,
+      "rpc": "https://polygon-mainnet.g.alchemy.com/v2/YOUR_API_KEY",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "MATIC",
+      "blockExplorer": "https://polygonscan.com"
+    },
+    "bsc": {
+      "name": "BNB Smart Chain",
+      "chainId": 56,
+      "rpc": "https://bsc-dataseed.binance.org",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "BNB", 
+      "blockExplorer": "https://bscscan.com"
+    },
+    "avalanche": {
+      "name": "Avalanche C-Chain",
+      "chainId": 43114,
+      "rpc": "https://api.avax.network/ext/bc/C/rpc",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "AVAX",
+      "blockExplorer": "https://snowtrace.io"
+    },
+    "arbitrum": {
+      "name": "Arbitrum One",
+      "chainId": 42161,
+      "rpc": "https://arb-mainnet.g.alchemy.com/v2/YOUR_API_KEY",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "ETH",
+      "blockExplorer": "https://arbiscan.io"
+    },
+    "optimism": {
+      "name": "Optimism Mainnet",
+      "chainId": 10,
+      "rpc": "https://opt-mainnet.g.alchemy.com/v2/YOUR_API_KEY",
+      "metaTxGateway": "0x...",
+      "nativeTokenSymbol": "ETH",
+      "blockExplorer": "https://optimistic.etherscan.io"
+    }
+  },
+  "priceFeeds": {
+    "ethereum": {
+      "symbol": "ETH",
+      "source": "coingecko",
+      "apiKey": "YOUR_COINGECKO_API_KEY"
+    },
+    "polygon": {
+      "symbol": "MATIC",
+      "source": "coingecko"
+    },
+    "bsc": {
+      "symbol": "BNB", 
+      "source": "coingecko"
+    },
+    "avalanche": {
+      "symbol": "AVAX",
+      "source": "coingecko"
+    },
+    "crossfi": {
+      "symbol": "XFI",
+      "source": "dia_oracle",
+      "key": "XFI/USD"
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "alertWebhook": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+    "metricsPort": 3002,
+    "logLevel": "info"
+  },
+  "gasSettings": {
+    "maxGasPrice": "100000000000",
+    "gasLimitMultiplier": 1.2,
+    "priorityFee": "2000000000"
+  },
+  "batchSettings": {
+    "maxBatchSize": 10,
+    "batchTimeout": 30000,
+    "minBatchSize": 1
+  }
+}

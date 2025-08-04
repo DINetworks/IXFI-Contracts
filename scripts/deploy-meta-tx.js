@@ -46,6 +46,29 @@ async function main() {
             gatewayAddress = await gateway.getAddress();
             console.log("✅ MetaTxGateway deployed to:", gatewayAddress);
 
+            // 3. Configure vault to authorize gateway for credit consumption
+            console.log("\n🔧 Configuring GasCreditVault...");
+            await vault.setGatewayAuthorization(gatewayAddress, true);
+            console.log("✅ Gateway authorized in vault");
+
+            // 4. Configure gateway to authorize relayer
+            const relayerAddress = process.env.RELAYER_ADDRESS;
+            if (relayerAddress) {
+                console.log("\n🔧 Configuring MetaTxGateway...");
+                await gateway.setRelayerAuthorization(relayerAddress, true);
+                console.log(`✅ Relayer ${relayerAddress} authorized in gateway`);
+            } else {
+                console.log("⚠️  RELAYER_ADDRESS not set - manual authorization required");
+            }
+
+            // 5. Get IXFI price info
+            try {
+                const [price, timestamp] = await vault.getIXFIPrice();
+                console.log(`\n💰 IXFI Price: $${Number(price) / 1e8} (timestamp: ${timestamp})`);
+            } catch (error) {
+                console.log("⚠️  Could not fetch IXFI price from oracle");
+            }
+
         } else {
             // Deploy on other chains: Only MetaTxGateway
             console.log("📦 Deploying on External Chain - MetaTxGateway Only");
