@@ -171,12 +171,13 @@ npm run lint              # Lint code
 ### MetaTx Relayer API (Port 3001)
 
 - `GET /health` - Health check and metrics
-- `POST /execute` - Execute single meta-transaction
 - `POST /execute-batch` - Execute batch meta-transactions
 - `GET /credits/:userAddress` - Check user's gas credits
 - `POST /estimate-batch` - Estimate gas for batch transaction
 - `GET /chains` - Get supported chains
 - `GET /status` - Relayer status
+
+**Note**: Single transaction execution is not supported. All transactions must be submitted as batches (even single transactions should be wrapped in a batch array).
 
 ## 🔍 How They Work
 
@@ -319,6 +320,24 @@ curl -X POST http://localhost:3001/estimate-batch \
       }
     ],
     "from": "0x..."
+  }'
+
+# Execute batch transaction
+curl -X POST http://localhost:3001/execute-batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "targetChain": "polygon",
+    "metaTxs": [
+      {
+        "to": "0x...",
+        "value": "0",
+        "data": "0x"
+      }
+    ],
+    "signature": "0x...",
+    "from": "0x...",
+    "nonce": 0,
+    "deadline": 1234567890
   }'
 ```
 

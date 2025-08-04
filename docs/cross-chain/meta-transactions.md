@@ -737,10 +737,14 @@ contract AppSponsoredGasless {
         sponsorBudgets[sponsor] -= gasCost;
         userLimits[sponsor][metaTx.from] -= metaTx.gasLimit;
         
-        // Execute transaction
-        _executeMetaTransaction(metaTx);
+        // Execute transaction (internal batch processing)
+        // Note: Single transactions are processed as single-item batches
+        MetaTransaction[] memory batch = new MetaTransaction[](1);
+        batch[0] = metaTx;
+        _executeMetaTransactionBatch(batch);
         
         emit SponsoredExecution(sponsor, metaTx.from, gasCost);
+    }
     }
 }
 ```
@@ -769,8 +773,10 @@ contract TokenSponsoredGasless {
         // Deduct token credits
         tokenCredits[metaTx.from] -= metaTx.gasLimit;
         
-        // Execute transaction
-        _executeMetaTransaction(metaTx);
+        // Execute transaction (as single-item batch)
+        MetaTransaction[] memory batch = new MetaTransaction[](1);
+        batch[0] = metaTx;
+        _executeMetaTransactionBatch(batch);
         
         emit TokenGasUsed(metaTx.from, metaTx.gasLimit);
     }
@@ -806,8 +812,10 @@ contract MembershipGasless {
         // Update gas usage
         dailyGasUsed[membershipTokenId] += metaTx.gasLimit;
         
-        // Execute transaction
-        _executeMetaTransaction(metaTx);
+        // Execute transaction (as single-item batch)
+        MetaTransaction[] memory batch = new MetaTransaction[](1);
+        batch[0] = metaTx;
+        _executeMetaTransactionBatch(batch);
         
         emit MembershipGasUsed(membershipTokenId, metaTx.from, metaTx.gasLimit);
     }

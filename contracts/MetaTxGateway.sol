@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
  * @title MetaTxGateway
  * @notice Gateway for executing gasless meta-transactions on any EVM chain
  * @dev Does not handle gas credits - relies on external relayer for credit management
+ * @dev Only supports batch execution - single meta-transactions must be wrapped in a batch
  */
 contract MetaTxGateway is Ownable, ReentrancyGuard {
     using ECDSA for bytes32;
@@ -88,20 +89,34 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
     // Meta-transaction functions ================================
 
     /**
-     * @notice Execute a meta-transaction on behalf of a user
+     * @notice Execute a meta-transaction on behalf of a user (internal use only)
      * @param from User's address
      * @param metaTx Meta-transaction data
      * @return success True if the transaction was successful
      */
     function _executeMetaTransaction(
         address from,
-        MetaTransaction calldata metaTx
-    ) external nonReentrant returns (bool success) {
-        // Execute the transaction
-        (success, ) = metaTx.to.call{value: metaTx.value}(metaTx.data);
+        MetaTransaction memory metaTx
+    ) internal returns (bool success) {
+        // Execute the transaction with try-catch to handle failures gracefully
+        try this._safeExecuteCall(metaTx.to, metaTx.value, metaTx.data) returns (bool _success) {
+            success = _success;
+        } catch {
+            success = false;
+        }
         
         emit MetaTransactionExecuted(from, msg.sender, metaTx.to, success);
         
+        return success;
+    }
+
+    /**
+     * @notice Helper function to safely execute external calls
+     * @dev This function is external to allow try-catch usage
+     */
+    function _safeExecuteCall(address target, uint256 value, bytes calldata data) external returns (bool success) {
+        require(msg.sender == address(this), "Only self-calls allowed");
+        (success, ) = target.call{value: value}(data);
         return success;
     }
 
@@ -138,12 +153,7 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
 
         // Execute all transactions in the batch
         for (uint256 i = 0; i < metaTxs.length; i++) {
-            bool success;
-            try this._executeMetaTransaction(from, metaTxs[i]) returns (bool _success) {
-                success = _success;
-            } catch {
-                success = false;
-            }
+            bool success = _executeMetaTransaction(from, metaTxs[i]);
             
             batchTransactionLogs[batchId].successes.push(success);
             batchTransactions[batchId].push(metaTxs[i]);

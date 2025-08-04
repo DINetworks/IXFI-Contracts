@@ -439,52 +439,6 @@ class MetaTxRelayer {
     }
 
     /**
-     * Execute meta-transaction on target chain
-     * @param {string} targetChain - Target chain name
-     * @param {Object} metaTx - Meta-transaction data
-     * @param {string} signature - User's signature
-     * @returns {Object} Execution result
-     */
-    async executeOnTargetChain(targetChain, metaTx, signature) {
-        try {
-            const gateway = this.gatewayContracts.get(targetChain);
-            if (!gateway) {
-                throw new Error(`No gateway found for chain: ${targetChain}`);
-            }
-            
-            console.log(`📡 Executing on ${targetChain}...`);
-            
-            // Estimate gas for the meta-transaction
-            const gasEstimate = await gateway.executeMetaTransaction.estimateGas(metaTx, signature);
-            console.log(`⛽ Gateway gas estimate: ${gasEstimate}`);
-            
-            // Execute the transaction
-            const tx = await gateway.executeMetaTransaction(metaTx, signature, {
-                gasLimit: gasEstimate * 120n / 100n // Add 20% buffer
-            });
-            
-            console.log(`📝 Transaction sent: ${tx.hash}`);
-            
-            // Wait for confirmation
-            const receipt = await tx.wait();
-            
-            return {
-                success: receipt.status === 1,
-                transactionHash: tx.hash,
-                gasUsed: receipt.gasUsed,
-                blockNumber: receipt.blockNumber
-            };
-            
-        } catch (error) {
-            console.error(`❌ Failed to execute on ${targetChain}:`, error);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
-    }
-
-    /**
      * Deduct gas credits from user's balance on CrossFi
      * @param {string} userAddress - User's address
      * @param {bigint} gasUsed - Actual gas used
@@ -515,26 +469,6 @@ class MetaTxRelayer {
     }
 
     /**
-     * Estimate gas for a meta-transaction
-     * @param {string} targetChain - Target chain name
-     * @param {Object} metaTx - Meta-transaction data
-     * @returns {number} Gas estimate
-     */
-    async estimateGas(targetChain, metaTx) {
-        try {
-            // Simple estimation based on data size and base costs
-            const baseGas = 21000; // Base transaction cost
-            const dataGas = metaTx.data ? (metaTx.data.length - 2) / 2 * 16 : 0; // ~16 gas per byte
-            const callGas = 50000; // Estimated call overhead
-            
-            return baseGas + dataGas + callGas;
-        } catch (error) {
-            console.error('❌ Failed to estimate gas:', error);
-            return 100000; // Conservative default
-        }
-    }
-
-    /**
      * Start health monitoring server
      */
     startHealthServer() {
@@ -561,34 +495,6 @@ class MetaTxRelayer {
                 chains: Object.keys(this.config.chains),
                 relayerAddress: this.wallets.get('crossfi')?.address
             });
-        });
-        
-        // Submit meta-transaction endpoint
-        app.post('/execute', async (req, res) => {
-            try {
-                const { targetChain, metaTx, signature } = req.body;
-                
-                if (!targetChain || !metaTx || !signature) {
-                    return res.status(400).json({
-                        error: 'Missing required fields: targetChain, metaTx, signature'
-                    });
-                }
-                
-                const result = await this.executeMetaTransaction({
-                    targetChain,
-                    metaTx,
-                    signature
-                });
-                
-                res.json(result);
-                
-            } catch (error) {
-                console.error('❌ API error:', error);
-                res.status(500).json({
-                    error: 'Internal server error',
-                    message: error.message
-                });
-            }
         });
         
         const port = this.config.healthPort || 3001;
@@ -622,7 +528,6 @@ class MetaTxRelayer {
     getGatewayABI() {
         return [
             "function executeMetaTransactions(address from, bytes metaTxData, bytes signature, uint256 nonce, uint256 deadline) external returns (bool[] memory successes)",
-            "function _executeMetaTransaction(address from, tuple(address to, uint256 value, bytes data) metaTx) external returns (bool success)",
             "function getNonce(address user) external view returns (uint256)",
             "function setRelayerAuthorization(address relayer, bool authorized) external",
             "function isRelayerAuthorized(address relayer) external view returns (bool)",

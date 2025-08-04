@@ -58,41 +58,6 @@ class MetaTxAPI {
             });
         });
 
-        // Execute single meta-transaction
-        this.app.post('/execute', async (req, res) => {
-            try {
-                const { targetChain, metaTx, signature } = req.body;
-                
-                if (!targetChain || !metaTx || !signature) {
-                    return res.status(400).json({
-                        error: 'Missing required fields: targetChain, metaTx, signature'
-                    });
-                }
-
-                // Validate metaTx structure
-                if (!metaTx.from || !metaTx.nonce || !metaTx.deadline) {
-                    return res.status(400).json({
-                        error: 'Invalid metaTx structure. Required: from, nonce, deadline'
-                    });
-                }
-                
-                const result = await this.relayer.executeMetaTransaction({
-                    targetChain,
-                    metaTx,
-                    signature
-                });
-                
-                res.json(result);
-                
-            } catch (error) {
-                console.error('❌ Execute API error:', error);
-                res.status(500).json({
-                    error: 'Internal server error',
-                    message: error.message
-                });
-            }
-        });
-
         // Execute batch meta-transactions
         this.app.post('/execute-batch', async (req, res) => {
             try {
@@ -268,7 +233,6 @@ class MetaTxAPI {
                 error: 'Endpoint not found',
                 availableEndpoints: [
                     'GET /health',
-                    'POST /execute',
                     'POST /execute-batch',
                     'GET /credits/:userAddress',
                     'POST /estimate-batch',
@@ -283,8 +247,7 @@ class MetaTxAPI {
         this.app.listen(port, () => {
             console.log(`🌐 MetaTx Relayer API server running on port ${port}`);
             console.log(`📊 Health check: http://localhost:${port}/health`);
-            console.log(`🚀 Execute endpoint: http://localhost:${port}/execute`);
-            console.log(`📦 Batch execute: http://localhost:${port}/execute-batch`);
+            console.log(` Batch execute: http://localhost:${port}/execute-batch`);
             console.log(`💳 Check credits: http://localhost:${port}/credits/:userAddress`);
             console.log(`📈 Status: http://localhost:${port}/status`);
         });
