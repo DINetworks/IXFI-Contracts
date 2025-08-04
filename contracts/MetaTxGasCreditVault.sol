@@ -36,7 +36,7 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     
     // DIA Oracle for IXFI/USD price feed
     IDIAOracleV2 public diaOracle;
-    string public ixfiPriceKey = "IXFI/USD"; // DIA Oracle key for IXFI price
+    string public ixfiPriceKey = "XFI/USD"; // DIA Oracle key for IXFI price
     
     // Price feed settings
     uint256 public maxPriceAge = 3600; // Maximum age of price data (1 hour)
@@ -57,8 +57,6 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
     event Withdrawn(address indexed user, uint256 ixfiAmount, uint256 creditsDeducted);
     event CreditsUsed(address indexed user, address indexed gateway, uint256 creditsUsed, uint256 gasUsd);
     event GatewayAuthorized(address indexed gateway, bool authorized);
-    event OracleUpdated(address newOracle);
-    event PriceKeyUpdated(string newKey);
     event MaxPriceAgeUpdated(uint256 newMaxAge);
 
     constructor(address initialOwner, address _ixfiToken, address _diaOracle) Ownable() {
@@ -89,26 +87,6 @@ contract MetaTxGasCreditVault is Ownable, ReentrancyGuard {
         require(gateway != address(0), "Invalid gateway address");
         authorizedGateways[gateway] = authorized;
         emit GatewayAuthorized(gateway, authorized);
-    }
-
-    /**
-     * @notice Update the DIA Oracle contract address
-     * @param newOracle New DIA Oracle contract address
-     */
-    function setDIAOracle(address newOracle) external onlyOwner {
-        require(newOracle != address(0), "Invalid oracle address");
-        diaOracle = IDIAOracleV2(newOracle);
-        emit OracleUpdated(newOracle);
-    }
-
-    /**
-     * @notice Update the IXFI price key for DIA Oracle
-     * @param newKey New price key (e.g., "IXFI/USD")
-     */
-    function setIXFIPriceKey(string memory newKey) external onlyOwner {
-        require(bytes(newKey).length > 0, "Invalid price key");
-        ixfiPriceKey = newKey;
-        emit PriceKeyUpdated(newKey);
     }
 
     /**

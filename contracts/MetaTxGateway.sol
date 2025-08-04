@@ -18,9 +18,9 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
         "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
     );
 
-    // EIP-712 Meta Transaction Typehash
+    // EIP-712 Meta Transaction Typehash for batch transactions
     bytes32 private constant META_TRANSACTION_TYPEHASH = keccak256(
-        "MetaTransaction(address from,address to,uint256 value,bytes data,uint256 nonce,uint256 deadline)"
+        "MetaTransaction(address from,bytes metaTxData,uint256 nonce,uint256 deadline)"
     );
     
     // Relayer management
@@ -28,14 +28,28 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
     
     // Nonce management for replay protection
     mapping(address => uint256) public nonces;
-    
+
+    // Storage for batch transaction logs
+    struct BatchTransactionLog {
+        address user;
+        address relayer;
+        bytes metaTxData;
+        uint256 gasUsed;
+        uint256 timestamp;
+        bool[] successes;
+    }
+
+    // Mapping from batch transaction ID to log
+    mapping(uint256 => BatchTransactionLog) public batchTransactionLogs;
+    uint256 public nextBatchId;
+
+    // Separate mapping for storing decoded transactions
+    mapping(uint256 => MetaTransaction[]) public batchTransactions;
+
     struct MetaTransaction {
-        address from;      // User who signed the transaction
         address to;        // Target contract to call
         uint256 value;     // ETH value to send (usually 0)
         bytes data;        // Function call data
-        uint256 nonce;     // User's current nonce
-        uint256 deadline;  // Transaction deadline
     }
 
     // Events
@@ -44,8 +58,14 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
         address indexed user,
         address indexed relayer,
         address indexed target,
-        uint256 gasUsed,
         bool success
+    );
+    event BatchTransactionExecuted(
+        uint256 indexed batchId,
+        address indexed user,
+        address indexed relayer,
+        uint256 gasUsed,
+        uint256 transactionCount
     );
 
     constructor(address initialOwner) Ownable() {
@@ -69,63 +89,80 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
 
     /**
      * @notice Execute a meta-transaction on behalf of a user
+     * @param from User's address
      * @param metaTx Meta-transaction data
-     * @param signature User's signature
      * @return success True if the transaction was successful
      */
-    function executeMetaTransaction(
-        MetaTransaction calldata metaTx,
-        bytes calldata signature
+    function _executeMetaTransaction(
+        address from,
+        MetaTransaction calldata metaTx
     ) external nonReentrant returns (bool success) {
-        require(authorizedRelayers[msg.sender], "Unauthorized relayer");
-        require(block.timestamp <= metaTx.deadline, "Transaction expired");
-        require(metaTx.nonce == nonces[metaTx.from], "Invalid nonce");
-
-        // Verify signature
-        require(_verifySignature(metaTx, signature), "Invalid signature");
-
-        // Estimate gas before execution
-        uint256 gasStart = gasleft();
-
-        // Increment nonce to prevent replay
-        nonces[metaTx.from]++;
-
         // Execute the transaction
         (success, ) = metaTx.to.call{value: metaTx.value}(metaTx.data);
         
-        // Calculate actual gas used
-        uint256 gasUsed = gasStart - gasleft() + 21000; // Add base transaction cost
-        
-        emit MetaTransactionExecuted(metaTx.from, msg.sender, metaTx.to, gasUsed, success);
+        emit MetaTransactionExecuted(from, msg.sender, metaTx.to, success);
         
         return success;
     }
 
     /**
      * @notice Batch execute multiple meta-transactions
-     * @param metaTxs Array of meta-transactions
-     * @param signatures Array of signatures corresponding to each transaction
+     * @param from User's address
+     * @param metaTxData Encoded bytes of Array of meta-transactions
+     * @param signature signature corresponding to entire meta transaction
+     * @param nonce User's nonce
+     * @param deadline Transaction deadline
      * @return successes Array of success status for each transaction
      */
-    function batchExecuteMetaTransactions(
-        MetaTransaction[] calldata metaTxs,
-        bytes[] calldata signatures
+    function executeMetaTransactions(
+        address from,
+        bytes calldata metaTxData,
+        bytes calldata signature,
+        uint256 nonce,
+        uint256 deadline
     ) external nonReentrant returns (bool[] memory successes) {
+        uint256 batchGasStart = gasleft();
+        
         require(authorizedRelayers[msg.sender], "Unauthorized relayer");
-        require(metaTxs.length == signatures.length, "Length mismatch");
-        require(metaTxs.length > 0, "Empty batch");
+        require(block.timestamp <= deadline, "Transaction expired");
+        require(nonce == nonces[from], "Invalid nonce");
+        require(_verifySignature(from, metaTxData, signature, nonce, deadline), "Invalid signature");
+
+        MetaTransaction[] memory metaTxs = abi.decode(metaTxData, (MetaTransaction[]));
+        require(metaTxs.length > 0, "Empty batch Txs");     
 
         successes = new bool[](metaTxs.length);
 
+        // Store batch transaction log
+        uint256 batchId = nextBatchId++;
+
+        // Execute all transactions in the batch
         for (uint256 i = 0; i < metaTxs.length; i++) {
-            // Execute each transaction individually
-            // Note: Using a try-catch to continue execution even if one fails
-            try this.executeMetaTransaction(metaTxs[i], signatures[i]) returns (bool success) {
-                successes[i] = success;
+            bool success;
+            try this._executeMetaTransaction(from, metaTxs[i]) returns (bool _success) {
+                success = _success;
             } catch {
-                successes[i] = false;
+                success = false;
             }
+            
+            batchTransactionLogs[batchId].successes.push(success);
+            batchTransactions[batchId].push(metaTxs[i]);
         }
+
+        // Increment nonce to prevent replay
+        nonces[from]++;
+        
+        // Calculate total gas used for the entire batch
+        uint256 totalGasUsed = batchGasStart - gasleft() + 21000; // Add base transaction cost
+
+        batchTransactionLogs[batchId].user = from;
+        batchTransactionLogs[batchId].relayer = msg.sender;
+        batchTransactionLogs[batchId].metaTxData = metaTxData;
+        batchTransactionLogs[batchId].gasUsed = totalGasUsed;
+        batchTransactionLogs[batchId].timestamp = block.timestamp;
+
+        // Emit batch transaction event
+        emit BatchTransactionExecuted(batchId, from, msg.sender, totalGasUsed, metaTxs.length);
 
         return successes;
     }
@@ -133,31 +170,29 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
     // Helper functions ==========================================
 
     /**
-     * @notice Verify EIP-712 signature for a meta-transaction
-     * @param metaTx Meta-transaction data
+     * @notice Verify EIP-712 signature for batch meta-transactions
+     * @param from User's address
+     * @param metaTxData Encoded bytes of Meta-transactions data
      * @param signature User's signature
+     * @param nonce User's nonce
+     * @param deadline User's deadline
      * @return valid True if signature is valid
      */
     function _verifySignature(
-        MetaTransaction calldata metaTx,
-        bytes calldata signature
+        address from,
+        bytes calldata metaTxData,
+        bytes calldata signature,
+        uint256 nonce,
+        uint256 deadline
     ) internal view returns (bool valid) {
-        bytes32 domainSeparator = keccak256(abi.encode(
-            EIP712_DOMAIN_TYPEHASH,
-            keccak256("MetaTxGateway"),
-            keccak256("1"),
-            block.chainid,
-            address(this)
-        ));
+        bytes32 domainSeparator = this.getDomainSeparator();
 
         bytes32 structHash = keccak256(abi.encode(
             META_TRANSACTION_TYPEHASH,
-            metaTx.from,
-            metaTx.to,
-            metaTx.value,
-            keccak256(metaTx.data),
-            metaTx.nonce,
-            metaTx.deadline
+            from,
+            keccak256(metaTxData),
+            nonce,
+            deadline
         ));
 
         bytes32 digest = keccak256(abi.encodePacked(
@@ -167,7 +202,7 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
         ));
 
         address recoveredSigner = digest.recover(signature);
-        return recoveredSigner == metaTx.from;
+        return recoveredSigner == from;
     }
 
     // View functions ============================================
@@ -202,5 +237,53 @@ contract MetaTxGateway is Ownable, ReentrancyGuard {
             block.chainid,
             address(this)
         ));
+    }
+
+    /**
+     * @notice Get batch transaction log by ID
+     * @param batchId Batch transaction ID
+     * @return log Batch transaction log
+     */
+    function getBatchTransactionLog(uint256 batchId) external view returns (BatchTransactionLog memory log) {
+        require(batchId < nextBatchId, "Invalid batch ID");
+        return batchTransactionLogs[batchId];
+    }
+
+    /**
+     * @notice Get batch transaction gas usage by ID
+     * @param batchId Batch transaction ID
+     * @return gasUsed Gas used for the batch transaction
+     */
+    function getBatchGasUsed(uint256 batchId) external view returns (uint256 gasUsed) {
+        require(batchId < nextBatchId, "Invalid batch ID");
+        return batchTransactionLogs[batchId].gasUsed;
+    }
+
+    /**
+     * @notice Get batch transaction successes by ID
+     * @param batchId Batch transaction ID
+     * @return successes Array of success status for each transaction in the batch
+     */
+    function getBatchSuccesses(uint256 batchId) external view returns (bool[] memory successes) {
+        require(batchId < nextBatchId, "Invalid batch ID");
+        return batchTransactionLogs[batchId].successes;
+    }
+
+    /**
+     * @notice Get total number of batch transactions processed
+     * @return count Total batch transaction count
+     */
+    function getTotalBatchCount() external view returns (uint256 count) {
+        return nextBatchId;
+    }
+
+    /**
+     * @notice Get decoded transactions from a batch by ID
+     * @param batchId Batch transaction ID
+     * @return transactions Array of MetaTransaction structs in the batch
+     */
+    function getBatchTransactions(uint256 batchId) external view returns (MetaTransaction[] memory transactions) {
+        require(batchId < nextBatchId, "Invalid batch ID");
+        return batchTransactions[batchId];
     }
 }

@@ -39,7 +39,7 @@ Update `config.json` with your chain details:
   "chains": {
     "crossfi": {
       "rpc": "https://rpc.crossfi.io",
-      "chainId": 4157,
+      "chainId": 4158,
       "ixfiAddress": "0xYourIXFIContractAddress",
       "blockConfirmations": 1
     },
